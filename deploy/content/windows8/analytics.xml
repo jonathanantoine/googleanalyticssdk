@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+  <string name="ga_trackingId">UA-XXXX-Y</string>
+  <string name="ga_appName">Test</string>
+  <string name="ga_appVersion">1.0.0.0</string>
+  <bool name="ga_reportUncaughtExceptions">true</bool>
+  <bool name="ga_autoAppLifetimeTracking">true</bool>
+</resources>
