@@ -35,20 +35,18 @@ namespace GoogleAnalytics
                 }).Wait(); // this MUST be synchronouse and we are only loading a local file so no need to go async
         }
 
-        public void SetContext(object ctx)
+        public void SetContext(Application ctx)
         {
             UpdateConnectionStatus();
             NetworkInformation.NetworkStatusChanged += NetworkInformation_NetworkStatusChanged;
-            if (ctx is Application)
+            if (ctx != null)
             {
-                var app = (Application)ctx;
-                app.UnhandledException += app_UnhandledException;
-                app.Suspending += app_Suspending;
-                app.Resuming += app_Resuming;
+                ctx.UnhandledException += app_UnhandledException;
+                ctx.Suspending += app_Suspending;
+                ctx.Resuming += app_Resuming;
             }
-            else if (ctx == null) ctx = new object();
             InitConfig(ConfigPath);
-            InitTracker(ctx);
+            InitTracker();
         }
 
         void NetworkInformation_NetworkStatusChanged(object sender)

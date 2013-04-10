@@ -25,20 +25,19 @@ namespace GoogleAnalytics
             }
         }
 
-        public void SetContext(object ctx)
+        public void SetContext(Application ctx)
         {
             UpdateConnectionStatus();
             NetworkChange.NetworkAddressChanged += NetworkChange_NetworkAddressChanged;
-            if (ctx is Application)
+            if (ctx != null)
             {
-                var app = (Application)ctx;
-                app.UnhandledException += app_UnhandledException;
+                ctx.UnhandledException += app_UnhandledException;
                 PhoneApplicationService.Current.Activated += Current_Activated;
                 PhoneApplicationService.Current.Deactivated += Current_Deactivated;
                 PhoneApplicationService.Current.Closing += Current_Closing;
             }
             InitConfig(ConfigPath); // we are only loading a local file, no need to go async
-            InitTracker(ctx);
+            InitTracker();
         }
 
         void Current_Activated(object sender, ActivatedEventArgs e)

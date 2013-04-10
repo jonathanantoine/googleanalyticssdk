@@ -15,13 +15,13 @@ namespace GoogleAnalytics
 
         async Task<bool> _RequestAppOptOutAsync()
         {
-            MessageDialog msgDialog = new MessageDialog("Allow anonomous information to be collected to help improve this application?", "Custom Experience Improvement Program");
-            var okCommand = new UICommand("OK");
-            var cancelCommand = new UICommand("Cancel");
-            msgDialog.Commands.Add(okCommand);
-            msgDialog.Commands.Add(cancelCommand);
+            MessageDialog msgDialog = new MessageDialog("Allow anonomous information to be collected to help improve this application?", "Help Improve User Experience");
+            var optInCommand = new UICommand("Yes");
+            var optOutCommand = new UICommand("No");
+            msgDialog.Commands.Add(optInCommand);
+            msgDialog.Commands.Add(optOutCommand);
             var result = await msgDialog.ShowAsync();
-            AppOptOut = (result != okCommand);
+            AppOptOut = (result != optInCommand);
             return AppOptOut;
         }
     }

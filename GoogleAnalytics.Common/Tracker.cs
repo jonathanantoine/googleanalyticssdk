@@ -38,6 +38,23 @@ namespace GoogleAnalytics
             SampleRate = 100.0F;
         }
 
+        bool isEnabled = true;
+        internal bool IsEnabled
+        {
+            get { return isEnabled; }
+            set
+            {
+                isEnabled = value;
+                if (!isEnabled)
+                {
+                    lock (payloads)
+                    {
+                        payloads.Clear();
+                    }
+                }
+            }
+        }
+
         public IDictionary<int, string> CustomDimensions { get; private set; }
         public IDictionary<int, int> CustomMetrics { get; private set; }
 
@@ -186,16 +203,19 @@ namespace GoogleAnalytics
 
         void AddPayload(Payload payload)
         {
-            var serviceManager = GAServiceManager.Current;
-            if (serviceManager.DispatchPeriod == TimeSpan.Zero && serviceManager.IsConnected)
+            if (IsEnabled)
             {
-                var nowait = GAServiceManager.Current.DispatchImmediatePayload(this, payload);
-            }
-            else
-            {
-                lock (payloads)
+                var serviceManager = GAServiceManager.Current;
+                if (serviceManager.DispatchPeriod == TimeSpan.Zero && serviceManager.IsConnected)
                 {
-                    payloads.Enqueue(payload);
+                    var nowait = GAServiceManager.Current.DispatchImmediatePayload(this, payload);
+                }
+                else
+                {
+                    lock (payloads)
+                    {
+                        payloads.Enqueue(payload);
+                    }
                 }
             }
         }

@@ -234,5 +234,11 @@ namespace Test.Win8.Xaml
             object y = 1;
             string x = (string)y;
         }
+
+        private async void ButtonOptOut_Click(object sender, RoutedEventArgs e)
+        {
+            var optOut = await GoogleAnalytics.GoogleAnalytics.Current.RequestAppOptOutAsync();
+            // TODO: store the user preference and reset when the app loads next time.
+        }
     }
 }

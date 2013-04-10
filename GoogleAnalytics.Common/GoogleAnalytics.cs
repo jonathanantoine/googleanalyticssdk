@@ -6,24 +6,17 @@ namespace GoogleAnalytics
 {
     public sealed partial class GoogleAnalytics
     {
-        static GoogleAnalytics()
-        {
-            Instances = new Dictionary<object, GoogleAnalytics>();
-        }
+        static GoogleAnalytics current;
 
-        static internal Dictionary<object, GoogleAnalytics> Instances { get; private set; }
-
-        public static GoogleAnalytics GetInstance(object ctx)
+        public static GoogleAnalytics Current
         {
-            if (!Instances.ContainsKey(ctx))
+            get
             {
-                var instance = new GoogleAnalytics(new PlatformInfoProvider());
-                Instances.Add(ctx, instance);
-                return instance;
-            }
-            else
-            {
-                return Instances[ctx];
+                if (current == null)
+                {
+                    current = new GoogleAnalytics(new PlatformInfoProvider());
+                }
+                return current;
             }
         }
 
@@ -38,7 +31,19 @@ namespace GoogleAnalytics
 
         public Tracker DefaultTracker { get; set; }
 
-        public bool AppOptOut { get; set; }
+        bool appOptOut;
+        public bool AppOptOut
+        {
+            get { return appOptOut; }
+            set
+            {
+                appOptOut = value;
+                foreach (var tracker in Trackers.Values)
+                {
+                    tracker.IsEnabled = !appOptOut;
+                }
+            }
+        }
 
         public bool IsDebugEnabled { get; set; }
 
@@ -46,13 +51,14 @@ namespace GoogleAnalytics
         {
             if (!Trackers.ContainsKey(propertyId))
             {
-                var result = new Tracker(propertyId, platformTrackingInfo);
-                Trackers.Add(propertyId, result);
+                var tracker = new Tracker(propertyId, platformTrackingInfo);
+                tracker.IsEnabled = !AppOptOut;
+                Trackers.Add(propertyId, tracker);
                 if (DefaultTracker == null)
                 {
-                    DefaultTracker = result;
+                    DefaultTracker = tracker;
                 }
-                return result;
+                return tracker;
             }
             else
             {

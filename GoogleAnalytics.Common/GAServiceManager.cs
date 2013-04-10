@@ -118,12 +118,9 @@ namespace GoogleAnalytics
             isDispatching = true;
             try
             {
-                foreach (var instance in GoogleAnalytics.Instances.Values)
+                foreach (var tracker in GoogleAnalytics.Current.Trackers.Values)
                 {
-                    foreach (var tracker in instance.Trackers.Values)
-                    {
-                        await DispatchQueuedPayloads(tracker, tracker.GetPayloads().ToArray());
-                    }
+                    await DispatchQueuedPayloads(tracker, tracker.GetPayloads().ToArray());
                 }
             }
             finally

@@ -36,7 +36,7 @@ namespace GoogleAnalytics
         {
             if (tracker == null)
             {
-                object ctx = null;
+                Application ctx = null;
                 try
                 {
                     ctx = Application.Current;
@@ -47,9 +47,9 @@ namespace GoogleAnalytics
             return tracker;
         }
 
-        private void InitTracker(object ctx)
+        private void InitTracker()
         {
-            var ga = GoogleAnalytics.GetInstance(ctx);
+            var ga = GoogleAnalytics.Current;
             ga.IsDebugEnabled = config.Debug;
             tracker = ga.GetTracker(config.TrackingId);
             tracker.AppName = config.AppName;
