@@ -17,7 +17,6 @@ namespace GoogleAnalytics
         internal Tracker(string propertyId, PlatformInfoProvider platformInfoProvider)
         {
             this.platformInfoProvider = platformInfoProvider;
-            StartSession = true;
             payloads = new Queue<Payload>();
             CustomDimensions = new Dictionary<int, string>();
             CustomMetrics = new Dictionary<int, int>();
@@ -220,7 +219,7 @@ namespace GoogleAnalytics
             }
         }
 
-        internal void PayloadFailed(Payload payload)
+        internal void RecyclePayload(Payload payload)
         {
             lock (payloads)
             {

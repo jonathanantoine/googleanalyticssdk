@@ -52,6 +52,7 @@ namespace GoogleAnalytics
             var ga = GoogleAnalytics.Current;
             ga.IsDebugEnabled = config.Debug;
             tracker = ga.GetTracker(config.TrackingId);
+            tracker.StartSession = config.SessionTimeout.HasValue;
             tracker.AppName = config.AppName;
             tracker.AppVersion = config.AppVersion;
             tracker.IsAnonymizeIpEnabled = config.AnonymizeIp;

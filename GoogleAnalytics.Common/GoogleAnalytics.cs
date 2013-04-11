@@ -52,7 +52,7 @@ namespace GoogleAnalytics
             if (!Trackers.ContainsKey(propertyId))
             {
                 var tracker = new Tracker(propertyId, platformTrackingInfo);
-                tracker.IsEnabled = !AppOptOut;
+                tracker.IsEnabled = !AppOptOut && !string.IsNullOrEmpty(propertyId);
                 Trackers.Add(propertyId, tracker);
                 if (DefaultTracker == null)
                 {

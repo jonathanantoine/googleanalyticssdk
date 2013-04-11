@@ -28,9 +28,11 @@ namespace GoogleAnalytics
         Timer timer;
 #endif
         bool isDispatching;
+        TokenBucket hitTokenBucket;
 
         private GAServiceManager()
         {
+            hitTokenBucket = new TokenBucket(60, .5);
             DispatchPeriod = TimeSpan.FromSeconds(30);
 #if NETFX_CORE
             timer = ThreadPoolTimer.CreatePeriodicTimer(timer_Tick, DispatchPeriod);
@@ -152,24 +154,30 @@ namespace GoogleAnalytics
             }
         }
 
-        static async Task DispatchPayloadData(Tracker tracker, Payload payload, HttpClient httpClient, Dictionary<string, string> payloadData)
+        async Task DispatchPayloadData(Tracker tracker, Payload payload, HttpClient httpClient, Dictionary<string, string> payloadData)
         {
-            if (tracker.BustCache) payloadData.Add("z", GetCacheBuster());
-            var endPoint = tracker.IsUseSecure ? endPointSecure : endPointUnsecure;
-            using (var content = new FormUrlEncodedContent(payloadData))
+            if (hitTokenBucket.Consume())
             {
-                try
+                if (tracker.BustCache) payloadData.Add("z", GetCacheBuster());
+                var endPoint = tracker.IsUseSecure ? endPointSecure : endPointUnsecure;
+                using (var content = new FormUrlEncodedContent(payloadData))
                 {
-                    var response = await httpClient.PostAsync(endPoint, content);
-                    if (!response.IsSuccessStatusCode)
+                    try
                     {
-                        tracker.PayloadFailed(payload);
+                        await httpClient.PostAsync(endPoint, content);
+                    }
+                    catch
+                    {
+                        tracker.RecyclePayload(payload);
                     }
                 }
-                catch { /* ignore */ }
+            }
+            else
+            {
+                tracker.RecyclePayload(payload);
             }
         }
-
+        
         static HttpClient GetHttpClient()
         {
             var result = new HttpClient();

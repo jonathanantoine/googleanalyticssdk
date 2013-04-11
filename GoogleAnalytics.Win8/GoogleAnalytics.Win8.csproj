@@ -135,6 +135,9 @@
     <Compile Include="EasyTracker.Win8.cs" />
     <Compile Include="PlatformInfoProvider.Win8.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\GoogleAnalytics.Common\TokenBucket.cs">
+      <Link>TokenBucket.cs</Link>
+    </Compile>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>

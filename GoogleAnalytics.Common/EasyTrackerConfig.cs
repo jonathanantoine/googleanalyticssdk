@@ -15,7 +15,6 @@ namespace GoogleAnalytics
             SessionTimeout = TimeSpan.FromSeconds(30);
             DispatchPeriod = TimeSpan.FromSeconds(30);
             SampleFrequency = 100.0F;
-            AutoAppLifetimeTracking = true;
         }
 
         internal static EasyTrackerConfig Load(XmlReader reader)
@@ -51,7 +50,6 @@ namespace GoogleAnalytics
                             }
                             break;
                         case "integer":
-                        case "int":
                             {
                                 var value = reader.ReadElementContentAsInt();
                                 switch (key)
@@ -60,12 +58,11 @@ namespace GoogleAnalytics
                                         result.DispatchPeriod = TimeSpan.FromSeconds(value);
                                         break;
                                     case "ga_sessionTimeout":
-                                        result.SessionTimeout = TimeSpan.FromSeconds(value);
+                                        result.SessionTimeout = (value >= 0) ? TimeSpan.FromSeconds(value) : (TimeSpan?)null;
                                         break;
                                 }
                             }
                             break;
-                        case "boolean":
                         case "bool":
                             {
                                 var value = reader.ReadElementContentAsBoolean();
@@ -88,6 +85,9 @@ namespace GoogleAnalytics
                                         break;
                                 }
                             }
+                            break;
+                        default:
+                            reader.Skip();
                             break;
                     }
                 }
