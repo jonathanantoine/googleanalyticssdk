@@ -74,16 +74,16 @@ namespace GoogleAnalytics
 
         void app_Resuming(object sender, object e)
         {
-            if (suspended.HasValue && config.SessionTimeout.HasValue)
+            if (suspended.HasValue && Config.SessionTimeout.HasValue)
             {
                 var suspendedAgo = DateTime.UtcNow.Subtract(suspended.Value);
-                if (suspendedAgo > config.SessionTimeout.Value)
+                if (suspendedAgo > Config.SessionTimeout.Value)
                 {
                     tracker.StartSession = true;
                 }
             }
 
-            if (config.AutoAppLifetimeTracking)
+            if (Config.AutoAppLifetimeTracking)
             {
                 tracker.SendEvent("app", "resume", null, 0);
             }
@@ -91,7 +91,7 @@ namespace GoogleAnalytics
 
         async void app_Suspending(object sender, Windows.ApplicationModel.SuspendingEventArgs e)
         {
-            if (config.AutoAppLifetimeTracking)
+            if (Config.AutoAppLifetimeTracking)
             {
                 tracker.SendEvent("app", "suspend", null, 0);
             }
@@ -104,7 +104,7 @@ namespace GoogleAnalytics
 
         async void app_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            if (config.ReportUncaughtExceptions)
+            if (Config.ReportUncaughtExceptions)
             {
                 try
                 {

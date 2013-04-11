@@ -14,11 +14,10 @@ namespace GoogleAnalytics
     {
         static EasyTracker current;
         static Tracker tracker;
-
-        EasyTrackerConfig config;
         DateTime? suspended;
 
         public Uri ConfigPath { get; set; }
+        public EasyTrackerConfig Config { get; set; }
 
         public static EasyTracker Current
         {
@@ -50,19 +49,22 @@ namespace GoogleAnalytics
         private void InitTracker()
         {
             var ga = GoogleAnalytics.Current;
-            ga.IsDebugEnabled = config.Debug;
-            tracker = ga.GetTracker(config.TrackingId);
-            tracker.StartSession = config.SessionTimeout.HasValue;
-            tracker.AppName = config.AppName;
-            tracker.AppVersion = config.AppVersion;
-            tracker.IsAnonymizeIpEnabled = config.AnonymizeIp;
-            tracker.SampleRate = config.SampleFrequency;
+            ga.IsDebugEnabled = Config.Debug;
+            tracker = ga.GetTracker(Config.TrackingId);
+            tracker.StartSession = Config.SessionTimeout.HasValue;
+            tracker.AppName = Config.AppName;
+            tracker.AppVersion = Config.AppVersion;
+            tracker.IsAnonymizeIpEnabled = Config.AnonymizeIp;
+            tracker.SampleRate = Config.SampleFrequency;
         }
 
         private void InitConfig(XmlReader reader)
         {
-            config = EasyTrackerConfig.Load(reader);
-            GAServiceManager.Current.DispatchPeriod = config.DispatchPeriod;
+            if (Config == null)
+            {
+                Config = EasyTrackerConfig.Load(reader);
+                GAServiceManager.Current.DispatchPeriod = Config.DispatchPeriod;
+            }
         }
 
 #if NETFX_CORE

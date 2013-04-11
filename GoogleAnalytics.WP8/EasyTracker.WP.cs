@@ -42,16 +42,16 @@ namespace GoogleAnalytics
 
         void Current_Activated(object sender, ActivatedEventArgs e)
         {
-            if (suspended.HasValue && config.SessionTimeout.HasValue)
+            if (suspended.HasValue && Config.SessionTimeout.HasValue)
             {
                 var suspendedAgo = DateTime.UtcNow.Subtract(suspended.Value);
-                if (suspendedAgo > config.SessionTimeout.Value)
+                if (suspendedAgo > Config.SessionTimeout.Value)
                 {
                     tracker.StartSession = true;
                 }
             }
 
-            if (config.AutoAppLifetimeTracking)
+            if (Config.AutoAppLifetimeTracking)
             {
                 tracker.SendEvent("app", "resume", !e.IsApplicationInstancePreserved ? "tombstoned" : null, 0);
             }
@@ -59,7 +59,7 @@ namespace GoogleAnalytics
 
         async void Current_Deactivated(object sender, DeactivatedEventArgs e)
         {
-            if (config.AutoAppLifetimeTracking)
+            if (Config.AutoAppLifetimeTracking)
             {
 #if WINDOWS_PHONE7
                 tracker.SendEvent("app", "suspend", null, 0);
@@ -74,7 +74,7 @@ namespace GoogleAnalytics
 
         async void Current_Closing(object sender, ClosingEventArgs e)
         {
-            if (config.AutoAppLifetimeTracking)
+            if (Config.AutoAppLifetimeTracking)
             {
                 tracker.EndSession = true;
                 tracker.SendEvent("app", "close", null, 0);
@@ -95,7 +95,7 @@ namespace GoogleAnalytics
 
         async void app_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
         {
-            if (config.ReportUncaughtExceptions)
+            if (Config.ReportUncaughtExceptions)
             {
                 try
                 {

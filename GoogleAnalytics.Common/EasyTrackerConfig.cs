@@ -8,9 +8,9 @@ using System.Xml;
 namespace GoogleAnalytics
 {
 
-    internal sealed class EasyTrackerConfig
+    public sealed class EasyTrackerConfig
     {
-        private EasyTrackerConfig()
+        public EasyTrackerConfig()
         {
             SessionTimeout = TimeSpan.FromSeconds(30);
             DispatchPeriod = TimeSpan.FromSeconds(30);
