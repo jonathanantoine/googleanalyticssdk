@@ -117,6 +117,9 @@
     <Compile Include="..\GoogleAnalytics.WP8\GoogleAnalytics.WP.cs">
       <Link>GoogleAnalytics.WP.cs</Link>
     </Compile>
+    <Compile Include="..\GoogleAnalytics.WP8\Helpers.cs">
+      <Link>Helpers.cs</Link>
+    </Compile>
     <Compile Include="PlatformInfoProvider.WP7.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

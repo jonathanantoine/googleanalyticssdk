@@ -1,10 +1,10 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 using Windows.Networking.Connectivity;
 using Windows.Storage;
 using Windows.UI.Xaml;
-using System.IO;
 
 namespace GoogleAnalytics
 {
@@ -46,9 +46,23 @@ namespace GoogleAnalytics
                 ctx.Resuming += app_Resuming;
             }
             InitConfig(ConfigPath);
+            PopulateMissingConfig();
             InitTracker();
         }
 
+        void PopulateMissingConfig()
+        {
+            if (string.IsNullOrEmpty(Config.AppName))
+            {
+                Config.AppName = Windows.ApplicationModel.Package.Current.Id.Name;
+            }
+            if (string.IsNullOrEmpty(Config.AppVersion))
+            {
+                var version = Windows.ApplicationModel.Package.Current.Id.Version;
+                Config.AppVersion = string.Format("{0}.{1}.{2}.{3}", version.Major, version.Minor, version.Build, version.Revision);
+            }
+        }
+        
         void NetworkInformation_NetworkStatusChanged(object sender)
         {
             UpdateConnectionStatus();

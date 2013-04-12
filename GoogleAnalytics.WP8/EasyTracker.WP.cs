@@ -37,7 +37,20 @@ namespace GoogleAnalytics
                 PhoneApplicationService.Current.Closing += Current_Closing;
             }
             InitConfig(ConfigPath); // we are only loading a local file, no need to go async
+            PopulateMissingConfig();
             InitTracker();
+        }
+
+        void PopulateMissingConfig()
+        {
+            if (string.IsNullOrEmpty(Config.AppName))
+            {
+                Config.AppName = Helpers.GetAppAttribute("Title");
+            }
+            if (string.IsNullOrEmpty(Config.AppVersion))
+            {
+                Config.AppVersion = Helpers.GetAppAttribute("Version");
+            }
         }
 
         void Current_Activated(object sender, ActivatedEventArgs e)
