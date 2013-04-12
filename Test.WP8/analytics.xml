@@ -1,24 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <!--More info at https://developers.google.com/analytics/devguides/collection/android/v2/parameters-->
-<resources>
+<analytics xmlns="http://googleanalyticssdk.codeplex.com/ns/easytracker">
   <!--Replace placeholder ID with your tracking ID-->
-  <string name="ga_trackingId">UA-39959863-1</string>
+  <trackingId>UA-39959863-1</trackingId>
   <!--Replace placeholder name with your app name-->
-  <string name="ga_appName">Test.WP8</string>
+  <appName>Test.WP8</appName>
   <!--Replace placeholder version with your app version-->
-  <string name="ga_appVersion">1.0.0.0</string>
+  <appVersion>1.0.0.0</appVersion>
   <!--Enable writing of debug information to debug window log, useful for troubleshooting your implementation-->
-  <bool name="ga_debug">false</bool>
+  <debug>false</debug>
   <!--The dispatch period in seconds.-->
-  <integer name="ga_dispatchPeriod">10</integer>
+  <dispatchPeriod>10</dispatchPeriod>
   <!--The dispatch period in seconds.-->
-  <string name="ga_sampleFrequency">100.0</string>
+  <sampleFrequency>100.0</sampleFrequency>
   <!--Tells Google Analytics to anonymize the information sent by the tracker objects by removing the last octet of the IP address prior to its storage. Note that this will slightly reduce the accuracy of geographic reporting.-->
-  <bool name="ga_anonymizeIp">false</bool>
+  <anonymizeIp>false</anonymizeIp>
   <!--Enable automatic exception tracking-->
-  <bool name="ga_reportUncaughtExceptions">true</bool>
+  <reportUncaughtExceptions>true</reportUncaughtExceptions>
   <!--The amount of time (in seconds) your application can stay in the background before the session is ended. Negative value disables EasyTracker session management.-->
-  <integer name="ga_sessionTimeout">30</integer>
+  <sessionTimeout>30</sessionTimeout>
   <!--Enable automatic app lifetime tracking (e.g. suspend/resume)-->
-  <bool name="ga_autoAppLifetimeTracking">true</bool>
-</resources>
+  <autoAppLifetimeTracking>true</autoAppLifetimeTracking>
+</analytics>

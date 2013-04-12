@@ -121,6 +121,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\GoogleAnalytics.Common\analytics.xsd">
+      <Link>analytics.xsd</Link>
+      <SubType>Designer</SubType>
+    </None>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>

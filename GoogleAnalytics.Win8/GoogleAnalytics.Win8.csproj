@@ -139,6 +139,12 @@
       <Link>TokenBucket.cs</Link>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\GoogleAnalytics.Common\analytics.xsd">
+      <Link>analytics.xsd</Link>
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>
   </PropertyGroup>

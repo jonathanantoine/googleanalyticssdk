@@ -127,6 +127,10 @@
     <Compile Include="ResolutionHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\GoogleAnalytics.Common\analytics.xsd">
+      <Link>analytics.xsd</Link>
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

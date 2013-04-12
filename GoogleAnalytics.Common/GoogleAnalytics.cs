@@ -49,6 +49,7 @@ namespace GoogleAnalytics
 
         public Tracker GetTracker(string propertyId)
         {
+            propertyId = propertyId ?? string.Empty;
             if (!Trackers.ContainsKey(propertyId))
             {
                 var tracker = new Tracker(propertyId, platformTrackingInfo);
