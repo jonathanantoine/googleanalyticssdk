@@ -21,6 +21,7 @@ namespace GoogleAnalytics
         public long TotalCostInMicros { get; set; }
         public long ShippingCostInMicros { get; set; }
         public long TotalTaxInMicros { get; set; }
+        public string CurrencyCode { get; set; }
         public IList<TransactionItem> Items { get; private set; }
     }
 
@@ -43,6 +44,5 @@ namespace GoogleAnalytics
         public long Quantity { get; set; }
         public string SKU { get; set; }
         public string Category { get; set; }
-        public string CurrencyCode { get; set; }
     }
 }

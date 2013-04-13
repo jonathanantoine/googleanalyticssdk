@@ -35,9 +35,9 @@ namespace GoogleAnalytics
 
             var transaction = new Transaction(transactionId, costInMicrons);
             transaction.Affiliation = StoreName;
+            transaction.CurrencyCode = currencyCode;
             var transactionItem = new TransactionItem(productId, product.Name, costInMicrons, 1);
             transactionItem.Category = productType;
-            transactionItem.CurrencyCode = currencyCode;
             transaction.Items.Add(transactionItem);
             return transaction;
         }
@@ -62,9 +62,9 @@ namespace GoogleAnalytics
 
             var transaction = new Transaction(transactionId, costInMicrons);
             transaction.Affiliation = StoreName;
+            transaction.CurrencyCode = currencyCode;
             var transactionItem = new TransactionItem(appId, listingInformation.Name, costInMicrons, 1);
             transactionItem.Category = licenseType;
-            transactionItem.CurrencyCode = currencyCode;
             transaction.Items.Add(transactionItem);
             return transaction;
         }

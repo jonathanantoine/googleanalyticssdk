@@ -94,7 +94,7 @@ namespace GoogleAnalytics
             return PostData(HitType_UserTiming, additionalData, isNonInteractive, sessionControl);
         }
 
-        public Payload TrackTransaction(string id, string affiliation, double revenue, double shipping, double tax, SessionControl sessionControl = SessionControl.None, bool isNonInteractive = false)
+        public Payload TrackTransaction(string id, string affiliation, double revenue, double shipping, double tax, string currencyCode, SessionControl sessionControl = SessionControl.None, bool isNonInteractive = false)
         {
             var additionalData = new Dictionary<string, string>();
             additionalData.Add("ti", id);
@@ -102,6 +102,7 @@ namespace GoogleAnalytics
             if (revenue != 0) additionalData.Add("tr", revenue.ToString(CultureInfo.InvariantCulture));
             if (shipping != 0) additionalData.Add("ts", shipping.ToString(CultureInfo.InvariantCulture));
             if (tax != 0) additionalData.Add("tt", tax.ToString(CultureInfo.InvariantCulture));
+            if (currencyCode != null) additionalData.Add("cu", currencyCode);
             return PostData(HitType_Transaction, additionalData, isNonInteractive, sessionControl);
         }
 
