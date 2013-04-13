@@ -1,19 +1,10 @@
-﻿using Test.Win8.Xaml.Data;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Graphics.Display;
+using Test.Win8.Xaml.Data;
+using Windows.ApplicationModel.Store;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // The Split Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234234
@@ -29,6 +20,13 @@ namespace Test.Win8.Xaml
         public SplitPage()
         {
             this.InitializeComponent();
+            InitStore();
+        }
+
+        private static async void InitStore()
+        {
+            var storeFile = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///WindowsStoreProxy.xml"));
+            await Windows.ApplicationModel.Store.CurrentAppSimulator.ReloadSimulatorAsync(storeFile);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -208,15 +206,41 @@ namespace Test.Win8.Xaml
             GoogleAnalytics.EasyTracker.GetTracker().SendView("fake");
         }
 
-        private void ButtonTransaction_Click(object sender, RoutedEventArgs e)
+        private async void ButtonProductTransaction_Click(object sender, RoutedEventArgs e)
         {
-            double cost = 1.99;
-            long costInMicrons = (long)(cost * 1000000);
-            var transaction = new GoogleAnalytics.Transaction("01234", costInMicrons);
-            var item = new GoogleAnalytics.TransactionItem("myproduct", "My Product", costInMicrons, 1);
-            transaction.Items.Add(item);
+            try
+            {
+                var productId = "test";
+                var receipt = await CurrentAppSimulator.RequestProductPurchaseAsync(productId, true);
+                if (CurrentAppSimulator.LicenseInformation.ProductLicenses[productId].IsActive)
+                {
+                    var listings = await CurrentAppSimulator.LoadListingInformationAsync();
+                    var transaction = GoogleAnalytics.TransactionBuilder.GetProductPurchaseTransaction(listings, receipt);
+                    GoogleAnalytics.EasyTracker.GetTracker().SendTransaction(transaction);
+                }
+            }
+            catch (Exception ex)
+            {
+                GoogleAnalytics.EasyTracker.GetTracker().SendException(ex.StackTrace, false);
+            }
+        }
 
-            GoogleAnalytics.EasyTracker.GetTracker().SendTransaction(transaction);
+        private async void ButtonAppTransaction_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var receipt = await CurrentAppSimulator.RequestAppPurchaseAsync(true);
+                if (CurrentAppSimulator.LicenseInformation.IsActive)
+                {
+                    var listings = await CurrentAppSimulator.LoadListingInformationAsync();
+                    var transaction = GoogleAnalytics.TransactionBuilder.GetAppPurchaseTransaction(listings, receipt);
+                    GoogleAnalytics.EasyTracker.GetTracker().SendTransaction(transaction);
+                }
+            }
+            catch (Exception ex)
+            {
+                GoogleAnalytics.EasyTracker.GetTracker().SendException(ex.StackTrace, false);
+            }
         }
 
         private void ButtonSocial_Click(object sender, RoutedEventArgs e)

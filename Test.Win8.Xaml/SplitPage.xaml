@@ -98,7 +98,8 @@
                     <Button Content="Throw exception" Click="ButtonThrowException_Click"/>
                     <Button Content="Track custom event" Click="ButtonEvent_Click"/>
                     <Button Content="Track page view" Click="ButtonView_Click"/>
-                    <Button Content="Track e-commerce transaction" Click="ButtonTransaction_Click"/>
+                    <Button Content="Track app purchase" Click="ButtonAppTransaction_Click"/>
+                    <Button Content="Track product purchase" Click="ButtonProductTransaction_Click"/>
                     <Button Content="Track social activity" Click="ButtonSocial_Click"/>
                     <Button Content="Track manual exception" Click="ButtonException_Click"/>
                     <Button Content="Track timing" Click="ButtonTiming_Click"/>

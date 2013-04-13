@@ -120,12 +120,15 @@
     <Compile Include="..\GoogleAnalytics.Common\Transactions.cs">
       <Link>Transactions.cs</Link>
     </Compile>
+    <Compile Include="AppReceipt.cs" />
     <Compile Include="EasyTracker.WP.cs" />
     <Compile Include="GoogleAnalytics.WP.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="PlatformInfoProvider.WP8.cs" />
+    <Compile Include="ProductReceipt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResolutionHelper.cs" />
+    <Compile Include="TransactionBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\GoogleAnalytics.Common\analytics.xsd">
