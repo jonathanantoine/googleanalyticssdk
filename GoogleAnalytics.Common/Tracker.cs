@@ -21,8 +21,6 @@ namespace GoogleAnalytics
             engine = new PayloadFactory()
             {
                 PropertyId = propertyId,
-                CustomDimensions = CustomDimensions,
-                CustomMetrics = CustomMetrics,
                 AnonymousClientId = platformInfoProvider.AnonymousClientId,
                 DocumentEncoding = platformInfoProvider.DocumentEncoding,
                 ScreenColorDepthBits = platformInfoProvider.ScreenColorDepthBits,
@@ -52,8 +50,15 @@ namespace GoogleAnalytics
             }
         }
 
-        public IDictionary<int, string> CustomDimensions { get { return engine.CustomDimensions; } }
-        public IDictionary<int, int> CustomMetrics { get { return engine.CustomMetrics; } }
+        public void SetCustomDimension(int index, string value)
+        {
+            engine.CustomDimensions[index] = value;
+        }
+
+        public void SetCustomMetric(int index, int value)
+        {
+            engine.CustomMetrics[index] = value;
+        }
 
 #if NETFX_CORE
         private void platformTrackingInfo_ViewPortResolutionChanged(object sender, object args)
