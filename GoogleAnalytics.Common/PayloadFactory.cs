@@ -38,6 +38,12 @@ namespace GoogleAnalytics
         public int? ScreenColorDepthBits { get; set; }
         public string DocumentEncoding { get; set; }
 
+        public PayloadFactory()
+        {
+            CustomDimensions = new Dictionary<int, string>();
+            CustomMetrics = new Dictionary<int, int>();
+        }
+
         public Payload TrackView(string screenName, SessionControl sessionControl = SessionControl.None, bool isNonInteractive = false)
         {
             var additionalData = new Dictionary<string, string>();
@@ -128,14 +134,6 @@ namespace GoogleAnalytics
             result.Add("an", AppName);
             result.Add("av", AppVersion);
             result.Add("t", hitType);
-            foreach (var dimension in CustomDimensions)
-            {
-                result.Add(string.Format("cd{0}*", dimension.Key), dimension.Value);
-            }
-            foreach (var metric in CustomMetrics)
-            {
-                result.Add(string.Format("cm{0}*", metric.Key), metric.Value.ToString(CultureInfo.InvariantCulture));
-            }
             if (isNonInteractive) result.Add("ni", "1");
             if (AnonymizeIP) result.Add("aip", "1");
             if (sessionControl != SessionControl.None) result.Add("sc", sessionControl == SessionControl.Start ? "start" : "end");
@@ -144,6 +142,16 @@ namespace GoogleAnalytics
             if (UserLanguage != null) result.Add("ul", UserLanguage.ToLowerInvariant());
             if (ScreenColorDepthBits.HasValue) result.Add("sd", string.Format("{0}-bits", ScreenColorDepthBits.Value));
             if (DocumentEncoding != null) result.Add("de", DocumentEncoding);
+            foreach (var dimension in CustomDimensions)
+            {
+                result.Add(string.Format("cd{0}*", dimension.Key), dimension.Value);
+            }
+            foreach (var metric in CustomMetrics)
+            {
+                result.Add(string.Format("cm{0}*", metric.Key), metric.Value.ToString(CultureInfo.InvariantCulture));
+            }
+            CustomDimensions.Clear();
+            CustomMetrics.Clear();
 
             return result;
         }

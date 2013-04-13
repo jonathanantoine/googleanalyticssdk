@@ -18,8 +18,6 @@ namespace GoogleAnalytics
         {
             this.platformInfoProvider = platformInfoProvider;
             payloads = new Queue<Payload>();
-            CustomDimensions = new Dictionary<int, string>();
-            CustomMetrics = new Dictionary<int, int>();
             engine = new PayloadFactory()
             {
                 PropertyId = propertyId,
@@ -54,8 +52,8 @@ namespace GoogleAnalytics
             }
         }
 
-        public IDictionary<int, string> CustomDimensions { get; private set; }
-        public IDictionary<int, int> CustomMetrics { get; private set; }
+        public IDictionary<int, string> CustomDimensions { get { return engine.CustomDimensions; } }
+        public IDictionary<int, int> CustomMetrics { get { return engine.CustomMetrics; } }
 
 #if NETFX_CORE
         private void platformTrackingInfo_ViewPortResolutionChanged(object sender, object args)
