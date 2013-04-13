@@ -60,7 +60,7 @@ namespace GoogleAnalytics
                 var suspendedAgo = DateTime.UtcNow.Subtract(suspended.Value);
                 if (suspendedAgo > Config.SessionTimeout.Value)
                 {
-                    tracker.StartSession = true;
+                    tracker.SetStartSession(true);
                 }
             }
 
@@ -89,7 +89,7 @@ namespace GoogleAnalytics
         {
             if (Config.AutoAppLifetimeTracking)
             {
-                tracker.EndSession = true;
+                tracker.SetEndSession(true);
                 tracker.SendEvent("app", "close", null, 0);
             }
 

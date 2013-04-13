@@ -182,14 +182,14 @@ namespace GoogleAnalytics
         {
             get
             {
-                if (EndSession)
+                if (endSession)
                 {
-                    EndSession = false;
+                    endSession = false;
                     return SessionControl.End;
                 }
-                else if (StartSession)
+                else if (startSession)
                 {
-                    StartSession = false;
+                    startSession = false;
                     return SessionControl.Start;
                 }
                 else
@@ -199,9 +199,17 @@ namespace GoogleAnalytics
             }
         }
 
-        public bool StartSession { get; set; }
+        bool startSession;
+        public void SetStartSession(bool value)
+        {
+            startSession = value;
+        }
 
-        public bool EndSession { get; set; }
+        bool endSession;
+        public void SetEndSession(bool value)
+        {
+            endSession = value;
+        }
 
         void AddPayload(Payload payload)
         {

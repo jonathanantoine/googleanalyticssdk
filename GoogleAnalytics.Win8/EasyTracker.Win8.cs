@@ -93,7 +93,7 @@ namespace GoogleAnalytics
                 var suspendedAgo = DateTime.UtcNow.Subtract(suspended.Value);
                 if (suspendedAgo > Config.SessionTimeout.Value)
                 {
-                    tracker.StartSession = true;
+                    tracker.SetStartSession(true);
                 }
             }
 
