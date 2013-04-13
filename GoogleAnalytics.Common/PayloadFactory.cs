@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Globalization;
 #if NETFX_CORE
 using Windows.Foundation;
 #else
@@ -50,7 +51,7 @@ namespace GoogleAnalytics
             additionalData.Add("ec", category);
             additionalData.Add("ea", action);
             if (label != null) additionalData.Add("el", label);
-            if (value != 0) additionalData.Add("ev", value.ToString());
+            if (value != 0) additionalData.Add("ev", value.ToString(CultureInfo.InvariantCulture));
             return PostData(HitType_Event, additionalData, isNonInteractive, sessionControl);
         }
 
@@ -76,14 +77,14 @@ namespace GoogleAnalytics
             var additionalData = new Dictionary<string, string>();
             if (category != null) additionalData.Add("utc", category);
             if (variable != null) additionalData.Add("utv", variable);
-            if (time.HasValue) additionalData.Add("utt", time.Value.TotalMilliseconds.ToString());
+            if (time.HasValue) additionalData.Add("utt", time.Value.TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
             if (label != null) additionalData.Add("utl", label);
-            if (loadTime.HasValue) additionalData.Add("ptl", loadTime.Value.TotalMilliseconds.ToString());
-            if (dnsTime.HasValue) additionalData.Add("dns", dnsTime.Value.TotalMilliseconds.ToString());
-            if (downloadTime.HasValue) additionalData.Add("pdt", downloadTime.Value.TotalMilliseconds.ToString());
-            if (redirectResponseTime.HasValue) additionalData.Add("rrt", redirectResponseTime.Value.TotalMilliseconds.ToString());
-            if (tcpConnectTime.HasValue) additionalData.Add("tcp", tcpConnectTime.Value.TotalMilliseconds.ToString());
-            if (serverResponseTime.HasValue) additionalData.Add("srt", serverResponseTime.Value.TotalMilliseconds.ToString());
+            if (loadTime.HasValue) additionalData.Add("ptl", loadTime.Value.TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
+            if (dnsTime.HasValue) additionalData.Add("dns", dnsTime.Value.TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
+            if (downloadTime.HasValue) additionalData.Add("pdt", downloadTime.Value.TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
+            if (redirectResponseTime.HasValue) additionalData.Add("rrt", redirectResponseTime.Value.TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
+            if (tcpConnectTime.HasValue) additionalData.Add("tcp", tcpConnectTime.Value.TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
+            if (serverResponseTime.HasValue) additionalData.Add("srt", serverResponseTime.Value.TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
             return PostData(HitType_UserTiming, additionalData, isNonInteractive, sessionControl);
         }
 
@@ -92,9 +93,9 @@ namespace GoogleAnalytics
             var additionalData = new Dictionary<string, string>();
             additionalData.Add("ti", id);
             if (affiliation != null) additionalData.Add("ta", affiliation);
-            if (revenue != 0) additionalData.Add("tr", revenue.ToString());
-            if (shipping != 0) additionalData.Add("ts", shipping.ToString());
-            if (tax != 0) additionalData.Add("tt", tax.ToString());
+            if (revenue != 0) additionalData.Add("tr", revenue.ToString(CultureInfo.InvariantCulture));
+            if (shipping != 0) additionalData.Add("ts", shipping.ToString(CultureInfo.InvariantCulture));
+            if (tax != 0) additionalData.Add("tt", tax.ToString(CultureInfo.InvariantCulture));
             return PostData(HitType_Transaction, additionalData, isNonInteractive, sessionControl);
         }
 
@@ -103,8 +104,8 @@ namespace GoogleAnalytics
             var additionalData = new Dictionary<string, string>();
             additionalData.Add("ti", transactionId);
             if (name != null) additionalData.Add("in", name);
-            if (price != 0) additionalData.Add("ip", price.ToString());
-            if (quantity != 0) additionalData.Add("iq", quantity.ToString());
+            if (price != 0) additionalData.Add("ip", price.ToString(CultureInfo.InvariantCulture));
+            if (quantity != 0) additionalData.Add("iq", quantity.ToString(CultureInfo.InvariantCulture));
             if (code != null) additionalData.Add("ic", code);
             if (category != null) additionalData.Add("iv", category);
             if (currencyCode != null) additionalData.Add("cu", currencyCode);
@@ -133,7 +134,7 @@ namespace GoogleAnalytics
             }
             foreach (var metric in CustomMetrics)
             {
-                result.Add(string.Format("cm{0}*", metric.Key), metric.Value.ToString());
+                result.Add(string.Format("cm{0}*", metric.Key), metric.Value.ToString(CultureInfo.InvariantCulture));
             }
             if (isNonInteractive) result.Add("ni", "1");
             if (AnonymizeIP) result.Add("aip", "1");
