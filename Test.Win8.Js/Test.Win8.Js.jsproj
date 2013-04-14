@@ -61,6 +61,9 @@
     <AppxManifest Include="package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <Content Include="..\GoogleAnalytics.Common\analytics.xsd">
+      <Link>analytics.xsd</Link>
+    </Content>
     <Content Include="analytics.xml" />
     <Content Include="css\default.css" />
     <Content Include="images\logo.png" />

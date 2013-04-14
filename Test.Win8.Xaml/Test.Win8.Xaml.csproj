@@ -130,6 +130,10 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <None Include="..\GoogleAnalytics.Common\analytics.xsd">
+      <Link>analytics.xsd</Link>
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Common\ReadMe.txt" />
     <None Include="Test.Win8.Xaml_TemporaryKey.pfx" />
   </ItemGroup>
@@ -142,6 +146,7 @@
     <Content Include="Assets\LightGray.png" />
     <Content Include="Assets\MediumGray.png" />
     <Content Include="Assets\DarkGray.png" />
+    <Content Include="SampleReceipt.xml" />
     <Content Include="WindowsStoreProxy.xml" />
   </ItemGroup>
   <ItemGroup>
