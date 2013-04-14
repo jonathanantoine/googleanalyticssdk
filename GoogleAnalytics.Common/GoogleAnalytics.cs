@@ -70,6 +70,10 @@ namespace GoogleAnalytics
         public void CloseTracker(Tracker tracker)
         {
             Trackers.Remove(tracker.TrackingId);
+            if (DefaultTracker == tracker)
+            {
+                DefaultTracker = null;
+            }
         }
     }
 }
