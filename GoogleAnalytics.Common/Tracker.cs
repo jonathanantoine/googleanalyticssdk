@@ -13,6 +13,7 @@ namespace GoogleAnalytics
         readonly PayloadFactory engine;
         readonly Queue<Payload> payloads;
         readonly PlatformInfoProvider platformInfoProvider;
+        readonly TokenBucket hitTokenBucket;
 
         internal Tracker(string propertyId, PlatformInfoProvider platformInfoProvider)
         {
@@ -31,6 +32,7 @@ namespace GoogleAnalytics
             platformInfoProvider.ViewPortResolutionChanged += platformTrackingInfo_ViewPortResolutionChanged;
             platformInfoProvider.ScreenResolutionChanged += platformTrackingInfo_ScreenResolutionChanged;
             SampleRate = 100.0F;
+            hitTokenBucket = new TokenBucket(60, .5);
         }
 
         bool isEnabled = true;
@@ -215,16 +217,19 @@ namespace GoogleAnalytics
         {
             if (IsEnabled)
             {
-                var serviceManager = GAServiceManager.Current;
-                if (serviceManager.DispatchPeriod == TimeSpan.Zero && serviceManager.IsConnected)
+                if (!ThrottlingEnabled || hitTokenBucket.Consume())
                 {
-                    var nowait = GAServiceManager.Current.DispatchImmediatePayload(this, payload);
-                }
-                else
-                {
-                    lock (payloads)
+                    var serviceManager = GAServiceManager.Current;
+                    if (serviceManager.DispatchPeriod == TimeSpan.Zero && serviceManager.IsConnected)
                     {
-                        payloads.Enqueue(payload);
+                        var nowait = GAServiceManager.Current.DispatchImmediatePayload(this, payload);
+                    }
+                    else
+                    {
+                        lock (payloads)
+                        {
+                            payloads.Enqueue(payload);
+                        }
                     }
                 }
             }
@@ -243,7 +248,7 @@ namespace GoogleAnalytics
             lock (payloads)
             {
                 var total = payloads.Count;
-                var payloadsToSample = ThrottlingEnabled ? SampleRate / 100.0F * total : total;
+                var payloadsToSample = SampleRate / 100.0F * total;
                 for (int i = 0; i < payloadsToSample; i++)
                 {
                     yield return payloads.Dequeue();

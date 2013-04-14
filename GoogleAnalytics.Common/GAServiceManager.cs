@@ -28,11 +28,9 @@ namespace GoogleAnalytics
         Timer timer;
 #endif
         bool isDispatching;
-        TokenBucket hitTokenBucket;
 
         private GAServiceManager()
         {
-            hitTokenBucket = new TokenBucket(60, .5);
             DispatchPeriod = TimeSpan.FromSeconds(30);
 #if NETFX_CORE
             timer = ThreadPoolTimer.CreatePeriodicTimer(timer_Tick, DispatchPeriod);
@@ -156,28 +154,21 @@ namespace GoogleAnalytics
 
         async Task DispatchPayloadData(Tracker tracker, Payload payload, HttpClient httpClient, Dictionary<string, string> payloadData)
         {
-            if (hitTokenBucket.Consume())
+            if (tracker.BustCache) payloadData.Add("z", GetCacheBuster());
+            var endPoint = tracker.IsUseSecure ? endPointSecure : endPointUnsecure;
+            using (var content = new FormUrlEncodedContent(payloadData))
             {
-                if (tracker.BustCache) payloadData.Add("z", GetCacheBuster());
-                var endPoint = tracker.IsUseSecure ? endPointSecure : endPointUnsecure;
-                using (var content = new FormUrlEncodedContent(payloadData))
+                try
                 {
-                    try
-                    {
-                        await httpClient.PostAsync(endPoint, content);
-                    }
-                    catch
-                    {
-                        tracker.RecyclePayload(payload);
-                    }
+                    await httpClient.PostAsync(endPoint, content);
+                }
+                catch
+                {
+                    tracker.RecyclePayload(payload);
                 }
             }
-            else
-            {
-                tracker.RecyclePayload(payload);
-            }
         }
-        
+
         static HttpClient GetHttpClient()
         {
             var result = new HttpClient();
