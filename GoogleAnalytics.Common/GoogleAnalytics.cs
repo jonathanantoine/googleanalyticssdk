@@ -21,7 +21,7 @@ namespace GoogleAnalytics
         }
 
         readonly PlatformInfoProvider platformTrackingInfo;
-        internal Dictionary<string, Tracker> Trackers { get; private set; }
+        readonly Dictionary<string, Tracker> Trackers;
 
         private GoogleAnalytics(PlatformInfoProvider platformTrackingInfo)
         {
@@ -38,9 +38,9 @@ namespace GoogleAnalytics
             set
             {
                 appOptOut = value;
-                foreach (var tracker in Trackers.Values)
+                if (appOptOut)
                 {
-                    tracker.IsEnabled = !appOptOut;
+                    GAServiceManager.Current.Clear();
                 }
             }
         }
@@ -52,8 +52,7 @@ namespace GoogleAnalytics
             propertyId = propertyId ?? string.Empty;
             if (!Trackers.ContainsKey(propertyId))
             {
-                var tracker = new Tracker(propertyId, platformTrackingInfo);
-                tracker.IsEnabled = !AppOptOut && !string.IsNullOrEmpty(propertyId);
+                var tracker = new Tracker(propertyId, platformTrackingInfo, this);
                 Trackers.Add(propertyId, tracker);
                 if (DefaultTracker == null)
                 {
@@ -73,6 +72,14 @@ namespace GoogleAnalytics
             if (DefaultTracker == tracker)
             {
                 DefaultTracker = null;
+            }
+        }
+
+        internal void SendPayload(Payload payload)
+        {
+            if (!AppOptOut)
+            {
+                GAServiceManager.Current.SendPayload(payload);
             }
         }
     }

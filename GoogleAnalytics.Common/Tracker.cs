@@ -11,14 +11,14 @@ namespace GoogleAnalytics
     public sealed class Tracker
     {
         readonly PayloadFactory engine;
-        readonly Queue<Payload> payloads;
         readonly PlatformInfoProvider platformInfoProvider;
         readonly TokenBucket hitTokenBucket;
+        readonly GoogleAnalytics googleAnalytics;
 
-        internal Tracker(string propertyId, PlatformInfoProvider platformInfoProvider)
+        internal Tracker(string propertyId, PlatformInfoProvider platformInfoProvider, GoogleAnalytics googleAnalytics)
         {
+            this.googleAnalytics = googleAnalytics;
             this.platformInfoProvider = platformInfoProvider;
-            payloads = new Queue<Payload>();
             engine = new PayloadFactory()
             {
                 PropertyId = propertyId,
@@ -33,23 +33,6 @@ namespace GoogleAnalytics
             platformInfoProvider.ScreenResolutionChanged += platformTrackingInfo_ScreenResolutionChanged;
             SampleRate = 100.0F;
             hitTokenBucket = new TokenBucket(60, .5);
-        }
-
-        bool isEnabled = true;
-        internal bool IsEnabled
-        {
-            get { return isEnabled; }
-            set
-            {
-                isEnabled = value;
-                if (!isEnabled)
-                {
-                    lock (payloads)
-                    {
-                        payloads.Clear();
-                    }
-                }
-            }
         }
 
         public void SetCustomDimension(int index, string value)
@@ -121,7 +104,6 @@ namespace GoogleAnalytics
             set { engine.Campaign = value; }
         }
 
-        public bool BustCache { get; set; }
         public float SampleRate { get; set; }
         public bool IsUseSecure { get; set; }
         public bool ThrottlingEnabled { get; set; }
@@ -130,35 +112,35 @@ namespace GoogleAnalytics
         {
             platformInfoProvider.OnTracking(); // give platform info provider a chance to refresh.
             var payload = engine.TrackView(screenName, SessionControl);
-            AddPayload(payload);
+            SendPayload(payload);
         }
 
         public void SendException(string description, bool isFatal)
         {
             platformInfoProvider.OnTracking(); // give platform info provider a chance to refresh.
             var payload = engine.TrackException(description, isFatal, SessionControl);
-            AddPayload(payload);
+            SendPayload(payload);
         }
 
         public void SendSocial(string network, string action, string target)
         {
             platformInfoProvider.OnTracking(); // give platform info provider a chance to refresh.
             var payload = engine.TrackSocialInteraction(network, action, target, SessionControl);
-            AddPayload(payload);
+            SendPayload(payload);
         }
 
         public void SendTiming(TimeSpan time, string category, string variable, string label)
         {
             platformInfoProvider.OnTracking(); // give platform info provider a chance to refresh.
             var payload = engine.TrackUserTiming(category, variable, null, label, time, null, null, null, null, null, SessionControl);
-            AddPayload(payload);
+            SendPayload(payload);
         }
 
         public void SendEvent(string category, string action, string label, int value)
         {
             platformInfoProvider.OnTracking(); // give platform info provider a chance to refresh.
             var payload = engine.TrackEvent(category, action, label, value, SessionControl);
-            AddPayload(payload);
+            SendPayload(payload);
         }
 
         public void SendTransaction(Transaction transaction)
@@ -166,7 +148,7 @@ namespace GoogleAnalytics
             platformInfoProvider.OnTracking(); // give platform info provider a chance to refresh.
             foreach (var payload in TrackTransaction(transaction, SessionControl))
             {
-                AddPayload(payload);
+                SendPayload(payload);
             }
         }
 
@@ -213,47 +195,33 @@ namespace GoogleAnalytics
             endSession = value;
         }
 
-        void AddPayload(Payload payload)
+        void SendPayload(Payload payload)
         {
-            if (IsEnabled)
+            if (!string.IsNullOrEmpty(TrackingId))
             {
-                if (!ThrottlingEnabled || hitTokenBucket.Consume())
+                if (!IsSampledOut())
                 {
-                    var serviceManager = GAServiceManager.Current;
-                    if (serviceManager.DispatchPeriod == TimeSpan.Zero && serviceManager.IsConnected)
+                    if (!ThrottlingEnabled || hitTokenBucket.Consume())
                     {
-                        var nowait = GAServiceManager.Current.DispatchImmediatePayload(this, payload);
-                    }
-                    else
-                    {
-                        lock (payloads)
-                        {
-                            payloads.Enqueue(payload);
-                        }
+                        payload.IsUseSecure = IsUseSecure;
+                        googleAnalytics.SendPayload(payload);
                     }
                 }
             }
         }
 
-        internal void RecyclePayload(Payload payload)
+        bool IsSampledOut()
         {
-            lock (payloads)
+            if (SampleRate <= 0.0F)
             {
-                payloads.Enqueue(payload);
+                return true;
             }
-        }
-
-        internal IEnumerable<Payload> GetPayloads()
-        {
-            lock (payloads)
+            else if (SampleRate < 100.0F)
             {
-                var total = payloads.Count;
-                var payloadsToSample = SampleRate / 100.0F * total;
-                for (int i = 0; i < payloadsToSample; i++)
-                {
-                    yield return payloads.Dequeue();
-                }
+                var clientId = platformInfoProvider.AnonymousClientId;
+                return ((clientId != null) && (Math.Abs(clientId.GetHashCode()) % 10000 >= SampleRate * 100.0F));
             }
+            else return false;
         }
     }
 }

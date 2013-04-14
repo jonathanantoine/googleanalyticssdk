@@ -5,13 +5,14 @@ namespace GoogleAnalytics
 {
     internal sealed class Payload
     {
-        public Payload(IEnumerable<KeyValuePair<string, string>> data)
+        public Payload(IDictionary<string, string> data)
         {
             Data = data;
             TimeStamp = DateTime.UtcNow;
         }
 
-        public IEnumerable<KeyValuePair<string, string>> Data { get; private set; }
+        public IDictionary<string, string> Data { get; private set; }
         public DateTime TimeStamp { get; private set; }
+        public bool IsUseSecure { get; set; }
     }
 }

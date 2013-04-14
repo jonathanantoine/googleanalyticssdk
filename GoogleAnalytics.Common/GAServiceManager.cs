@@ -17,10 +17,11 @@ namespace GoogleAnalytics
 {
     public sealed class GAServiceManager
     {
+        static Random random;
         static GAServiceManager current;
-        static readonly Random random = new Random();
         static readonly Uri endPointUnsecure = new Uri("http://www.google-analytics.com/collect");
         static readonly Uri endPointSecure = new Uri("https://ssl.google-analytics.com/collect");
+        readonly Queue<Payload> payloads;
 
 #if NETFX_CORE
         ThreadPoolTimer timer;
@@ -31,12 +32,23 @@ namespace GoogleAnalytics
 
         private GAServiceManager()
         {
+            payloads = new Queue<Payload>();
             DispatchPeriod = TimeSpan.FromSeconds(30);
 #if NETFX_CORE
             timer = ThreadPoolTimer.CreatePeriodicTimer(timer_Tick, DispatchPeriod);
 #else
             timer = new Timer(timer_Tick, null, DispatchPeriod, DispatchPeriod);
 #endif
+        }
+
+        public bool BustCache { get; set; }
+
+        internal void Clear()
+        {
+            lock (payloads)
+            {
+                payloads.Clear();
+            }
         }
 
         async void timer_Tick(object sender)
@@ -102,6 +114,21 @@ namespace GoogleAnalytics
             }
         }
 
+        internal void SendPayload(Payload payload)
+        {
+            if (DispatchPeriod == TimeSpan.Zero && IsConnected)
+            {
+                var nowait = DispatchImmediatePayload(payload);
+            }
+            else
+            {
+                lock (payloads)
+                {
+                    payloads.Enqueue(payload);
+                }
+            }
+        }
+
 #if NETFX_CORE
         public IAsyncAction Dispatch()
         {
@@ -118,9 +145,17 @@ namespace GoogleAnalytics
             isDispatching = true;
             try
             {
-                foreach (var tracker in GoogleAnalytics.Current.Trackers.Values)
+                IList<Payload> payloadsToSend = new List<Payload>();
+                lock (payloads)
                 {
-                    await DispatchQueuedPayloads(tracker, tracker.GetPayloads().ToArray());
+                    while (payloads.Count > 0)
+                    {
+                        payloadsToSend.Add(payloads.Dequeue());
+                    }
+                }
+                if (payloadsToSend.Any())
+                {
+                    await DispatchQueuedPayloads(payloadsToSend);
                 }
             }
             finally
@@ -129,33 +164,35 @@ namespace GoogleAnalytics
             }
         }
 
-        private async Task DispatchQueuedPayloads(Tracker tracker, params Payload[] payloads)
+        private async Task DispatchQueuedPayloads(IEnumerable<Payload> payloads)
         {
             using (var httpClient = GetHttpClient())
             {
                 var now = DateTime.UtcNow;
                 foreach (var payload in payloads)
                 {
+                    // clone the data
                     var payloadData = payload.Data.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
                     payloadData.Add("qt", ((long)now.Subtract(payload.TimeStamp).TotalMilliseconds).ToString());
-                    await DispatchPayloadData(tracker, payload, httpClient, payloadData);
+                    await DispatchPayloadData(payload, httpClient, payloadData);
                 }
             }
         }
 
-        internal async Task DispatchImmediatePayload(Tracker tracker, Payload payload)
+        internal async Task DispatchImmediatePayload(Payload payload)
         {
             using (var httpClient = GetHttpClient())
             {
+                // clone the data
                 var payloadData = payload.Data.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-                await DispatchPayloadData(tracker, payload, httpClient, payloadData);
+                await DispatchPayloadData(payload, httpClient, payloadData);
             }
         }
 
-        async Task DispatchPayloadData(Tracker tracker, Payload payload, HttpClient httpClient, Dictionary<string, string> payloadData)
+        async Task DispatchPayloadData(Payload payload, HttpClient httpClient, Dictionary<string, string> payloadData)
         {
-            if (tracker.BustCache) payloadData.Add("z", GetCacheBuster());
-            var endPoint = tracker.IsUseSecure ? endPointSecure : endPointUnsecure;
+            if (BustCache) payloadData.Add("z", GetCacheBuster());
+            var endPoint = payload.IsUseSecure ? endPointSecure : endPointUnsecure;
             using (var content = new FormUrlEncodedContent(payloadData))
             {
                 try
@@ -164,9 +201,14 @@ namespace GoogleAnalytics
                 }
                 catch
                 {
-                    tracker.RecyclePayload(payload);
+                    OnPayloadFailed(payload);
                 }
             }
+        }
+
+        void OnPayloadFailed(Payload payload)
+        {
+            // TODO: store in isolated storage and retry next session
         }
 
         static HttpClient GetHttpClient()
@@ -174,11 +216,6 @@ namespace GoogleAnalytics
             var result = new HttpClient();
             result.DefaultRequestHeaders.UserAgent.ParseAdd(GetUserAgent());
             return result;
-        }
-
-        static string GetCacheBuster()
-        {
-            return random.Next().ToString();
         }
 
 #if NETFX_CORE
@@ -215,5 +252,14 @@ namespace GoogleAnalytics
             }
         }
 #endif
+
+        static string GetCacheBuster()
+        {
+            if (random == null)
+            {
+                random = new Random();
+            }
+            return random.Next().ToString();
+        }
     }
 }
