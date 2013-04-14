@@ -30,7 +30,7 @@ namespace GoogleAnalytics
             var product = listingInformation.ProductListings[productId];
             var regionInfo = System.Globalization.RegionInfo.CurrentRegion;
             var currencyCode = regionInfo.ISOCurrencySymbol;
-            var cost = double.Parse(listingInformation.FormattedPrice, System.Globalization.NumberStyles.Currency, System.Globalization.CultureInfo.CurrentCulture);
+            var cost = double.Parse(product.FormattedPrice, System.Globalization.NumberStyles.Currency, System.Globalization.CultureInfo.CurrentCulture);
             var costInMicrons = (long)(cost * 1000000);
 
             var transaction = new Transaction(transactionId, costInMicrons);
