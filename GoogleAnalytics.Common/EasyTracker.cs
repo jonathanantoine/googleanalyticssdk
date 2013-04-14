@@ -50,6 +50,7 @@ namespace GoogleAnalytics
         {
             var ga = GoogleAnalytics.Current;
             ga.IsDebugEnabled = Config.Debug;
+            GAServiceManager.Current.DispatchPeriod = Config.DispatchPeriod;
             tracker = ga.GetTracker(Config.TrackingId);
             tracker.SetStartSession(Config.SessionTimeout.HasValue);
             tracker.AppName = Config.AppName;
@@ -63,7 +64,6 @@ namespace GoogleAnalytics
             if (Config == null)
             {
                 Config = EasyTrackerConfig.Load(reader);
-                GAServiceManager.Current.DispatchPeriod = Config.DispatchPeriod;
             }
         }
 
