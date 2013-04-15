@@ -31,6 +31,7 @@ namespace GoogleAnalytics
         // TODO: unused
         public string Referrer { get; set; }
         public string Campaign { get; set; }
+        public string ScreenName { get; set; }
 
         public string AnonymousClientId { get; set; }
         public Size? ScreenResolution { get; set; }
@@ -46,9 +47,8 @@ namespace GoogleAnalytics
 
         public Payload TrackView(string screenName, SessionControl sessionControl = SessionControl.None, bool isNonInteractive = false)
         {
-            var additionalData = new Dictionary<string, string>();
-            additionalData.Add("cd", screenName);
-            return PostData(HitType_Pageview, additionalData, isNonInteractive, sessionControl);
+            ScreenName = screenName;
+            return PostData(HitType_Pageview, null, isNonInteractive, sessionControl);
         }
 
         public Payload TrackEvent(string category, string action, string label, int value, SessionControl sessionControl = SessionControl.None, bool isNonInteractive = false)
@@ -121,8 +121,14 @@ namespace GoogleAnalytics
 
         private Payload PostData(string hitType, IDictionary<string, string> additionalData, bool isNonInteractive, SessionControl sessionControl)
         {
-            var requiredPayloadData = GetRequiredPayloadData(hitType, isNonInteractive, sessionControl);
-            var payloadData = requiredPayloadData.Concat(additionalData);
+            var payloadData = GetRequiredPayloadData(hitType, isNonInteractive, sessionControl);
+            if (additionalData != null)
+            {
+                foreach (var item in additionalData)
+                {
+                    payloadData.Add(item);
+                }
+            }
             return new Payload(payloadData);
         }
 
@@ -135,6 +141,7 @@ namespace GoogleAnalytics
             result.Add("an", AppName);
             result.Add("av", AppVersion);
             result.Add("t", hitType);
+            if (ScreenName != null) result.Add("cd", ScreenName);
             if (isNonInteractive) result.Add("ni", "1");
             if (AnonymizeIP) result.Add("aip", "1");
             if (sessionControl != SessionControl.None) result.Add("sc", sessionControl == SessionControl.Start ? "start" : "end");
