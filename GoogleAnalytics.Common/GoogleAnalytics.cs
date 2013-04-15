@@ -21,11 +21,11 @@ namespace GoogleAnalytics
         }
 
         readonly PlatformInfoProvider platformTrackingInfo;
-        readonly Dictionary<string, Tracker> Trackers;
+        readonly Dictionary<string, Tracker> trackers;
 
         private GoogleAnalytics(PlatformInfoProvider platformTrackingInfo)
         {
-            Trackers = new Dictionary<string, Tracker>();
+            trackers = new Dictionary<string, Tracker>();
             this.platformTrackingInfo = platformTrackingInfo;
         }
 
@@ -50,10 +50,10 @@ namespace GoogleAnalytics
         public Tracker GetTracker(string propertyId)
         {
             propertyId = propertyId ?? string.Empty;
-            if (!Trackers.ContainsKey(propertyId))
+            if (!trackers.ContainsKey(propertyId))
             {
                 var tracker = new Tracker(propertyId, platformTrackingInfo, this);
-                Trackers.Add(propertyId, tracker);
+                trackers.Add(propertyId, tracker);
                 if (DefaultTracker == null)
                 {
                     DefaultTracker = tracker;
@@ -62,13 +62,13 @@ namespace GoogleAnalytics
             }
             else
             {
-                return Trackers[propertyId];
+                return trackers[propertyId];
             }
         }
 
         public void CloseTracker(Tracker tracker)
         {
-            Trackers.Remove(tracker.TrackingId);
+            trackers.Remove(tracker.TrackingId);
             if (DefaultTracker == tracker)
             {
                 DefaultTracker = null;
