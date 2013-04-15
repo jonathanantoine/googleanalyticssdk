@@ -122,7 +122,7 @@ namespace GoogleAnalytics
             {
                 try
                 {
-                    tracker.SendException(e.Message, true);
+                    tracker.SendException(e.Message, !e.Handled);
                     await Dispatch();
                 }
                 catch { /* ignore */ }
