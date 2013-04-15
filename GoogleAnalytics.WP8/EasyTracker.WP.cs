@@ -34,7 +34,6 @@ namespace GoogleAnalytics
                 ctx.UnhandledException += app_UnhandledException;
                 PhoneApplicationService.Current.Activated += Current_Activated;
                 PhoneApplicationService.Current.Deactivated += Current_Deactivated;
-                PhoneApplicationService.Current.Closing += Current_Closing;
             }
             InitConfig(ConfigPath); // we are only loading a local file, no need to go async
             PopulateMissingConfig();
@@ -72,6 +71,7 @@ namespace GoogleAnalytics
 
         async void Current_Deactivated(object sender, DeactivatedEventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine("Deactivated");
             if (Config.AutoAppLifetimeTracking)
             {
 #if WINDOWS_PHONE7
@@ -82,18 +82,7 @@ namespace GoogleAnalytics
             }
 
             suspended = DateTime.UtcNow;
-            await GAServiceManager.Current.Dispatch();
-        }
-
-        async void Current_Closing(object sender, ClosingEventArgs e)
-        {
-            if (Config.AutoAppLifetimeTracking)
-            {
-                tracker.SetEndSession(true);
-                tracker.SendEvent("app", "close", null, 0);
-            }
-
-            await GAServiceManager.Current.Dispatch();
+            await Dispatch(); // there is no way to get a deferral in WP so this will not actually happen until after we return to the app
         }
 
         void NetworkChange_NetworkAddressChanged(object sender, EventArgs e)

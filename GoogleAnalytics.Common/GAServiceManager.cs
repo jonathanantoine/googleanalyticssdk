@@ -22,16 +22,17 @@ namespace GoogleAnalytics
         static readonly Uri endPointUnsecure = new Uri("http://www.google-analytics.com/collect");
         static readonly Uri endPointSecure = new Uri("https://ssl.google-analytics.com/collect");
         readonly Queue<Payload> payloads;
+        readonly IList<Task> dispatchingTasks;
 
 #if NETFX_CORE
         ThreadPoolTimer timer;
 #else
         Timer timer;
 #endif
-        bool isDispatching;
 
         private GAServiceManager()
         {
+            dispatchingTasks = new List<Task>();
             payloads = new Queue<Payload>();
             DispatchPeriod = TimeSpan.FromSeconds(30);
 #if NETFX_CORE
@@ -114,11 +115,11 @@ namespace GoogleAnalytics
             }
         }
 
-        internal void SendPayload(Payload payload)
+        internal async void SendPayload(Payload payload)
         {
             if (DispatchPeriod == TimeSpan.Zero && IsConnected)
             {
-                var nowait = DispatchImmediatePayload(payload);
+                await RunDispatchingTask(DispatchImmediatePayload(payload));
             }
             else
             {
@@ -140,27 +141,55 @@ namespace GoogleAnalytics
         public async Task Dispatch()
 #endif
         {
-            if (isDispatching) return;
             if (!isConnected) return;
-            isDispatching = true;
+
+            Task allDispatchingTasks = null;
+            lock (dispatchingTasks)
+            {
+                if (dispatchingTasks.Any())
+                {
+#if WINDOWS_PHONE7
+                    allDispatchingTasks = TaskEx.WhenAll(dispatchingTasks);
+#else
+                    allDispatchingTasks = Task.WhenAll(dispatchingTasks);
+#endif
+                }
+            }
+            if (allDispatchingTasks != null)
+            {
+                await allDispatchingTasks;
+            }
+
+            IList<Payload> payloadsToSend = new List<Payload>();
+            lock (payloads)
+            {
+                while (payloads.Count > 0)
+                {
+                    payloadsToSend.Add(payloads.Dequeue());
+                }
+            }
+            if (payloadsToSend.Any())
+            {
+                await RunDispatchingTask(DispatchQueuedPayloads(payloadsToSend));
+            }
+        }
+
+        async Task RunDispatchingTask(Task newDispatchingTask)
+        {
+            lock (dispatchingTasks)
+            {
+                dispatchingTasks.Add(newDispatchingTask);
+            }
             try
             {
-                IList<Payload> payloadsToSend = new List<Payload>();
-                lock (payloads)
-                {
-                    while (payloads.Count > 0)
-                    {
-                        payloadsToSend.Add(payloads.Dequeue());
-                    }
-                }
-                if (payloadsToSend.Any())
-                {
-                    await DispatchQueuedPayloads(payloadsToSend);
-                }
+                await newDispatchingTask;
             }
             finally
             {
-                isDispatching = false;
+                lock (dispatchingTasks)
+                {
+                    dispatchingTasks.Remove(newDispatchingTask);
+                }
             }
         }
 
@@ -179,7 +208,7 @@ namespace GoogleAnalytics
             }
         }
 
-        internal async Task DispatchImmediatePayload(Payload payload)
+        async Task DispatchImmediatePayload(Payload payload)
         {
             using (var httpClient = GetHttpClient())
             {

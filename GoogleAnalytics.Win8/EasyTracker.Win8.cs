@@ -112,7 +112,7 @@ namespace GoogleAnalytics
 
             suspended = DateTime.UtcNow;
             var deferral = e.SuspendingOperation.GetDeferral();
-            await GAServiceManager.Current.Dispatch();
+            await Dispatch();
             deferral.Complete();
         }
 
