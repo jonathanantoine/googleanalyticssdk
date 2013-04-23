@@ -45,7 +45,7 @@ namespace GoogleAnalytics
                 ctx.Suspending += app_Suspending;
                 ctx.Resuming += app_Resuming;
             }
-            InitConfig(ConfigPath);
+            if (Config == null) InitConfig(ConfigPath);
             PopulateMissingConfig();
             InitTracker();
         }

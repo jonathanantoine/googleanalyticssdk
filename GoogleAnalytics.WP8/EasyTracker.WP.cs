@@ -35,7 +35,7 @@ namespace GoogleAnalytics
                 PhoneApplicationService.Current.Activated += Current_Activated;
                 PhoneApplicationService.Current.Deactivated += Current_Deactivated;
             }
-            InitConfig(ConfigPath); // we are only loading a local file, no need to go async
+            if (Config == null) InitConfig(ConfigPath);
             PopulateMissingConfig();
             InitTracker();
         }
