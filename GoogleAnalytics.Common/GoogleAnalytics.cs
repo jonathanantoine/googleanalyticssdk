@@ -31,20 +31,6 @@ namespace GoogleAnalytics
 
         public Tracker DefaultTracker { get; set; }
 
-        bool appOptOut;
-        public bool AppOptOut
-        {
-            get { return appOptOut; }
-            set
-            {
-                appOptOut = value;
-                if (appOptOut)
-                {
-                    GAServiceManager.Current.Clear();
-                }
-            }
-        }
-
         public bool IsDebugEnabled { get; set; }
 
         public Tracker GetTracker(string propertyId)

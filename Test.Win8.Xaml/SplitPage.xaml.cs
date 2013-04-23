@@ -261,8 +261,7 @@ namespace Test.Win8.Xaml
 
         private async void ButtonOptOut_Click(object sender, RoutedEventArgs e)
         {
-            var optOut = await GoogleAnalytics.GoogleAnalytics.Current.RequestAppOptOutAsync();
-            // TODO: store the user preference and reset when the app loads next time.
+            await GoogleAnalytics.GoogleAnalytics.Current.RequestAppOptOutAsync();
         }
     }
 }

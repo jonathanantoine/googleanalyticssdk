@@ -64,5 +64,10 @@ namespace Test.WP7
             object y = 1;
             string x = (string)y;
         }
+
+        private void ButtonOptOut_Click(object sender, RoutedEventArgs e)
+        {
+            GoogleAnalytics.GoogleAnalytics.Current.RequestAppOptOutAsync();
+        }
     }
 }

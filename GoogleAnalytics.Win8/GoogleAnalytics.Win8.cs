@@ -2,12 +2,48 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.Foundation;
+using Windows.Storage;
 using Windows.UI.Popups;
 
 namespace GoogleAnalytics
 {
     public sealed partial class GoogleAnalytics
     {
+        const string Key_AppOptOut = "GoogleAnaltyics.AppOptOut";
+
+        bool? appOptOut;
+        public bool AppOptOut
+        {
+            get
+            {
+                if (appOptOut.HasValue) return appOptOut.Value;
+                return GetAppOptOut();
+            }
+            set
+            {
+                if (!appOptOut.HasValue) GetAppOptOut();
+                if (appOptOut.Value != value)
+                {
+                    appOptOut = value;
+                    ApplicationData.Current.LocalSettings.Values[Key_AppOptOut] = value;
+                    if (value) GAServiceManager.Current.Clear();
+                }
+            }
+        }
+
+        private bool GetAppOptOut()
+        {
+            if (ApplicationData.Current.LocalSettings.Values.ContainsKey(Key_AppOptOut))
+            {
+                appOptOut = (bool)ApplicationData.Current.LocalSettings.Values[Key_AppOptOut];
+            }
+            else
+            {
+                appOptOut = false;
+            }
+            return appOptOut.Value;
+        }
+
         public IAsyncOperation<bool> RequestAppOptOutAsync()
         {
             return _RequestAppOptOutAsync().AsAsyncOperation();
@@ -20,9 +56,10 @@ namespace GoogleAnalytics
             var optOutCommand = new UICommand("No");
             msgDialog.Commands.Add(optInCommand);
             msgDialog.Commands.Add(optOutCommand);
-            var result = await msgDialog.ShowAsync();
-            AppOptOut = (result != optInCommand);
-            return AppOptOut;
+            var dialogResult = await msgDialog.ShowAsync();
+            var result = (dialogResult != optInCommand);
+            AppOptOut = result;
+            return result;
         }
     }
 }
