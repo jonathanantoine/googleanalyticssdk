@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>GoogleAnalyticsSDK</id>
-    <version>1.0.8-beta</version>
+    <version>1.0.9-beta</version>
     <title>Google Analytics SDK for Windows 8 and Windows Phone</title>
     <authors>Tim Greenfield</authors>
     <owners>Tim Greenfield</owners>
@@ -15,14 +15,14 @@
     <tags>google analtyics measurement protocol win8 WinJS WinRT WP7 WP8</tags>
     <dependencies>
       <group targetFramework="wp71">
-        <dependency id="Microsoft.Bcl" version="1.0.16-rc" />
-        <dependency id="Microsoft.Bcl.Build" version="1.0.0-rc" />
-        <dependency id="Microsoft.Bcl.Async" version="1.0.14-rc" />
+        <dependency id="Microsoft.Bcl" version="1.0.19" />
+        <dependency id="Microsoft.Bcl.Build" version="1.0.4" />
+        <dependency id="Microsoft.Bcl.Async" version="1.0.16" />
         <dependency id="Microsoft.Net.Http" version="2.1.3-beta" />
       </group>
       <group targetFramework="windowsphone8">
-        <dependency id="Microsoft.Bcl" version="1.0.16-rc" />
-        <dependency id="Microsoft.Bcl.Build" version="1.0.0-rc" />
+        <dependency id="Microsoft.Bcl" version="1.0.19" />
+        <dependency id="Microsoft.Bcl.Build" version="1.0.4" />
         <dependency id="Microsoft.Net.Http" version="2.1.3-beta" />
       </group>
       <group targetFramework="windows8" />
