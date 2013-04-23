@@ -132,7 +132,7 @@ namespace GoogleAnalytics
         public void SendTiming(TimeSpan time, string category, string variable, string label)
         {
             platformInfoProvider.OnTracking(); // give platform info provider a chance to refresh.
-            var payload = engine.TrackUserTiming(category, variable, null, label, time, null, null, null, null, null, SessionControl);
+            var payload = engine.TrackUserTiming(category, variable, time, label, null, null, null, null, null, null, SessionControl);
             SendPayload(payload);
         }
 
