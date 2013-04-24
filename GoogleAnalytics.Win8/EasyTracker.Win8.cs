@@ -62,7 +62,7 @@ namespace GoogleAnalytics
                 Config.AppVersion = string.Format("{0}.{1}.{2}.{3}", version.Major, version.Minor, version.Build, version.Revision);
             }
         }
-        
+
         void NetworkInformation_NetworkStatusChanged(object sender)
         {
             UpdateConnectionStatus();
@@ -116,17 +116,36 @@ namespace GoogleAnalytics
             deferral.Complete();
         }
 
+        bool reportingException = false;
         async void app_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             if (Config.ReportUncaughtExceptions)
             {
-                try
+                if (!reportingException)
                 {
-                    tracker.SendException(e.Message, !e.Handled);
-                    await Dispatch();
+                    if (e.Handled)
+                    {
+                        tracker.SendException(e.Message, false);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            reportingException = true;
+                            e.Handled = true;
+                            tracker.SendException(e.Message, true);
+                            await Dispatch();
+                            // rethrow the exception now that we're done logging it. wrap in another exception in order to prevent stack trace from getting reset.
+                            throw new Exception("Tracked exception rethrown", e.Exception);
+                        }
+                        finally
+                        {
+                            reportingException = false;        
+                        }
+                    }
                 }
-                catch { /* ignore */ }
             }
         }
+
     }
 }
