@@ -152,11 +152,11 @@ namespace GoogleAnalytics
             if (DocumentEncoding != null) result.Add("de", DocumentEncoding);
             foreach (var dimension in CustomDimensions)
             {
-                result.Add(string.Format("cd{0}*", dimension.Key), dimension.Value);
+                result.Add(string.Format("cd{0}", dimension.Key), dimension.Value);
             }
             foreach (var metric in CustomMetrics)
             {
-                result.Add(string.Format("cm{0}*", metric.Key), metric.Value.ToString(CultureInfo.InvariantCulture));
+                result.Add(string.Format("cm{0}", metric.Key), metric.Value.ToString(CultureInfo.InvariantCulture));
             }
             CustomDimensions.Clear();
             CustomMetrics.Clear();
