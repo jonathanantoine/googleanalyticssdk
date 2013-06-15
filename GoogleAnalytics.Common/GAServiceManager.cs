@@ -35,6 +35,7 @@ namespace GoogleAnalytics
             dispatchingTasks = new List<Task>();
             payloads = new Queue<Payload>();
             DispatchPeriod = TimeSpan.FromSeconds(30);
+            UserAgent = ConstructUserAgent();
 #if NETFX_CORE
             timer = ThreadPoolTimer.CreatePeriodicTimer(timer_Tick, DispatchPeriod);
 #else
@@ -243,23 +244,29 @@ namespace GoogleAnalytics
         static HttpClient GetHttpClient()
         {
             var result = new HttpClient();
-            result.DefaultRequestHeaders.UserAgent.ParseAdd(GetUserAgent());
+            result.DefaultRequestHeaders.UserAgent.ParseAdd(UserAgent);
             return result;
         }
 
+        public static string UserAgent { get; set; }
+
+
 #if NETFX_CORE
-        static string GetUserAgent()
+        static string ConstructUserAgent()
         {
             // unfortunately, there isn't much info we can get from Windows 8 Store apps
-            return "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)";
+            var hasTouch = Windows.Devices.Input
+                  .PointerDevice.GetPointerDevices()
+                  .Any(p => p.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch);
+            return string.Format("Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0{0})", hasTouch ? "; Touch" : "");
         }
 
 #elif WINDOWS_PHONE
-        static string GetUserAgent()
+        static string ConstructUserAgent()
         {
             //var userAgentMask = "Mozilla/[version] ([system and browser information]) [platform] ([platform details]) [extensions]";
 #if WINDOWS_PHONE7
-            return string.Format("Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS {0}; Trident/5.0; IEMobile/9.0; {1}; {2})", Environment.OSVersion.Version, DeviceManufacturer, DeviceType);
+            return string.Format("Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS {0}; Trident/5.0; IEMobile/9.0; Touch; {1}; {2})", Environment.OSVersion.Version, DeviceManufacturer, DeviceType);
 #else
             return string.Format("Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone {0}; Trident/6.0; IEMobile/10.0; ARM; Touch; {1}; {2})", Environment.OSVersion.Version, DeviceManufacturer, DeviceType);
 #endif
@@ -269,7 +276,7 @@ namespace GoogleAnalytics
         {
             get
             {
-                return DeviceExtendedProperties.GetValue("DeviceManufacturer").ToString();
+                return Microsoft.Phone.Info.DeviceStatus.DeviceManufacturer;
             }
         }
 
@@ -277,7 +284,7 @@ namespace GoogleAnalytics
         {
             get
             {
-                return DeviceExtendedProperties.GetValue("DeviceName").ToString();
+                return Microsoft.Phone.Info.DeviceStatus.DeviceName;
             }
         }
 #endif
