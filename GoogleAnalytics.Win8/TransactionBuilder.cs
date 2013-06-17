@@ -32,7 +32,7 @@ namespace GoogleAnalytics
             var currencyCode = regionInfo.ISOCurrencySymbol;
             var currencyFormatter = new Windows.Globalization.NumberFormatting.CurrencyFormatter(currencyCode);
             var cost = currencyFormatter.ParseDouble(product.FormattedPrice);
-            var costInMicrons = (long)(cost * 1000000);
+            var costInMicrons = (long)(cost.GetValueOrDefault(0) * 1000000);
 
             var transaction = new Transaction(transactionId, costInMicrons);
             transaction.Affiliation = StoreName;
@@ -60,7 +60,7 @@ namespace GoogleAnalytics
             var currencyCode = regionInfo.ISOCurrencySymbol;
             var currencyFormatter = new Windows.Globalization.NumberFormatting.CurrencyFormatter(currencyCode);
             var cost = currencyFormatter.ParseDouble(listingInformation.FormattedPrice);
-            var costInMicrons = (long)(cost * 1000000);
+            var costInMicrons = (long)(cost.GetValueOrDefault(0) * 1000000);
 
             var transaction = new Transaction(transactionId, costInMicrons);
             transaction.Affiliation = StoreName;
