@@ -74,7 +74,6 @@ namespace GoogleAnalytics
 
         async void Current_Deactivated(object sender, DeactivatedEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("Deactivated");
             if (Config.AutoAppLifetimeTracking)
             {
 #if WINDOWS_PHONE7
