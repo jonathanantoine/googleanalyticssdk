@@ -83,14 +83,14 @@ namespace GoogleAnalytics
             var additionalData = new Dictionary<string, string>();
             if (category != null) additionalData.Add("utc", category);
             if (variable != null) additionalData.Add("utv", variable);
-            if (time.HasValue) additionalData.Add("utt", time.Value.TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
+            if (time.HasValue) additionalData.Add("utt", Math.Round(time.Value.TotalMilliseconds).ToString(CultureInfo.InvariantCulture));
             if (label != null) additionalData.Add("utl", label);
-            if (loadTime.HasValue) additionalData.Add("ptl", loadTime.Value.TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
-            if (dnsTime.HasValue) additionalData.Add("dns", dnsTime.Value.TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
-            if (downloadTime.HasValue) additionalData.Add("pdt", downloadTime.Value.TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
-            if (redirectResponseTime.HasValue) additionalData.Add("rrt", redirectResponseTime.Value.TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
-            if (tcpConnectTime.HasValue) additionalData.Add("tcp", tcpConnectTime.Value.TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
-            if (serverResponseTime.HasValue) additionalData.Add("srt", serverResponseTime.Value.TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
+            if (loadTime.HasValue) additionalData.Add("ptl", Math.Round(loadTime.Value.TotalMilliseconds).ToString(CultureInfo.InvariantCulture));
+            if (dnsTime.HasValue) additionalData.Add("dns", Math.Round(dnsTime.Value.TotalMilliseconds).ToString(CultureInfo.InvariantCulture));
+            if (downloadTime.HasValue) additionalData.Add("pdt", Math.Round(downloadTime.Value.TotalMilliseconds).ToString(CultureInfo.InvariantCulture));
+            if (redirectResponseTime.HasValue) additionalData.Add("rrt", Math.Round(redirectResponseTime.Value.TotalMilliseconds).ToString(CultureInfo.InvariantCulture));
+            if (tcpConnectTime.HasValue) additionalData.Add("tcp", Math.Round(tcpConnectTime.Value.TotalMilliseconds).ToString(CultureInfo.InvariantCulture));
+            if (serverResponseTime.HasValue) additionalData.Add("srt", Math.Round(serverResponseTime.Value.TotalMilliseconds).ToString(CultureInfo.InvariantCulture));
             return PostData(HitType_UserTiming, additionalData, isNonInteractive, sessionControl);
         }
 
