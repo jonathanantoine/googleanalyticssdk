@@ -17,10 +17,18 @@ namespace Test.Win8.Xaml
     /// </summary>
     public sealed partial class SplitPage : Test.Win8.Xaml.Common.LayoutAwarePage
     {
+        private DateTime startTime = DateTime.Now;
+
         public SplitPage()
         {
             this.InitializeComponent();
             InitStore();
+            this.Loaded += SplitPage_Loaded;
+        }
+
+        void SplitPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            GoogleAnalytics.EasyTracker.GetTracker().SendTiming(DateTime.Now.Subtract(startTime), "Startup", "MainPage", "Label");
         }
 
         private static async void InitStore()
@@ -246,11 +254,6 @@ namespace Test.Win8.Xaml
         private void ButtonSocial_Click(object sender, RoutedEventArgs e)
         {
             GoogleAnalytics.EasyTracker.GetTracker().SendSocial("facebook", "share", "http://googleanalyticssdk.codeplex.com");
-        }
-
-        private void ButtonTiming_Click(object sender, RoutedEventArgs e)
-        {
-            GoogleAnalytics.EasyTracker.GetTracker().SendException("oops, something went wrong", false);
         }
 
         private void ButtonThrowException_Click(object sender, RoutedEventArgs e)

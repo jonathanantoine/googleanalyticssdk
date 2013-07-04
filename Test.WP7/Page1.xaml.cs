@@ -12,6 +12,8 @@ namespace Test.WP7
 {
     public partial class Page1 : PhoneApplicationPage
     {
+        private DateTime startTime = DateTime.Now;
+
         public Page1()
         {
             InitializeComponent();
@@ -21,6 +23,12 @@ namespace Test.WP7
         {
             base.OnNavigatedTo(e);
             GoogleAnalytics.EasyTracker.GetTracker().SendView("Page1");
+            this.Loaded += Page1_Loaded;
+        }
+
+        void Page1_Loaded(object sender, RoutedEventArgs e)
+        {
+            GoogleAnalytics.EasyTracker.GetTracker().SendTiming(DateTime.Now.Subtract(startTime), "Startup", "MainPage", "Label");
         }
 
         private void ButtonException_Click(object sender, RoutedEventArgs e)
@@ -52,11 +60,6 @@ namespace Test.WP7
         private void ButtonSocial_Click(object sender, RoutedEventArgs e)
         {
             GoogleAnalytics.EasyTracker.GetTracker().SendSocial("facebook", "share", "http://googleanalyticssdk.codeplex.com");
-        }
-
-        private void ButtonTiming_Click(object sender, RoutedEventArgs e)
-        {
-            GoogleAnalytics.EasyTracker.GetTracker().SendException("oops, something went wrong", false);
         }
 
         private void ButtonThrowException_Click(object sender, RoutedEventArgs e)

@@ -102,7 +102,6 @@
                     <Button Content="Track product purchase" Click="ButtonProductTransaction_Click"/>
                     <Button Content="Track social activity" Click="ButtonSocial_Click"/>
                     <Button Content="Track manual exception" Click="ButtonException_Click"/>
-                    <Button Content="Track timing" Click="ButtonTiming_Click"/>
                     <Button Content="Opt out" Click="ButtonOptOut_Click"/>
                 </StackPanel>
                 <!--<TextBlock Grid.Row="2" Grid.ColumnSpan="2" Margin="0,20,0,0" Text="{Binding Content}" Style="{StaticResource BodyTextStyle}"/>-->

@@ -15,6 +15,8 @@ namespace Test.WP8
 {
     public partial class Page1 : PhoneApplicationPage
     {
+        private DateTime startTime = DateTime.Now;
+
         public Page1()
         {
             InitializeComponent();
@@ -24,6 +26,12 @@ namespace Test.WP8
         {
             base.OnNavigatedTo(e);
             GoogleAnalytics.EasyTracker.GetTracker().SendView("Page1");
+            this.Loaded += Page1_Loaded;
+        }
+
+        void Page1_Loaded(object sender, RoutedEventArgs e)
+        {
+            GoogleAnalytics.EasyTracker.GetTracker().SendTiming(DateTime.Now.Subtract(startTime), "Startup", "MainPage", "Label");
         }
 
         private void ButtonException_Click(object sender, RoutedEventArgs e)
