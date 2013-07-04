@@ -32,12 +32,15 @@ namespace GoogleAnalytics
             if (ctx != null)
             {
                 ctx.UnhandledException += app_UnhandledException;
-                PhoneApplicationService.Current.Activated += Current_Activated;
-                PhoneApplicationService.Current.Deactivated += Current_Deactivated;
             }
             if (Config == null) InitConfig(ConfigPath);
             PopulateMissingConfig();
             InitTracker();
+            if (Config.AutoAppLifetimeMonitoring && ctx != null)
+            { 
+                PhoneApplicationService.Current.Activated += Current_Activated;
+                PhoneApplicationService.Current.Deactivated += Current_Deactivated;
+            }
         }
 
         void PopulateMissingConfig()

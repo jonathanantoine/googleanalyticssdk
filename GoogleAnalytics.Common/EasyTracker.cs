@@ -62,6 +62,7 @@ namespace GoogleAnalytics
         private void InitConfig(XmlReader reader)
         {
             Config = EasyTrackerConfig.Load(reader);
+            Config.Validate();
         }
 
 #if NETFX_CORE

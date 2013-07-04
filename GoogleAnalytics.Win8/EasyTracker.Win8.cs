@@ -42,12 +42,16 @@ namespace GoogleAnalytics
             if (ctx != null)
             {
                 ctx.UnhandledException += app_UnhandledException;
-                ctx.Suspending += app_Suspending;
-                ctx.Resuming += app_Resuming;
             }
             if (Config == null) InitConfig(ConfigPath);
             PopulateMissingConfig();
             InitTracker();
+
+            if (Config.AutoAppLifetimeMonitoring && ctx != null)
+            {
+                ctx.Suspending += app_Suspending;
+                ctx.Resuming += app_Resuming;
+            }
         }
 
         void PopulateMissingConfig()
@@ -140,7 +144,7 @@ namespace GoogleAnalytics
                         }
                         finally
                         {
-                            reportingException = false;        
+                            reportingException = false;
                         }
                     }
                 }

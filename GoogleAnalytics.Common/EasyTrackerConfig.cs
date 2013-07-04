@@ -15,6 +15,7 @@ namespace GoogleAnalytics
             SessionTimeout = TimeSpan.FromSeconds(30);
             DispatchPeriod = TimeSpan.Zero;
             SampleFrequency = 100.0F;
+            AutoAppLifetimeMonitoring = true;
         }
 
         internal static EasyTrackerConfig Load(XmlReader reader)
@@ -78,6 +79,9 @@ namespace GoogleAnalytics
                             break;
                         case "autoAppLifetimeTracking":
                             result.AutoAppLifetimeTracking = reader.ReadElementContentAsBoolean();
+                            break;
+                        case "autoAppLifetimeMonitoring":
+                            result.AutoAppLifetimeMonitoring = reader.ReadElementContentAsBoolean();
                             break;
                         case "anonymizeIp":
                             result.AnonymizeIp = reader.ReadElementContentAsBoolean();
@@ -159,6 +163,9 @@ namespace GoogleAnalytics
                                     case "ga_autoAppLifetimeTracking":
                                         result.AutoAppLifetimeTracking = value;
                                         break;
+                                    case "ga_autoAppLifetimeMonitoring":
+                                        result.AutoAppLifetimeMonitoring = value;
+                                        break;
                                     case "ga_anonymizeIp":
                                         result.AnonymizeIp = value;
                                         break;
@@ -181,6 +188,17 @@ namespace GoogleAnalytics
             }
             while (true);
             return result;
+        }
+
+        /// <summary>
+        /// Validates the configuration and throws an exception is a problem is found.
+        /// </summary>
+        internal void Validate()
+        {
+            if (AutoAppLifetimeTracking && !AutoAppLifetimeMonitoring)
+            {
+                throw new ArgumentOutOfRangeException("AutoAppLifetimeTracking cannot be true if AutoAppLifetimeMonitoring is false.");
+            }
         }
 
         /// <summary>
@@ -227,5 +245,9 @@ namespace GoogleAnalytics
         /// Automatically track application lifetime events (e.g. suspend and resume). true by default.
         /// </summary>
         public bool AutoAppLifetimeTracking { get; set; }
+        /// <summary>
+        /// Automatically monitor suspend and resume events. If true, all dispatched events will be sent on suspend and session timeout will be honored. true by default.
+        /// </summary>
+        public bool AutoAppLifetimeMonitoring { get; set; }
     }
 }

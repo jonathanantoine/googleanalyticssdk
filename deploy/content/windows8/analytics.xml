@@ -21,4 +21,6 @@
   <!--<sessionTimeout>30</sessionTimeout>-->
   <!--Enable automatic app lifetime tracking (e.g. suspend/resume). Default is false.-->
   <!--<autoAppLifetimeTracking>false</autoAppLifetimeTracking>-->
+  <!--Enable automatic app lifetime monitoring (e.g. suspend/resume). If true, all dispatched events will be sent on suspend and session timeout will be honored. true by default; must be true if autoAppLifetimeTracking is true.-->
+  <!--<autoAppLifetimeMonitoring>true</autoAppLifetimeMonitoring>-->
 </analytics>
