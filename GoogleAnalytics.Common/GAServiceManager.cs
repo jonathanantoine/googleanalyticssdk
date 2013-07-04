@@ -34,7 +34,7 @@ namespace GoogleAnalytics
         {
             dispatchingTasks = new List<Task>();
             payloads = new Queue<Payload>();
-            DispatchPeriod = TimeSpan.FromSeconds(30);
+            DispatchPeriod = TimeSpan.Zero;
             UserAgent = ConstructUserAgent();
 #if NETFX_CORE
             timer = ThreadPoolTimer.CreatePeriodicTimer(timer_Tick, DispatchPeriod);
