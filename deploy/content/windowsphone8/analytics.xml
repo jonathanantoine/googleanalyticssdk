@@ -9,7 +9,7 @@
   <!--<appVersion>1.0.0.0</appVersion>-->
   <!--Enable writing of debug information to debug window log, useful for troubleshooting your implementation. Default is false.-->
   <!--<debug>false</debug>-->
-  <!--The dispatch period in seconds. Default is 30-->
+  <!--The dispatch period in seconds. Default is 0 (indicating to send logs immediately)-->
   <!--<dispatchPeriod>30</dispatchPeriod>-->
   <!--The dispatch period in seconds. Values must be between 0.0 and 100.0 Default is 100.0-->
   <!--<sampleFrequency>100.0</sampleFrequency>-->

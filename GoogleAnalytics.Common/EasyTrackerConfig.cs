@@ -13,7 +13,7 @@ namespace GoogleAnalytics
         public EasyTrackerConfig()
         {
             SessionTimeout = TimeSpan.FromSeconds(30);
-            DispatchPeriod = TimeSpan.FromSeconds(30);
+            DispatchPeriod = TimeSpan.Zero;
             SampleFrequency = 100.0F;
         }
 
