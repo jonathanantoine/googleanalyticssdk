@@ -131,6 +131,9 @@
     <Compile Include="..\GoogleAnalytics.Common\EasyTrackerConfig.cs">
       <Link>EasyTrackerConfig.cs</Link>
     </Compile>
+    <Compile Include="..\SolutionItems\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="AppReceipt.cs" />
     <Compile Include="GoogleAnalytics.Win8.cs" />
     <Compile Include="EasyTracker.Win8.cs" />
