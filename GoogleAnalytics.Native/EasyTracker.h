@@ -18,8 +18,6 @@ namespace GoogleAnalytics
 
 		Windows::Foundation::EventRegistrationToken networkStatusChangedEventToken;
 
-		bool isContextSet;
-
 		static GoogleAnalytics::EasyTracker^ current;
 		
 		static GoogleAnalytics::Tracker^ tracker;
@@ -30,19 +28,11 @@ namespace GoogleAnalytics
 		
 		void InitTracker();
 
-		concurrency::task<void> InitConfig(Windows::Foundation::Uri^ configPath);
-		
-		void InitConfig(Windows::Data::Xml::Dom::XmlDocument^ doc);
-
 		EasyTracker();
-
-		void PopulateMissingConfig();
 
 		void NetworkInformation_NetworkStatusChanged(Platform::Object^ sender);
 
 		static void UpdateConnectionStatus();
-
-		concurrency::task<void> _SetContext(Platform::Object^ ctx);
 
 	public:
 		
@@ -51,11 +41,7 @@ namespace GoogleAnalytics
 		Windows::Foundation::IAsyncAction^ OnAppSuspending();
 
 		void OnUnhandledException(Platform::Exception^ ex, bool* handled);
-
-		Windows::Foundation::IAsyncAction^ SetContext(Platform::Object^ ctx);
-
-		property Windows::Foundation::Uri^ ConfigPath;
-
+				
 		property GoogleAnalytics::EasyTrackerConfig^ Config;
 
 		static property GoogleAnalytics::EasyTracker^ Current

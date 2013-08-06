@@ -10,16 +10,19 @@ namespace GoogleAnalytics
 	public ref class EasyTrackerConfig sealed
 	{
 	private:
+
 		static Platform::String^ ns;
 
-	internal:
-		
-		void Validate();
-
-		static GoogleAnalytics::EasyTrackerConfig^ Load(Windows::Data::Xml::Dom::XmlDocument^ doc);
-
 	public:
-
+		
+		/// <summary>
+		/// Loads an EasyTrackerConfig file from an Xml Document
+		/// </summary>
+		static GoogleAnalytics::EasyTrackerConfig^ Load(Windows::Data::Xml::Dom::XmlDocument^ doc);
+		
+		/// <summary>
+		/// Creates a new instance of EasyTrackerConfig.
+		/// </summary>
 		EasyTrackerConfig();
 
 		/// <summary>
@@ -38,12 +41,7 @@ namespace GoogleAnalytics
 		property Platform::String^ AppVersion;
 
 		/// <summary>
-		/// Flag to enable or writing of debug information to the log, useful for troubleshooting your implementation. false by default. 
-		/// </summary>
-		property bool Debug;
-
-		/// <summary>
-		/// The dispatch period in seconds. Defaults to 30 seconds. 
+		/// The dispatch period in seconds. Defaults to 0 seconds (which indicates to send immediately). 
 		/// </summary>
 		property Windows::Foundation::TimeSpan DispatchPeriod;
 
@@ -53,34 +51,19 @@ namespace GoogleAnalytics
 		property float SampleFrequency;
 
 		/// <summary>
-		/// Automatically track a screen view each time a user starts an Activity. false by default. 
-		/// </summary>
-		property bool AutoActivityTracking;
-
-		/// <summary>
 		/// Tells Google Analytics to anonymize the information sent by the tracker objects by removing the last octet of the IP address prior to its storage. Note that this will slightly reduce the accuracy of geographic reporting. false by default.
 		/// </summary>
 		property bool AnonymizeIp;
 
 		/// <summary>
-		/// Automatically track an Exception each time an uncaught exception is thrown in your application. false by default. 
+		/// Tells Google Analytics to automatically monitor network connectivity and avoid sending logs while not connected. Default is true.
 		/// </summary>
-		property bool ReportUncaughtExceptions;
+		property bool AutoTrackNetworkConnectivity;
 
 		/// <summary>
 		/// The amount of time your application can stay in the background before the session is ended. Default is 30 seconds. Null value disables EasyTracker session management.
 		/// </summary>
 		property Platform::IBox<Windows::Foundation::TimeSpan>^ SessionTimeout;
-
-		/// <summary>
-		/// Automatically track application lifetime events (e.g. suspend and resume). true by default.
-		/// </summary>
-		property bool AutoAppLifetimeTracking;
-
-		/// <summary>
-		/// Automatically monitor suspend and resume events. If true, all dispatched events will be sent on suspend and session timeout will be honored. true by default.
-		/// </summary>
-		property bool AutoAppLifetimeMonitoring;
-
+		
 	};
 }

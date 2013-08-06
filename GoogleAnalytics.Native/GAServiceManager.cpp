@@ -24,7 +24,7 @@ Uri^ GAServiceManager::endPointUnsecure = ref new Uri("http://www.google-analyti
 
 Uri^ GAServiceManager::endPointSecure = ref new Uri("https://ssl.google-analytics.com/collect");
 
-GAServiceManager::GAServiceManager()
+GAServiceManager::GAServiceManager() : isConnected(true)
 {
 	UserAgent = ConstructUserAgent();
 	timer = ThreadPoolTimer::CreatePeriodicTimer(ref new TimerElapsedHandler(this, &GAServiceManager::timer_Tick), DispatchPeriod);

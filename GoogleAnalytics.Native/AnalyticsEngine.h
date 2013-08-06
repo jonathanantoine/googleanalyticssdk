@@ -46,8 +46,6 @@ namespace GoogleAnalytics
 		
 		property GoogleAnalytics::Tracker^ DefaultTracker;
 		
-		property bool IsDebugEnabled;
-		
 		GoogleAnalytics::Tracker^ GetTracker(Platform::String^ propertyId);
 		
 		void CloseTracker(GoogleAnalytics::Tracker^ tracker);

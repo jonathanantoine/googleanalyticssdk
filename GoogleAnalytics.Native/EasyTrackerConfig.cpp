@@ -45,38 +45,26 @@ EasyTrackerConfig^ EasyTrackerConfig::Load(XmlDocument^ doc)
 					int sessionTimeoutInSeconds = std::stoi(element->InnerText->Data(), nullptr);
 					if (sessionTimeoutInSeconds >= 0) result->SessionTimeout = TimeSpanHelper::FromSeconds(sessionTimeoutInSeconds);
 				}
-				else if (element->NodeName == "debug")
-					result->Debug = element->InnerText == "true";
-				else if (element->NodeName == "autoActivityTracking")
-					result->AutoActivityTracking = element->InnerText == "true";
-				else if (element->NodeName == "autoAppLifetimeTracking")
-					result->AutoAppLifetimeTracking = element->InnerText == "true";
-				else if (element->NodeName == "autoAppLifetimeMonitoring")
-					result->AutoAppLifetimeMonitoring = element->InnerText == "true";
 				else if (element->NodeName == "anonymizeIp")
-					result->AnonymizeIp = element->InnerText == "true";
-				else if (element->NodeName == "reportUncaughtExceptions")
-					result->ReportUncaughtExceptions = element->InnerText == "true";
+					result->AnonymizeIp = element->InnerText == "true";				
+				else if (element->NodeName == "autoTrackNetworkConnectivity")
+					result->AutoTrackNetworkConnectivity = element->InnerText == "true";
 			}
 		}
 	}
 	return result;
 }
 
-void EasyTrackerConfig::Validate()
-{
-	if (AutoAppLifetimeTracking && !AutoAppLifetimeMonitoring)
-	{
-		throw ref new InvalidArgumentException("AutoAppLifetimeTracking cannot be true if AutoAppLifetimeMonitoring is false.");
-	}
-}
-
 EasyTrackerConfig::EasyTrackerConfig()
 {
 	SessionTimeout = TimeSpanHelper::FromSeconds(30);
-	DispatchPeriod = TimeSpan();
+	DispatchPeriod = TimeSpanHelper::FromTicks(0);
 	SampleFrequency = 100.0F;
-	AutoAppLifetimeMonitoring = true;
+	AutoTrackNetworkConnectivity = true;
+	AnonymizeIp = false;
+	AppName = Windows::ApplicationModel::Package::Current->Id->Name;
+	auto version = Windows::ApplicationModel::Package::Current->Id->Version;
+	AppVersion = version.Major + "." + version.Minor + "." + version.Build + "." + version.Revision;
 }
 
 

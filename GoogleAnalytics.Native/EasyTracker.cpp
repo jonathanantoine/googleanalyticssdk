@@ -25,8 +25,14 @@ Tracker^ EasyTracker::tracker = nullptr;
 
 void EasyTracker::InitTracker()
 {
+	if (Config == nullptr) throw ref new NullReferenceException("Config not set. Set EasyTracker.Current.Config = EasyTrackerConfig before getting tracker.");
+	if (Config->AutoTrackNetworkConnectivity)
+	{
+		UpdateConnectionStatus();
+		networkStatusChangedEventToken = NetworkInformation::NetworkStatusChanged += ref new NetworkStatusChangedEventHandler(this, &EasyTracker::NetworkInformation_NetworkStatusChanged);
+	}
+
 	auto ga = AnalyticsEngine::Current;
-	ga->IsDebugEnabled = Config->Debug;
 	GAServiceManager::Current->DispatchPeriod = Config->DispatchPeriod;
 	tracker = ga->GetTracker(Config->TrackingId);
 	tracker->SetStartSession(Config->SessionTimeout != nullptr);
@@ -34,12 +40,6 @@ void EasyTracker::InitTracker()
 	tracker->AppVersion = Config->AppVersion;
 	tracker->IsAnonymizeIpEnabled = Config->AnonymizeIp;
 	tracker->SampleRate = Config->SampleFrequency;
-}
-
-void EasyTracker::InitConfig(XmlDocument^ doc)
-{
-	Config = EasyTrackerConfig::Load(doc);
-	Config->Validate();
 }
 
 EasyTracker^ EasyTracker::Current::get()
@@ -53,7 +53,10 @@ EasyTracker^ EasyTracker::Current::get()
 
 Tracker^ EasyTracker::GetTracker()
 {
-	if (tracker == nullptr) throw ref new NullReferenceException("Context not set. Call EasyTracker.Current.SetContext(null) before getting tracker.");
+	if (tracker == nullptr) 
+	{
+		Current->InitTracker();
+	}
 	return tracker;
 }
 
@@ -63,32 +66,7 @@ IAsyncAction^ EasyTracker::Dispatch()
 }
 
 EasyTracker::EasyTracker()
-{
-	ConfigPath = ref new Uri("ms-appx:///analytics.xml");
-}
-
-task<void> EasyTracker::InitConfig(Uri^ configPath)
-{
-	return create_task(StorageFile::GetFileFromApplicationUriAsync(configPath)).then([this](StorageFile^ file){
-		return create_task(XmlDocument::LoadFromFileAsync(file)).then([this](XmlDocument^ doc){
-			InitConfig(doc);
-		});
-	});
-	//t.wait(); // this MUST be synchronous and we are only loading a local file installed with app so it should always be fast
-}
-
-void EasyTracker::PopulateMissingConfig()
-{
-	if (Config->AppName == nullptr || Config->AppName == "")
-	{
-		Config->AppName = Windows::ApplicationModel::Package::Current->Id->Name;
-	}
-	if (Config->AppVersion == nullptr || Config->AppVersion == "")
-	{
-		auto version = Windows::ApplicationModel::Package::Current->Id->Version;
-		Config->AppVersion = version.Major + "." + version.Minor + "." + version.Build + "." + version.Revision;
-	}
-}
+{ }
 
 void EasyTracker::NetworkInformation_NetworkStatusChanged(Object^ sender)
 {
@@ -123,79 +101,43 @@ void EasyTracker::OnAppResuming()
 			tracker->SetStartSession(true);
 		}
 	}
-
-	if (Config->AutoAppLifetimeTracking)
-	{
-		tracker->SendEvent("app", "resume", nullptr, 0);
-	}
 }
 
 IAsyncAction^ EasyTracker::OnAppSuspending()
 {
-	if (Config->AutoAppLifetimeTracking)
-	{
-		tracker->SendEvent("app", "suspend", nullptr, 0);
-	}
-
 	suspended = DateTimeHelper::Now();
 	return Dispatch();
 }
 
 void EasyTracker::OnUnhandledException(Exception^ ex, bool* handled)
 {
-	if (Config->ReportUncaughtExceptions)
+	if (!reportingException)
 	{
-		if (!reportingException)
+		if (handled)
 		{
-			if (handled)
-			{
-				tracker->SendException(ex->Message, false);
-			}
-			else
-			{
-				reportingException = true;
-				*handled = true;
-				tracker->SendException(ex->Message, true);
-				create_task(Dispatch()).then([this, ex](task<void> t){
-					reportingException = false;
-					// rethrow exception now that we're done logging it. Note: stack trace will be replaced by current stack.
-					throw ex;
-				}, task_continuation_context::use_current());
-			}
+			tracker->SendException(ex->Message, false);
+		}
+		else
+		{
+			reportingException = true;
+			*handled = true;
+			tracker->SendException(ex->Message, true);
+			create_task(Dispatch()).then([this, ex](task<void> t){
+				reportingException = false;
+				// rethrow exception now that we're done logging it. Note: stack trace will be replaced by current stack.
+				throw ex;
+			}, task_continuation_context::use_current());
 		}
 	}
 }
 
-IAsyncAction^ EasyTracker::SetContext(Object^ ctx)
-{
-	return create_async([this, ctx]() { return _SetContext(ctx); } );
-}
-
-task<void> EasyTracker::_SetContext(Object^ ctx)
-{
-	isContextSet = true;
-	UpdateConnectionStatus();
-	networkStatusChangedEventToken = NetworkInformation::NetworkStatusChanged += ref new NetworkStatusChangedEventHandler(this, &EasyTracker::NetworkInformation_NetworkStatusChanged);
-	task<void> initTask;
-	if (Config == nullptr) 
-	{
-		initTask = InitConfig(ConfigPath);
-	}
-	else
-	{
-		initTask = task<void>([](){});
-	}
-	return initTask.then([this](){
-		PopulateMissingConfig();
-		InitTracker();
-	});
-}
-
 EasyTracker::~EasyTracker()
 {
-	if (isContextSet)
+	if (tracker != nullptr)
 	{
-		NetworkInformation::NetworkStatusChanged -= networkStatusChangedEventToken;
-		isContextSet = false;
+		if (Config->AutoTrackNetworkConnectivity)
+		{
+			NetworkInformation::NetworkStatusChanged -= networkStatusChangedEventToken;
+		}
 	}
 }
