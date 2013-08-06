@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resources">
+      <UniqueIdentifier>4fa23ff9-a5e1-47aa-a5fe-baa0a9d2c098</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="AppReceipt.cpp" />
+    <ClCompile Include="EasyTracker.cpp" />
+    <ClCompile Include="EasyTrackerConfig.cpp" />
+    <ClCompile Include="GAServiceManager.cpp" />
+    <ClCompile Include="PayloadFactory.cpp" />
+    <ClCompile Include="PlatformInfoProvider.cpp" />
+    <ClCompile Include="ProductReceipt.cpp" />
+    <ClCompile Include="TokenBucket.cpp" />
+    <ClCompile Include="Tracker.cpp" />
+    <ClCompile Include="TransactionBuilder.cpp" />
+    <ClCompile Include="DateTimeHelper.cpp" />
+    <ClCompile Include="TimeSpanHelper.cpp" />
+    <ClCompile Include="AnalyticsEngine.cpp" />
+    <ClCompile Include="HttpHelper.cpp" />
+    <ClCompile Include="HttpRequest.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="TransactionItem.h" />
+    <ClInclude Include="AppReceipt.h" />
+    <ClInclude Include="EasyTracker.h" />
+    <ClInclude Include="EasyTrackerConfig.h" />
+    <ClInclude Include="GAServiceManager.h" />
+    <ClInclude Include="Payload.h" />
+    <ClInclude Include="PayloadFactory.h" />
+    <ClInclude Include="PlatformInfoProvider.h" />
+    <ClInclude Include="ProductReceipt.h" />
+    <ClInclude Include="SessionControl.h" />
+    <ClInclude Include="TokenBucket.h" />
+    <ClInclude Include="Tracker.h" />
+    <ClInclude Include="Transaction.h" />
+    <ClInclude Include="TransactionBuilder.h" />
+    <ClInclude Include="DateTimeHelper.h" />
+    <ClInclude Include="TimeSpanHelper.h" />
+    <ClInclude Include="AnalyticsEngine.h" />
+    <ClInclude Include="HttpHelper.h" />
+    <ClInclude Include="HttpRequest.h" />
+  </ItemGroup>
+</Project>
