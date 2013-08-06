@@ -32,7 +32,7 @@ namespace GoogleAnalytics
                             InitConfig(reader);
                         }
                     }
-                }).Wait(); // this MUST be synchronouse and we are only loading a local file so no need to go async
+                }).Wait(); // this MUST be synchronous and we are only loading a local file so no need to go async
         }
 
         public void SetContext(Application ctx)
