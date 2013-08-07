@@ -78,7 +78,8 @@ String^ PlatformInfoProvider::AnonymousClientId::get()
 	{
 		GUID guid;
 		CoCreateGuid(&guid);
-		auto result = Guid(guid).ToString();
+		std::wstring str(Guid(guid).ToString()->Data());
+		auto result = ref new String(str.substr(1, str.length() - 2).data());
 		appSettings->Values->Insert(Key_AnonymousClientId, result);
 		return result;
 	}
