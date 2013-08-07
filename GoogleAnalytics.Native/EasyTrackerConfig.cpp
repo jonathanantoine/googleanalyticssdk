@@ -49,6 +49,8 @@ EasyTrackerConfig^ EasyTrackerConfig::Load(XmlDocument^ doc)
 					result->AnonymizeIp = element->InnerText == "true";				
 				else if (element->NodeName == "autoTrackNetworkConnectivity")
 					result->AutoTrackNetworkConnectivity = element->InnerText == "true";
+				else if (element->NodeName == "useSecure")
+					result->UseSecure = element->InnerText == "true";
 			}
 		}
 	}
@@ -62,6 +64,7 @@ EasyTrackerConfig::EasyTrackerConfig()
 	SampleFrequency = 100.0F;
 	AutoTrackNetworkConnectivity = true;
 	AnonymizeIp = false;
+	UseSecure = false;
 	AppName = Windows::ApplicationModel::Package::Current->Id->Name;
 	auto version = Windows::ApplicationModel::Package::Current->Id->Version;
 	AppVersion = version.Major + "." + version.Minor + "." + version.Build + "." + version.Revision;

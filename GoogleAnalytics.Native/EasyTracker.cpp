@@ -36,6 +36,7 @@ void EasyTracker::InitTracker()
 	GAServiceManager::Current->DispatchPeriod = Config->DispatchPeriod;
 	tracker = ga->GetTracker(Config->TrackingId);
 	tracker->SetStartSession(Config->SessionTimeout != nullptr);
+	tracker->IsUseSecure = Config->UseSecure;
 	tracker->AppName = Config->AppName;
 	tracker->AppVersion = Config->AppVersion;
 	tracker->IsAnonymizeIpEnabled = Config->AnonymizeIp;

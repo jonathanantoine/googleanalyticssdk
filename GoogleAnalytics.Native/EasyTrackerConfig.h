@@ -56,6 +56,11 @@ namespace GoogleAnalytics
 		property bool AnonymizeIp;
 
 		/// <summary>
+		/// If true, causes all hits to be sent to the secure (SSL) Google Analytics endpoint. Default is false.
+		/// </summary>
+		property bool UseSecure;
+
+		/// <summary>
 		/// Tells Google Analytics to automatically monitor network connectivity and avoid sending logs while not connected. Default is true.
 		/// </summary>
 		property bool AutoTrackNetworkConnectivity;
