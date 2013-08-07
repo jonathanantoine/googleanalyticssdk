@@ -11,7 +11,7 @@
 cd deploy.native
 
 rmdir /s /q "Redist\"
-rmdir /s /q "Reference\"
+rmdir /s /q "References\"
 
 mkdir "Redist"
 mkdir "Redist\CommonConfiguration"

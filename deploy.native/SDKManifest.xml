@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <FileList
   Identity = "GoogleAnalytics.Native.SDK, Version=0.9"
-  DisplayName = "GoogleAnalytics SDK"
+  DisplayName = "Google Analytics SDK"
   MinVSVersion = "11.0"
   MinToolsVersion = "4.0"
   AppliesTo = "WindowsAppContainer + (CSharp | VB | VisualC | JavaScript)"
   SupportedArchitectures = "x86;x64;ARM"
-  SupportsMultipleVersions="Error"
+  SupportsMultipleVersions = "Error"
   DependsOn = "Microsoft.VCLibs, Version=11.0">
   <File Reference = "GoogleAnalytics.winmd" Implementation = "GoogleAnalytics.Native.dll"/>
 </FileList>
