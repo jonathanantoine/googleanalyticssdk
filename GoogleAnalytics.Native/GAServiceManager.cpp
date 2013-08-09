@@ -27,7 +27,6 @@ Uri^ GAServiceManager::endPointSecure = ref new Uri("https://ssl.google-analytic
 GAServiceManager::GAServiceManager() : isConnected(true)
 {
 	UserAgent = ConstructUserAgent();
-	timer = ThreadPoolTimer::CreatePeriodicTimer(ref new TimerElapsedHandler(this, &GAServiceManager::timer_Tick), DispatchPeriod);
 }
 
 void GAServiceManager::SendPayload(GoogleAnalytics::Payload^ payload)
@@ -207,10 +206,11 @@ void GAServiceManager::DispatchPeriod::set(TimeSpan value)
 		if (timer != nullptr)
 		{
 			timer->Cancel();
-			if (dispatchPeriod.Duration > 0)
-			{
-				timer = ThreadPoolTimer::CreatePeriodicTimer(ref new TimerElapsedHandler(this, &GAServiceManager::timer_Tick), dispatchPeriod);
-			}
+			timer = nullptr;
+		}
+		if (dispatchPeriod.Duration > 0)
+		{
+			timer = ThreadPoolTimer::CreatePeriodicTimer(ref new TimerElapsedHandler(this, &GAServiceManager::timer_Tick), dispatchPeriod);
 		}
 	}
 }
