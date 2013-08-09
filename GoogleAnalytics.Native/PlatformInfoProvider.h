@@ -14,6 +14,8 @@ namespace GoogleAnalytics
 	{
 	private:
 		
+		static float snappedModeSize;
+
 		Platform::Agile<Windows::UI::Core::CoreWindow^> coreWindow;
 
 		Windows::Foundation::EventRegistrationToken sizeChangedEventToken;
@@ -76,6 +78,18 @@ namespace GoogleAnalytics
 		property Platform::String^ DocumentEncoding
 		{
 			Platform::String^ get();
+		}
+
+		static property float SnappedModeSize
+		{
+			float get()
+			{
+				return snappedModeSize;
+			}
+			void set(float value)
+			{
+				snappedModeSize = value;
+			}
 		}
 
 	};

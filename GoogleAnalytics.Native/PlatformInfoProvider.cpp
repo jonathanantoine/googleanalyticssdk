@@ -17,6 +17,8 @@ using namespace Windows::Storage;
 
 String^ PlatformInfoProvider::Key_AnonymousClientId = "GoogleAnaltyics.AnonymousClientId";
 
+float PlatformInfoProvider::snappedModeSize = 320.0 + 22.0;
+
 PlatformInfoProvider::PlatformInfoProvider()
 {
 	InitializeWindow();
@@ -50,6 +52,10 @@ void PlatformInfoProvider::InitializeWindow()
 		else if (ApplicationView::Value == ApplicationViewState::FullScreenPortrait)
 		{
 			SetScreenResolution(Size(bounds.Height, bounds.Width));
+		}
+		else if (ApplicationView::Value == ApplicationViewState::Filled)
+		{
+			SetScreenResolution(Size(bounds.Width + SnappedModeSize, bounds.Height)); // add the width of snapped mode & divider grip
 		}
 		SetViewPortResolution(Size(bounds.Width, bounds.Height));
 		sizeChangedEventToken = coreWindow->SizeChanged += ref new TypedEventHandler<CoreWindow^, WindowSizeChangedEventArgs^>(this, &PlatformInfoProvider::Window_SizeChanged);
@@ -119,7 +125,6 @@ void PlatformInfoProvider::SetScreenResolution(IBox<Size>^ value)
 
 String^ PlatformInfoProvider::UserLanguage::get()
 {
-	// TEST
 	return Windows::Globalization::ApplicationLanguages::Languages->GetAt(0);
 }
 
