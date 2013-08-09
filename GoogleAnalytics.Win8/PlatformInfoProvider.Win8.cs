@@ -30,15 +30,20 @@ namespace GoogleAnalytics
             {
                 if (Window.Current != null && Window.Current.Content != null)
                 {
+                    var bounds = Window.Current.Bounds;
                     if (ApplicationView.Value == ApplicationViewState.FullScreenLandscape)
                     {
-                        ScreenResolution = new Size(Window.Current.Bounds.Width, Window.Current.Bounds.Height);
+                        ScreenResolution = new Size(bounds.Width, bounds.Height);
                     }
                     else if (ApplicationView.Value == ApplicationViewState.FullScreenPortrait)
                     {
-                        ScreenResolution = new Size(Window.Current.Bounds.Height, Window.Current.Bounds.Width);
+                        ScreenResolution = new Size(bounds.Height, bounds.Width);
                     }
-                    ViewPortResolution = new Size(Window.Current.Bounds.Width, Window.Current.Bounds.Height);
+                    else if (ApplicationView.Value == ApplicationViewState.Filled)
+                    {
+                        ScreenResolution = new Size(bounds.Width + 320.0 + 22.0, bounds.Height);  // add the width of snapped mode & divider grip
+                    }
+                    ViewPortResolution = new Size(bounds.Width, bounds.Height);
                     Window.Current.SizeChanged += Current_SizeChanged;
                     windowInitialized = true;
                 }
@@ -111,6 +116,7 @@ namespace GoogleAnalytics
             get { return System.Globalization.CultureInfo.CurrentUICulture.Name; }
         }
 
+        // Not sure how to get this information in Windows 8
         public int? ScreenColorDepthBits
         {
             get { return null; }
