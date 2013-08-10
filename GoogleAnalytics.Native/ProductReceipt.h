@@ -12,6 +12,13 @@ namespace GoogleAnalytics
 	{
 	public:
 
+		ProductReceipt()
+		{
+			Id = nullptr;
+			ProductId = nullptr;
+			ProductType = nullptr;
+		}
+
 		property Platform::String^ Id;
 
 		property Platform::String^ ProductId;

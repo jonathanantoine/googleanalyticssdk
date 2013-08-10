@@ -21,6 +21,7 @@ namespace GoogleAnalytics
 
 		Payload(Windows::Foundation::Collections::IMap<Platform::String^, Platform::String^>^ data)
 		{
+			this->IsUseSecure = false;
 			this->data = data;
 			this->timeStamp = DateTimeHelper::Now();
 		}

@@ -26,6 +26,19 @@ PayloadFactory::PayloadFactory()
 {
 	CustomDimensions = ref new Map<int, String^>();
 	CustomMetrics = ref new Map<int, int>();
+	PropertyId = nullptr;
+	AppName = nullptr;
+	AppVersion = nullptr;
+	AnonymizeIP = false;
+	ViewportSize = nullptr;
+	Referrer = nullptr;
+	Campaign = nullptr;
+	ScreenName = nullptr;
+	AnonymousClientId = nullptr;
+	ScreenResolution = nullptr;
+	UserLanguage = nullptr;
+	ScreenColorDepthBits = nullptr;
+	DocumentEncoding = nullptr;
 }
 
 Payload^ PayloadFactory::TrackView(String^ screenName, SessionControl sessionControl, bool isNonInteractive)
@@ -39,15 +52,15 @@ Payload^ PayloadFactory::TrackEvent(String^ category, String^ action, String^ la
 	auto additionalData = ref new Map<String^, String^>();
 	additionalData->Insert("ec", category);
 	additionalData->Insert("ea", action);
-	if (label != nullptr) additionalData->Insert("el", label);
-	if (value != 0) additionalData->Insert("ev", value.ToString());
+	if (label) additionalData->Insert("el", label);
+	if (value) additionalData->Insert("ev", value.ToString());
 	return PostData(HitType_Event, additionalData, isNonInteractive, sessionControl);
 }
 
 Payload^ PayloadFactory::TrackException(String^ description, bool isFatal, SessionControl sessionControl, bool isNonInteractive)
 {
 	auto additionalData = ref new Map<String^, String^>();
-	if (description != nullptr) additionalData->Insert("exd", description);
+	if (description) additionalData->Insert("exd", description);
 	if (!isFatal) additionalData->Insert("exf", "0");
 	return PostData(HitType_Exception, additionalData, isNonInteractive, sessionControl);
 }
@@ -64,10 +77,10 @@ Payload^ PayloadFactory::TrackSocialInteraction(String^ network, String^ action,
 Payload^ PayloadFactory::TrackUserTiming(String^ category, String^ variable, IBox<TimeSpan>^ time, String^ label, IBox<TimeSpan>^ loadTime, IBox<TimeSpan>^ dnsTime, IBox<TimeSpan>^ downloadTime, IBox<TimeSpan>^ redirectResponseTime, IBox<TimeSpan>^ tcpConnectTime, IBox<TimeSpan>^ serverResponseTime, SessionControl sessionControl, bool isNonInteractive)
 {
 	auto additionalData = ref new Map<String^, String^>();
-	if (category != nullptr) additionalData->Insert("utc", category);
-	if (variable != nullptr) additionalData->Insert("utv", variable);
+	if (category) additionalData->Insert("utc", category);
+	if (variable) additionalData->Insert("utv", variable);
 	if (time != nullptr) additionalData->Insert("utt", std::floor(0.5 + TimeSpanHelper::GetTotalMilliseconds(time->Value)).ToString());
-	if (label != nullptr) additionalData->Insert("utl", label);
+	if (label) additionalData->Insert("utl", label);
 	if (loadTime != nullptr) additionalData->Insert("ptl", std::floor(0.5 + TimeSpanHelper::GetTotalMilliseconds(loadTime->Value)).ToString());
 	if (dnsTime != nullptr) additionalData->Insert("dns", std::floor(0.5 + TimeSpanHelper::GetTotalMilliseconds(dnsTime->Value)).ToString());
 	if (downloadTime != nullptr) additionalData->Insert("pdt", std::floor(0.5 + TimeSpanHelper::GetTotalMilliseconds(downloadTime->Value)).ToString());
@@ -81,11 +94,11 @@ Payload^ PayloadFactory::TrackTransaction(String^ id, String^ affiliation, doubl
 {
 	auto additionalData = ref new Map<String^, String^>();
 	additionalData->Insert("ti", id);
-	if (affiliation != nullptr) additionalData->Insert("ta", affiliation);
-	if (revenue != 0) additionalData->Insert("tr", revenue.ToString());
-	if (shipping != 0) additionalData->Insert("ts", shipping.ToString());
-	if (tax != 0) additionalData->Insert("tt", tax.ToString());
-	if (currencyCode != nullptr) additionalData->Insert("cu", currencyCode);
+	if (affiliation) additionalData->Insert("ta", affiliation);
+	if (revenue) additionalData->Insert("tr", revenue.ToString());
+	if (shipping) additionalData->Insert("ts", shipping.ToString());
+	if (tax) additionalData->Insert("tt", tax.ToString());
+	if (currencyCode) additionalData->Insert("cu", currencyCode);
 	return PostData(HitType_Transaction, additionalData, isNonInteractive, sessionControl);
 }
 
@@ -93,19 +106,19 @@ Payload^ PayloadFactory::TrackTransactionItem(String^ transactionId, String^ nam
 {
 	auto additionalData = ref new Map<String^, String^>();
 	additionalData->Insert("ti", transactionId);
-	if (name != nullptr) additionalData->Insert("in", name);
-	if (price != 0) additionalData->Insert("ip", price.ToString());
-	if (quantity != 0) additionalData->Insert("iq", quantity.ToString());
-	if (code != nullptr) additionalData->Insert("ic", code);
-	if (category != nullptr) additionalData->Insert("iv", category);
-	if (currencyCode != nullptr) additionalData->Insert("cu", currencyCode);
+	if (name) additionalData->Insert("in", name);
+	if (price) additionalData->Insert("ip", price.ToString());
+	if (quantity) additionalData->Insert("iq", quantity.ToString());
+	if (code) additionalData->Insert("ic", code);
+	if (category) additionalData->Insert("iv", category);
+	if (currencyCode) additionalData->Insert("cu", currencyCode);
 	return PostData(HitType_TransactionItem, additionalData, isNonInteractive, sessionControl);
 }
 
 Payload^ PayloadFactory::PostData(String^ hitType, IMap<String^, String^>^ additionalData, bool isNonInteractive, SessionControl sessionControl)
 {
 	auto payloadData = GetRequiredPayloadData(hitType, isNonInteractive, sessionControl);
-	if (additionalData != nullptr)
+	if (additionalData)
 	{
 		for each (auto item in additionalData)
 		{
@@ -124,15 +137,15 @@ IMap<String^, Platform::String^>^ PayloadFactory::GetRequiredPayloadData(String^
 	result->Insert("an", AppName);
 	result->Insert("av", AppVersion);
 	result->Insert("t", hitType);
-	if (ScreenName != nullptr) result->Insert("cd", ScreenName);
+	if (ScreenName) result->Insert("cd", ScreenName);
 	if (isNonInteractive) result->Insert("ni", "1");
 	if (AnonymizeIP) result->Insert("aip", "1");
 	if (sessionControl != SessionControl::None) result->Insert("sc", sessionControl == SessionControl::Start ? "start" : "end");
 	if (ScreenResolution != nullptr) result->Insert("sr", ScreenResolution->Value.Width.ToString() + "x" + ScreenResolution->Value.Height.ToString());
 	if (ViewportSize != nullptr) result->Insert("vp", ViewportSize->Value.Width.ToString() + "x" + ViewportSize->Value.Height.ToString());
-	if (UserLanguage != nullptr) result->Insert("ul", UserLanguage);
-	if (ScreenColorDepthBits != nullptr) result->Insert("sd", ScreenColorDepthBits->Value.ToString() + "-bits");
-	if (DocumentEncoding != nullptr) result->Insert("de", DocumentEncoding);
+	if (UserLanguage) result->Insert("ul", UserLanguage);
+	if (ScreenColorDepthBits) result->Insert("sd", ScreenColorDepthBits->Value.ToString() + "-bits");
+	if (DocumentEncoding) result->Insert("de", DocumentEncoding);
 	for each (auto dimension in CustomDimensions)
 	{
 		result->Insert("cd" + dimension->Key, dimension->Value);

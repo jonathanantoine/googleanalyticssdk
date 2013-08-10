@@ -12,9 +12,11 @@ using namespace Platform::Collections;
 using namespace Windows::Foundation::Collections;
 using namespace Windows::Foundation;
 
-Tracker::Tracker(String^ propertyId, PlatformInfoProvider^ platformInfoProvider, AnalyticsEngine^ googleAnalytics)
+Tracker::Tracker(String^ propertyId, PlatformInfoProvider^ platformInfoProvider, AnalyticsEngine^ analyticsEngine) : 
+	startSession(false), 
+	endSession(false)
 {
-	this->googleAnalytics = googleAnalytics;
+	this->analyticsEngine = analyticsEngine;
 	this->platformInfoProvider = platformInfoProvider;
 	engine = ref new PayloadFactory();
 	engine->PropertyId = propertyId;
@@ -72,14 +74,14 @@ GoogleAnalytics::SessionControl Tracker::SessionControl::get()
 
 void Tracker::SendPayload(Payload^ payload)
 {
-	if (TrackingId != nullptr && TrackingId != "")
+	if (TrackingId)
 	{
 		if (!IsSampledOut())
 		{
 			if (!ThrottlingEnabled || hitTokenBucket->Consume())
 			{
 				payload->IsUseSecure = IsUseSecure;
-				googleAnalytics->SendPayload(payload);
+				analyticsEngine->SendPayload(payload);
 			}
 		}
 	}

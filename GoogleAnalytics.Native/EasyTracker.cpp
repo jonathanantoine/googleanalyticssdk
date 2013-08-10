@@ -25,7 +25,7 @@ Tracker^ EasyTracker::tracker = nullptr;
 
 void EasyTracker::InitTracker()
 {
-	if (Config == nullptr) throw ref new NullReferenceException("Config not set. Set EasyTracker.Current.Config = EasyTrackerConfig before getting tracker.");
+	if (!Config) throw ref new NullReferenceException("Config not set. Set EasyTracker.Current.Config = EasyTrackerConfig before getting tracker.");
 	if (Config->AutoTrackNetworkConnectivity)
 	{
 		UpdateConnectionStatus();
@@ -45,7 +45,7 @@ void EasyTracker::InitTracker()
 
 EasyTracker^ EasyTracker::Current::get()
 {
-	if (current == nullptr)
+	if (!current)
 	{
 		current = ref new EasyTracker();
 	}
@@ -54,7 +54,7 @@ EasyTracker^ EasyTracker::Current::get()
 
 Tracker^ EasyTracker::GetTracker()
 {
-	if (tracker == nullptr) 
+	if (!tracker) 
 	{
 		Current->InitTracker();
 	}
@@ -66,8 +66,12 @@ IAsyncAction^ EasyTracker::Dispatch()
 	return GAServiceManager::Current->Dispatch();
 }
 
-EasyTracker::EasyTracker()
-{ }
+EasyTracker::EasyTracker() : 
+	reportingException(false), 
+	suspended(nullptr)
+{ 
+	Config = nullptr;
+}
 
 void EasyTracker::NetworkInformation_NetworkStatusChanged(Object^ sender)
 {
@@ -77,7 +81,7 @@ void EasyTracker::NetworkInformation_NetworkStatusChanged(Object^ sender)
 void EasyTracker::UpdateConnectionStatus()
 {
 	auto profile = NetworkInformation::GetInternetConnectionProfile();
-	if (profile != nullptr)
+	if (profile)
 	{
 		switch (profile->GetNetworkConnectivityLevel())
 		{
@@ -134,7 +138,7 @@ void EasyTracker::OnUnhandledException(Exception^ ex, bool* handled)
 
 EasyTracker::~EasyTracker()
 {
-	if (tracker != nullptr)
+	if (tracker)
 	{
 		if (Config->AutoTrackNetworkConnectivity)
 		{

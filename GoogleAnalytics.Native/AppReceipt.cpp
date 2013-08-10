@@ -16,7 +16,7 @@ AppReceipt^ AppReceipt::Load(String^ receipt)
 	doc->LoadXml(receipt);
 
 	auto root = (XmlElement^)doc->SelectSingleNode("AppReceipt");
-	if (root == nullptr)
+	if (!root)
 	{
 		auto result = ref new AppReceipt();
 		result->Id = root->GetAttribute("Id");

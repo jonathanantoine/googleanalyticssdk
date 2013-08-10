@@ -23,14 +23,15 @@ void AnalyticsEngine::SendPayload(Payload^ payload)
 	}
 }
 
-AnalyticsEngine::AnalyticsEngine(PlatformInfoProvider^ platformTrackingInfo)
+AnalyticsEngine::AnalyticsEngine(PlatformInfoProvider^ platformTrackingInfo) : appOptOut(nullptr)
 {
+	this->DefaultTracker = nullptr;
 	this->platformTrackingInfo = platformTrackingInfo;
 }
 
 AnalyticsEngine^ AnalyticsEngine::Current::get()
 {
-	if (current == nullptr)
+	if (!current)
 	{
 		current = ref new AnalyticsEngine(ref new PlatformInfoProvider());
 	}
@@ -39,12 +40,11 @@ AnalyticsEngine^ AnalyticsEngine::Current::get()
 
 Tracker^ AnalyticsEngine::GetTracker(String^ propertyId)
 {
-	if (propertyId == nullptr) propertyId = "";
 	if (trackers.find(propertyId) == end(trackers))
 	{
 		auto tracker = ref new Tracker(propertyId, platformTrackingInfo, this);
 		trackers[propertyId] = tracker;
-		if (DefaultTracker == nullptr)
+		if (!DefaultTracker)
 		{
 			DefaultTracker = tracker;
 		}

@@ -12,7 +12,10 @@ using namespace GoogleAnalytics;
 using namespace Platform;
 using namespace Windows::Foundation;
 
-TokenBucket::TokenBucket(double tokens, double fillRate) : capacity(tokens), tokens(tokens), fillRate(fillRate)
+TokenBucket::TokenBucket(double tokens, double fillRate) : 
+	capacity(tokens), 
+	tokens(tokens), 
+	fillRate(fillRate)
 {
 	timeStamp = DateTimeHelper::Now();
 }

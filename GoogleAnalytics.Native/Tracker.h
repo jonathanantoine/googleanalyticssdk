@@ -31,7 +31,7 @@ namespace GoogleAnalytics
 
 		GoogleAnalytics::TokenBucket^ hitTokenBucket;
 
-		GoogleAnalytics::AnalyticsEngine^ googleAnalytics;
+		GoogleAnalytics::AnalyticsEngine^ analyticsEngine;
 
 		void platformTrackingInfo_ViewPortResolutionChanged(Platform::Object^ sender, Platform::Object^ args);
 
@@ -54,7 +54,7 @@ namespace GoogleAnalytics
 
 	internal:
 
-		Tracker(Platform::String^ propertyId, GoogleAnalytics::PlatformInfoProvider^ platformInfoProvider, GoogleAnalytics::AnalyticsEngine^ googleAnalytics);
+		Tracker(Platform::String^ propertyId, GoogleAnalytics::PlatformInfoProvider^ platformInfoProvider, GoogleAnalytics::AnalyticsEngine^ analyticsEngine);
 
 	public:
 

@@ -19,13 +19,13 @@ EasyTrackerConfig^ EasyTrackerConfig::Load(XmlDocument^ doc)
 {
 	auto result = ref new EasyTrackerConfig();
 	auto root = doc->SelectSingleNodeNS("ga:analytics", ns);
-	if (root != nullptr)
+	if (root)
 	{
 		for (unsigned int i = 0; i < root->ChildNodes->Size; i++)
 		{
 			auto node = root->ChildNodes->GetAt(i);
 			XmlElement^ element = dynamic_cast<XmlElement^>(node);
-			if (element != nullptr)
+			if (element)
 			{
 				if (element->NodeName == "trackingId") 
 					result->TrackingId = element->InnerText;
@@ -59,6 +59,7 @@ EasyTrackerConfig^ EasyTrackerConfig::Load(XmlDocument^ doc)
 
 EasyTrackerConfig::EasyTrackerConfig()
 {
+	TrackingId = nullptr;
 	SessionTimeout = TimeSpanHelper::FromSeconds(30);
 	DispatchPeriod = TimeSpanHelper::FromTicks(0);
 	SampleFrequency = 100.0F;

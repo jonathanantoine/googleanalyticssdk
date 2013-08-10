@@ -11,6 +11,13 @@ namespace GoogleAnalytics
 	{
 	public:
 
+		AppReceipt()
+		{
+			Id = nullptr;
+			AppId = nullptr;
+			LicenseType = nullptr;
+		}
+
 		property Platform::String^ Id;
 
 		property Platform::String^ AppId;

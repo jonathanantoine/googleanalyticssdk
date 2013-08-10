@@ -21,6 +21,12 @@ namespace GoogleAnalytics
 		Transaction()
 		{
 			items = ref new Platform::Collections::Vector<GoogleAnalytics::TransactionItem^>();
+            TotalCostInMicros = 0L;
+			ShippingCostInMicros = 0L;
+			TotalTaxInMicros = 0L;
+			CurrencyCode = nullptr;
+			Affiliation = nullptr;
+			TransactionId = nullptr;
 		}
 
 		Transaction(Platform::String^ transactionId, long long totalCostInMicros)
@@ -28,6 +34,10 @@ namespace GoogleAnalytics
 			items = ref new Platform::Collections::Vector<GoogleAnalytics::TransactionItem^>();
             TransactionId = transactionId;
             TotalCostInMicros = totalCostInMicros;
+			ShippingCostInMicros = 0L;
+			TotalTaxInMicros = 0L;
+			CurrencyCode = nullptr;
+			Affiliation = nullptr;
 		}
 
 		property Platform::String^ TransactionId;
@@ -49,7 +59,6 @@ namespace GoogleAnalytics
 				return items;
 			}
 		}
-
 
 	};
 }

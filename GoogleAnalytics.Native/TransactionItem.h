@@ -13,7 +13,13 @@ namespace GoogleAnalytics
 	public:
 
 		TransactionItem()
-		{ }
+		{
+			Name = nullptr;
+			PriceInMicros = 0L;
+			Quantity = 0L;
+			SKU = nullptr;
+			Category = nullptr;
+		}
 
 		TransactionItem(Platform::String^ sku, Platform::String^ name, long long priceInMicros, long long quantity)
 		{
@@ -21,6 +27,7 @@ namespace GoogleAnalytics
 			PriceInMicros = priceInMicros;
 			Quantity = quantity;
 			SKU = sku;
+			Category = nullptr;
 		}
 
 		property Platform::String^ Name;

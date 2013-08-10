@@ -19,7 +19,10 @@ String^ PlatformInfoProvider::Key_AnonymousClientId = "GoogleAnaltyics.Anonymous
 
 float PlatformInfoProvider::snappedModeSize = 320.0 + 22.0;
 
-PlatformInfoProvider::PlatformInfoProvider()
+PlatformInfoProvider::PlatformInfoProvider() :
+	windowInitialized(false),
+	viewPortResolution(nullptr),
+	screenResolution(nullptr)
 {
 	InitializeWindow();
 }

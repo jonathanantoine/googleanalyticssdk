@@ -24,8 +24,12 @@ Uri^ GAServiceManager::endPointUnsecure = ref new Uri("http://www.google-analyti
 
 Uri^ GAServiceManager::endPointSecure = ref new Uri("https://ssl.google-analytics.com/collect");
 
-GAServiceManager::GAServiceManager() : isConnected(true)
+GAServiceManager::GAServiceManager() : 
+	isConnected(true),
+	timer(nullptr)
 {
+	BustCache = false;
+	dispatchPeriod = TimeSpanHelper::FromTicks(0);
 	UserAgent = ConstructUserAgent();
 }
 
@@ -187,7 +191,7 @@ String^ GAServiceManager::GetCacheBuster()
 
 GAServiceManager^ GAServiceManager::Current::get()
 {
-	if (current == nullptr)
+	if (!current)
 	{
 		current = ref new GAServiceManager();
 	}
@@ -203,7 +207,7 @@ void GAServiceManager::DispatchPeriod::set(TimeSpan value)
 	if (dispatchPeriod.Duration != value.Duration)
 	{
 		dispatchPeriod = value;
-		if (timer != nullptr)
+		if (timer)
 		{
 			timer->Cancel();
 			timer = nullptr;
