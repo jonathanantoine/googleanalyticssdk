@@ -24,8 +24,10 @@ std::wstring HttpHelper::UrlEncode(const std::wstring source)
 	for (auto it = begin(source); it != end(source); ++it)
 	{
 		auto c = *it;
-		if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '.') 
+		if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '$' || c == '-' || c == '_' || c == '.' || c == '+' || c == '!' || c == '*' || c == '\'' || c == '('  || c == ')'  || c == ',') 
 			result += c;
+		else if (c = ' ')
+			result += '+';
 		else
 		{
 			// escape this char
