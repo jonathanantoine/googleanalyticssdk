@@ -26,7 +26,7 @@ std::wstring HttpHelper::UrlEncode(const std::wstring source)
 		auto c = *it;
 		if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '$' || c == '-' || c == '_' || c == '.' || c == '+' || c == '!' || c == '*' || c == '\'' || c == '('  || c == ')'  || c == ',') 
 			result += c;
-		else if (c = ' ')
+		else if (c == ' ')
 			result += '+';
 		else
 		{
