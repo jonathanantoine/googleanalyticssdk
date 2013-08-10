@@ -30,7 +30,7 @@ TimeSpan TimeSpanHelper::Parse(String^ string)
 
 	std::wstring s(string->Data());
 	// decimal
-	auto di = s.find_last_of('.');
+	size_t di = s.find_last_of('.');
 	if (di != std::string::npos)
 	{
 		std::wstring ds(s.substr(di + 1));
@@ -38,7 +38,7 @@ TimeSpan TimeSpanHelper::Parse(String^ string)
 		decimal = parsedDecimal / std::pow(10, ds.length());
 	}
 	// seconds
-	auto si = s.find_last_of(':');
+	size_t si = s.find_last_of(':');
 	{
 		int starti = si != std::string::npos ? si : -1;
 		int endi = di != std::string::npos ? di : s.length();
@@ -48,7 +48,7 @@ TimeSpan TimeSpanHelper::Parse(String^ string)
 	// minutes
 	if (si != std::string::npos)
 	{
-		int mi = s.find_last_of(':', si - 1);
+		size_t mi = s.find_last_of(':', si - 1);
 		int starti = mi != std::string::npos ? mi : -1;
 		std::wstring ms(s.substr(starti + 1, si - starti - 1));
 		minutes = std::wcstol(ms.data(), nullptr, 10);
