@@ -7,7 +7,6 @@
 #include "TransactionBuilder.h"
 #include "ProductReceipt.h"
 #include "AppReceipt.h"
-#include <clocale>
 
 using namespace GoogleAnalytics;
 using namespace Platform;
@@ -24,10 +23,7 @@ Transaction^ TransactionBuilder::GetProductPurchaseTransaction(ListingInformatio
 
 	auto product = listingInformation->ProductListings->Lookup(productId);
 
-	lconv* lc = localeconv();
-	std::string isoCurrencySymbol(lc->int_curr_symbol);
-	std::wstring isoCurrencySymbolW(isoCurrencySymbol.begin(), isoCurrencySymbol.end());
-	auto currencyCode = ref new String(isoCurrencySymbolW.data());
+	auto currencyCode = Windows::System::UserProfile::GlobalizationPreferences::Currencies->GetAt(0);
 
 	auto currencyFormatter = ref new Windows::Globalization::NumberFormatting::CurrencyFormatter(currencyCode);
 	auto cost = currencyFormatter->ParseDouble(product->FormattedPrice);
@@ -49,10 +45,7 @@ Transaction^ TransactionBuilder::GetAppPurchaseTransaction(ListingInformation^ l
 	auto appId = appReceipt->AppId;
 	auto licenseType = appReceipt->LicenseType;
 	
-	lconv* lc = localeconv();
-	std::string isoCurrencySymbol(lc->int_curr_symbol);
-	std::wstring isoCurrencySymbolW(isoCurrencySymbol.begin(), isoCurrencySymbol.end());
-	auto currencyCode = ref new String(isoCurrencySymbolW.data());
+	auto currencyCode = Windows::System::UserProfile::GlobalizationPreferences::Currencies->GetAt(0);
 
 	auto currencyFormatter = ref new Windows::Globalization::NumberFormatting::CurrencyFormatter(currencyCode);
 	auto cost = currencyFormatter->ParseDouble(listingInformation->FormattedPrice);

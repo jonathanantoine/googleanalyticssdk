@@ -14,7 +14,7 @@ ProductReceipt^ ProductReceipt::Load(String^ receipt)
 {
 	XmlDocument^ doc = ref new XmlDocument();
 	doc->LoadXml(receipt);
-	auto root = (XmlElement^)doc->SelectSingleNode("ProductReceipt");
+	auto root = (XmlElement^)doc->SelectSingleNode("Receipt/ProductReceipt");
 	if (root)
 	{
 		auto result = ref new ProductReceipt();
