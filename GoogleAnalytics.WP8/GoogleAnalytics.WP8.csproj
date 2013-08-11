@@ -120,6 +120,9 @@
     <Compile Include="..\GoogleAnalytics.Common\Transactions.cs">
       <Link>Transactions.cs</Link>
     </Compile>
+    <Compile Include="..\SolutionItems\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="AppReceipt.cs" />
     <Compile Include="EasyTracker.WP.cs" />
     <Compile Include="GoogleAnalytics.WP.cs" />
