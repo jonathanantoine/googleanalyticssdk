@@ -9,6 +9,10 @@
     var activation = Windows.ApplicationModel.Activation;
     var nav = WinJS.Navigation;
 
+    var config = new GoogleAnalytics.EasyTrackerConfig();
+    config.trackingId = "UA-39959863-1";
+    GoogleAnalytics.EasyTracker.current.config = config;
+
     app.addEventListener("activated", function (args) {
         if (args.detail.kind === activation.ActivationKind.launch) {
             //GoogleAnalytics.EasyTracker.current.setContext(null);
@@ -32,15 +36,44 @@
                     return nav.navigate(Application.navigator.home);
                 }
             }));
+
+            var storeUri = new Windows.Foundation.Uri("ms-appx:///WindowsStoreProxy.xml");
+            Windows.Storage.StorageFile.getFileFromApplicationUriAsync(storeUri).then(function myfunction(storeFile) {
+                return Windows.ApplicationModel.Store.CurrentAppSimulator.reloadSimulatorAsync(storeFile);
+            });
         }
     });
 
+    Windows.UI.WebUI.WebUIApplication.addEventListener("resuming", function (args) {
+        // tell Google Analytics  that we have resumed.
+        GoogleAnalytics.EasyTracker.current.onAppResuming();
+        // optionally log an event that the app has resumed
+        GoogleAnalytics.EasyTracker.getTracker().sendEvent("app", "resume", null, 0);
+    });
+
     app.oncheckpoint = function (args) {
-        // TODO: This application is about to be suspended. Save any state
-        // that needs to persist across suspensions here. If you need to 
-        // complete an asynchronous operation before your application is 
-        // suspended, call args.setPromise().
         app.sessionState.history = nav.history;
+
+        // optionally log an event that the app has suspended
+        GoogleAnalytics.EasyTracker.getTracker().sendEvent("app", "suspend", null, 0);
+        // make sure all Google Analytics data has been dispatched.
+        args.setPromise(GoogleAnalytics.EasyTracker.current.onAppSuspending());
+    };
+
+    var isReportingException = false; // flag to let GA dispatch the error before app crashes
+    app.onerror = function (eventInfo) {
+        if (!isReportingException) {
+            var error = eventInfo.detail;
+            var errorInfo = error.errorMessage + "\n" + error.errorUrl + " (" + error.errorLine + ")"
+            GoogleAnalytics.EasyTracker.getTracker().sendException(errorInfo, true);
+            isReportingException = true;
+            GoogleAnalytics.EasyTracker.current.dispatch().done(function () {
+                // once done logging the error, rethrow to resume normal course of action
+                throw error;
+            });
+            return true;
+        }
+        else return false;
     };
 
     app.start();
