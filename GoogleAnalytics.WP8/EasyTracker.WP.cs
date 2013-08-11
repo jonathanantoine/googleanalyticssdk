@@ -27,17 +27,22 @@ namespace GoogleAnalytics
 
         public void SetContext(Application ctx)
         {
-            UpdateConnectionStatus();
-            NetworkChange.NetworkAddressChanged += NetworkChange_NetworkAddressChanged;
-            if (ctx != null)
+            if (Config == null) InitConfig(ConfigPath);
+            PopulateMissingConfig();
+
+            if (Config.ReportUncaughtExceptions && ctx != null)
             {
                 ctx.UnhandledException += app_UnhandledException;
             }
-            if (Config == null) InitConfig(ConfigPath);
-            PopulateMissingConfig();
+            if (Config.AutoTrackNetworkConnectivity)
+            {
+                UpdateConnectionStatus();
+                NetworkChange.NetworkAddressChanged += NetworkChange_NetworkAddressChanged;
+            }
+
             InitTracker();
             if (Config.AutoAppLifetimeMonitoring && ctx != null)
-            { 
+            {
                 PhoneApplicationService.Current.Activated += Current_Activated;
                 PhoneApplicationService.Current.Deactivated += Current_Deactivated;
             }
@@ -100,38 +105,35 @@ namespace GoogleAnalytics
         bool reportingException = false;
         async void app_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
         {
-            if (Config.ReportUncaughtExceptions)
+            if (!reportingException)
             {
-                if (!reportingException)
+                if (e.Handled)
                 {
-                    if (e.Handled)
+                    tracker.SendException(e.ExceptionObject.ToString(), false);
+                }
+                else
+                {
+                    reportingException = true;
+                    try
                     {
-                        tracker.SendException(e.ExceptionObject.ToString(), false);
+                        tracker.SendException(e.ExceptionObject.ToString(), true);
+                        e.Handled = true;
+                        await Dispatch();
+                        // rethrow the exception now that we're done logging it. wrap in another exception in order to prevent stack trace from getting reset.
+                        throw new Exception("Tracked exception rethrown", e.ExceptionObject);
                     }
-                    else
+                    finally
                     {
-                        reportingException = true;
-                        try
+                        // we have to do some trickery in order to make sure the flag is reset only after the new exception has passed all the way through the UE pipeline. Otherwise we would have an infinite loop.
+                        System.Windows.Deployment.Current.Dispatcher.BeginInvoke(async () =>
                         {
-                            tracker.SendException(e.ExceptionObject.ToString(), true);
-                            e.Handled = true;
-                            await Dispatch();
-                            // rethrow the exception now that we're done logging it. wrap in another exception in order to prevent stack trace from getting reset.
-                            throw new Exception("Tracked exception rethrown", e.ExceptionObject);
-                        }
-                        finally
-                        {
-                            // we have to do some trickery in order to make sure the flag is reset only after the new exception has passed all the way through the UE pipeline. Otherwise we would have an infinite loop.
-                            System.Windows.Deployment.Current.Dispatcher.BeginInvoke(async () =>
-                            {
 #if WINDOWS_PHONE7
                                 await TaskEx.Yield();
 #else
-                                await Task.Yield();
+                            await Task.Yield();
 #endif
-                                reportingException = false;
-                            });
-                        }
+                            reportingException = false;
+                        });
                     }
                 }
             }

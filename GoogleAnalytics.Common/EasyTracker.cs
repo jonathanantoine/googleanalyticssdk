@@ -53,6 +53,7 @@ namespace GoogleAnalytics
             GAServiceManager.Current.DispatchPeriod = Config.DispatchPeriod;
             tracker = analyticsEngine.GetTracker(Config.TrackingId);
             tracker.SetStartSession(Config.SessionTimeout.HasValue);
+            tracker.IsUseSecure = Config.UseSecure;
             tracker.AppName = Config.AppName;
             tracker.AppVersion = Config.AppVersion;
             tracker.IsAnonymizeIpEnabled = Config.AnonymizeIp;

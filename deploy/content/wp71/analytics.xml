@@ -23,4 +23,8 @@
   <!--<autoAppLifetimeTracking>false</autoAppLifetimeTracking>-->
   <!--Enable automatic app lifetime monitoring (e.g. suspend/resume). If true, all dispatched events will be sent on suspend and session timeout will be honored. true by default; must be true if autoAppLifetimeTracking is true.-->
   <!--<autoAppLifetimeMonitoring>true</autoAppLifetimeMonitoring>-->
+  <!--Enables automatic network connectivity monitoring and avoids sending logs while not connected. Default is true.-->
+  <!--<autoTrackNetworkConnectivity>true</autoTrackNetworkConnectivity>-->
+  <!--Enable HTTPS instead of HTTP if true, causes all hits to be sent to the secure (SSL) Google Analytics endpoint. Default is false.-->
+  <!--<useSecure>false</useSecure>-->
 </analytics>

@@ -16,6 +16,7 @@ namespace GoogleAnalytics
             DispatchPeriod = TimeSpan.Zero;
             SampleFrequency = 100.0F;
             AutoAppLifetimeMonitoring = true;
+            AutoTrackNetworkConnectivity = true;
         }
 
         internal static EasyTrackerConfig Load(XmlReader reader)
@@ -88,6 +89,12 @@ namespace GoogleAnalytics
                             break;
                         case "reportUncaughtExceptions":
                             result.ReportUncaughtExceptions = reader.ReadElementContentAsBoolean();
+                            break;
+                        case "useSecure":
+                            result.UseSecure = reader.ReadElementContentAsBoolean();
+                            break;
+                        case "autoTrackNetworkConnectivity":
+                            result.AutoTrackNetworkConnectivity = reader.ReadElementContentAsBoolean();
                             break;
                         default:
                             reader.Skip();
@@ -249,5 +256,13 @@ namespace GoogleAnalytics
         /// Automatically monitor suspend and resume events. If true, all dispatched events will be sent on suspend and session timeout will be honored. true by default.
         /// </summary>
         public bool AutoAppLifetimeMonitoring { get; set; }
+        /// <summary>
+        /// If true, causes all hits to be sent to the secure (SSL) Google Analytics endpoint. Default is false.
+        /// </summary>
+        public bool UseSecure { get; set; }
+        /// <summary>
+        /// Tells Google Analytics to automatically monitor network connectivity and avoid sending logs while not connected. Default is true.
+        /// </summary>
+        public bool AutoTrackNetworkConnectivity { get; set; }
     }
 }

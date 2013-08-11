@@ -3,9 +3,9 @@
 <analytics xmlns="http://googleanalyticssdk.codeplex.com/ns/easytracker">
   <!--Replace placeholder ID with your tracking ID-->
   <trackingId>UA-XXXX-Y</trackingId>
-  <!--Replace placeholder name with your app name. If you leave this empty your package ID will be used-->
+  <!--Replace placeholder name with your app name. If you leave this empty your WMAppManifest.xml Title will be used-->
   <!--<appName>Test</appName>-->
-  <!--Replace placeholder version with your app version. If you leave this empty your package version will be used-->
+  <!--Replace placeholder version with your app version. If you leave this empty your WMAppManifest.xml version will be used-->
   <!--<appVersion>1.0.0.0</appVersion>-->
   <!--Enable writing of debug information to debug window log, useful for troubleshooting your implementation. Default is false.-->
   <!--<debug>false</debug>-->
@@ -23,4 +23,8 @@
   <!--<autoAppLifetimeTracking>false</autoAppLifetimeTracking>-->
   <!--Enable automatic app lifetime monitoring (e.g. suspend/resume). If true, all dispatched events will be sent on suspend and session timeout will be honored. true by default; must be true if autoAppLifetimeTracking is true.-->
   <!--<autoAppLifetimeMonitoring>true</autoAppLifetimeMonitoring>-->
+  <!--Enables automatic network connectivity monitoring and avoids sending logs while not connected. Default is true.-->
+  <!--<autoTrackNetworkConnectivity>true</autoTrackNetworkConnectivity>-->
+  <!--Enable HTTPS instead of HTTP if true, causes all hits to be sent to the secure (SSL) Google Analytics endpoint. Default is false.-->
+  <!--<useSecure>false</useSecure>-->
 </analytics>

@@ -37,14 +37,19 @@ namespace GoogleAnalytics
 
         public void SetContext(Application ctx)
         {
-            UpdateConnectionStatus();
-            NetworkInformation.NetworkStatusChanged += NetworkInformation_NetworkStatusChanged;
-            if (ctx != null)
+            if (Config == null) InitConfig(ConfigPath);
+            PopulateMissingConfig();
+
+            if (Config.ReportUncaughtExceptions && ctx != null)
             {
                 ctx.UnhandledException += app_UnhandledException;
             }
-            if (Config == null) InitConfig(ConfigPath);
-            PopulateMissingConfig();
+            if (Config.AutoTrackNetworkConnectivity)
+            {
+                UpdateConnectionStatus();
+                NetworkInformation.NetworkStatusChanged += NetworkInformation_NetworkStatusChanged;
+            }
+
             InitTracker();
 
             if (Config.AutoAppLifetimeMonitoring && ctx != null)
@@ -123,29 +128,26 @@ namespace GoogleAnalytics
         bool reportingException = false;
         async void app_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            if (Config.ReportUncaughtExceptions)
+            if (!reportingException)
             {
-                if (!reportingException)
+                if (e.Handled)
                 {
-                    if (e.Handled)
+                    tracker.SendException(e.Message, false);
+                }
+                else
+                {
+                    try
                     {
-                        tracker.SendException(e.Message, false);
+                        reportingException = true;
+                        e.Handled = true;
+                        tracker.SendException(e.Message, true);
+                        await Dispatch();
+                        // rethrow the exception now that we're done logging it. wrap in another exception in order to prevent stack trace from getting reset.
+                        throw new Exception("Tracked exception rethrown", e.Exception);
                     }
-                    else
+                    finally
                     {
-                        try
-                        {
-                            reportingException = true;
-                            e.Handled = true;
-                            tracker.SendException(e.Message, true);
-                            await Dispatch();
-                            // rethrow the exception now that we're done logging it. wrap in another exception in order to prevent stack trace from getting reset.
-                            throw new Exception("Tracked exception rethrown", e.Exception);
-                        }
-                        finally
-                        {
-                            reportingException = false;
-                        }
+                        reportingException = false;
                     }
                 }
             }
