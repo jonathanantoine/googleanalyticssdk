@@ -3,7 +3,7 @@ using System.Windows;
 
 namespace GoogleAnalytics
 {
-    public sealed partial class GoogleAnalytics
+    public sealed partial class AnalyticsEngine
     {
         const string Key_AppOptOut = "GoogleAnaltyics.AppOptOut";
 

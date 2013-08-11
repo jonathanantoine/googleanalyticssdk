@@ -13,11 +13,11 @@ namespace GoogleAnalytics
         readonly PayloadFactory engine;
         readonly PlatformInfoProvider platformInfoProvider;
         readonly TokenBucket hitTokenBucket;
-        readonly GoogleAnalytics googleAnalytics;
+        readonly AnalyticsEngine analyticsEngine;
 
-        internal Tracker(string propertyId, PlatformInfoProvider platformInfoProvider, GoogleAnalytics googleAnalytics)
+        internal Tracker(string propertyId, PlatformInfoProvider platformInfoProvider, AnalyticsEngine analyticsEngine)
         {
-            this.googleAnalytics = googleAnalytics;
+            this.analyticsEngine = analyticsEngine;
             this.platformInfoProvider = platformInfoProvider;
             engine = new PayloadFactory()
             {
@@ -204,7 +204,7 @@ namespace GoogleAnalytics
                     if (!ThrottlingEnabled || hitTokenBucket.Consume())
                     {
                         payload.IsUseSecure = IsUseSecure;
-                        googleAnalytics.SendPayload(payload);
+                        analyticsEngine.SendPayload(payload);
                     }
                 }
             }

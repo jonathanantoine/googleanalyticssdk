@@ -70,7 +70,7 @@ namespace Test.WP7
 
         private void ButtonOptOut_Click(object sender, RoutedEventArgs e)
         {
-            GoogleAnalytics.GoogleAnalytics.Current.RequestAppOptOutAsync();
+            GoogleAnalytics.AnalyticsEngine.Current.RequestAppOptOutAsync();
         }
     }
 }

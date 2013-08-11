@@ -4,17 +4,17 @@ using System.Threading.Tasks;
 
 namespace GoogleAnalytics
 {
-    public sealed partial class GoogleAnalytics
+    public sealed partial class AnalyticsEngine
     {
-        static GoogleAnalytics current;
+        static AnalyticsEngine current;
 
-        public static GoogleAnalytics Current
+        public static AnalyticsEngine Current
         {
             get
             {
                 if (current == null)
                 {
-                    current = new GoogleAnalytics(new PlatformInfoProvider());
+                    current = new AnalyticsEngine(new PlatformInfoProvider());
                 }
                 return current;
             }
@@ -23,7 +23,7 @@ namespace GoogleAnalytics
         readonly PlatformInfoProvider platformTrackingInfo;
         readonly Dictionary<string, Tracker> trackers;
 
-        private GoogleAnalytics(PlatformInfoProvider platformTrackingInfo)
+        private AnalyticsEngine(PlatformInfoProvider platformTrackingInfo)
         {
             trackers = new Dictionary<string, Tracker>();
             this.platformTrackingInfo = platformTrackingInfo;

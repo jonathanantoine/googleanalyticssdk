@@ -264,7 +264,7 @@ namespace Test.Win8.Xaml
 
         private async void ButtonOptOut_Click(object sender, RoutedEventArgs e)
         {
-            await GoogleAnalytics.GoogleAnalytics.Current.RequestAppOptOutAsync();
+            await GoogleAnalytics.AnalyticsEngine.Current.RequestAppOptOutAsync();
         }
     }
 }

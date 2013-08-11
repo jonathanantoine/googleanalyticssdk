@@ -92,6 +92,9 @@
     <Reference Include="mscorlib.extensions" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\GoogleAnalytics.Common\AnalyticsEngine.cs">
+      <Link>AnalyticsEngine.cs</Link>
+    </Compile>
     <Compile Include="..\GoogleAnalytics.Common\EasyTracker.cs">
       <Link>EasyTracker.cs</Link>
     </Compile>
@@ -100,9 +103,6 @@
     </Compile>
     <Compile Include="..\GoogleAnalytics.Common\GAServiceManager.cs">
       <Link>GAServiceManager.cs</Link>
-    </Compile>
-    <Compile Include="..\GoogleAnalytics.Common\GoogleAnalytics.cs">
-      <Link>GoogleAnalytics.cs</Link>
     </Compile>
     <Compile Include="..\GoogleAnalytics.Common\Payload.cs">
       <Link>Payload.cs</Link>
@@ -119,11 +119,11 @@
     <Compile Include="..\GoogleAnalytics.Common\Transactions.cs">
       <Link>Transactions.cs</Link>
     </Compile>
+    <Compile Include="..\GoogleAnalytics.WP8\AnalyticsEngine.WP.cs">
+      <Link>AnalyticsEngine.WP.cs</Link>
+    </Compile>
     <Compile Include="..\GoogleAnalytics.WP8\EasyTracker.WP.cs">
       <Link>EasyTracker.WP.cs</Link>
-    </Compile>
-    <Compile Include="..\GoogleAnalytics.WP8\GoogleAnalytics.WP.cs">
-      <Link>GoogleAnalytics.WP.cs</Link>
     </Compile>
     <Compile Include="..\GoogleAnalytics.WP8\Helpers.cs">
       <Link>Helpers.cs</Link>

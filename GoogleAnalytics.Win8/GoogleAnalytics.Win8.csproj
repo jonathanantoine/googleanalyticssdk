@@ -107,14 +107,12 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\GoogleAnalytics.Common\AnalyticsEngine.cs" />
     <Compile Include="..\GoogleAnalytics.Common\EasyTracker.cs">
       <Link>EasyTracker.cs</Link>
     </Compile>
     <Compile Include="..\GoogleAnalytics.Common\GAServiceManager.cs">
       <Link>GAServiceManager.cs</Link>
-    </Compile>
-    <Compile Include="..\GoogleAnalytics.Common\GoogleAnalytics.cs">
-      <Link>GoogleAnalytics.cs</Link>
     </Compile>
     <Compile Include="..\GoogleAnalytics.Common\Payload.cs">
       <Link>Payload.cs</Link>
@@ -135,7 +133,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AppReceipt.cs" />
-    <Compile Include="GoogleAnalytics.Win8.cs" />
+    <Compile Include="AnalyticsEngine.Win8.cs" />
     <Compile Include="EasyTracker.Win8.cs" />
     <Compile Include="PlatformInfoProvider.Win8.cs" />
     <Compile Include="ProductReceipt.cs" />

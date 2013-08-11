@@ -48,10 +48,10 @@ namespace GoogleAnalytics
 
         private void InitTracker()
         {
-            var ga = GoogleAnalytics.Current;
-            ga.IsDebugEnabled = Config.Debug;
+            var analyticsEngine = AnalyticsEngine.Current;
+            analyticsEngine.IsDebugEnabled = Config.Debug;
             GAServiceManager.Current.DispatchPeriod = Config.DispatchPeriod;
-            tracker = ga.GetTracker(Config.TrackingId);
+            tracker = analyticsEngine.GetTracker(Config.TrackingId);
             tracker.SetStartSession(Config.SessionTimeout.HasValue);
             tracker.AppName = Config.AppName;
             tracker.AppVersion = Config.AppVersion;

@@ -93,6 +93,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\GoogleAnalytics.Common\AnalyticsEngine.cs">
+      <Link>AnalyticsEngine.cs</Link>
+    </Compile>
     <Compile Include="..\GoogleAnalytics.Common\EasyTracker.cs">
       <Link>EasyTracker.cs</Link>
     </Compile>
@@ -101,9 +104,6 @@
     </Compile>
     <Compile Include="..\GoogleAnalytics.Common\GAServiceManager.cs">
       <Link>GAServiceManager.cs</Link>
-    </Compile>
-    <Compile Include="..\GoogleAnalytics.Common\GoogleAnalytics.cs">
-      <Link>GoogleAnalytics.cs</Link>
     </Compile>
     <Compile Include="..\GoogleAnalytics.Common\Payload.cs">
       <Link>Payload.cs</Link>
@@ -125,7 +125,7 @@
     </Compile>
     <Compile Include="AppReceipt.cs" />
     <Compile Include="EasyTracker.WP.cs" />
-    <Compile Include="GoogleAnalytics.WP.cs" />
+    <Compile Include="AnalyticsEngine.WP.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="PlatformInfoProvider.WP8.cs" />
     <Compile Include="ProductReceipt.cs" />
