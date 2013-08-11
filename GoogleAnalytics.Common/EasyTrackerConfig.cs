@@ -21,28 +21,19 @@ namespace GoogleAnalytics
 
         internal static EasyTrackerConfig Load(XmlReader reader)
         {
-            EasyTrackerConfig result = null;
             // advance to first element
             while (reader.NodeType != XmlNodeType.Element && !reader.EOF)
             {
                 reader.Read();
             }
-            if (!reader.EOF)
+            if (!reader.EOF && reader.Name == "analytics")
             {
-                switch (reader.Name)
-                {
-                    case "analytics": // newer, xsd supported xml
-                        result = LoadModernXml(reader);
-                        break;
-                    case "resources": // android compatible xml
-                        result = LoadAndroidXml(reader);
-                        break;
-                }
+                return LoadConfigXml(reader);
             }
-            return result ?? new EasyTrackerConfig();
+            return new EasyTrackerConfig();
         }
 
-        private static EasyTrackerConfig LoadModernXml(XmlReader reader)
+        private static EasyTrackerConfig LoadConfigXml(XmlReader reader)
         {
             var result = new EasyTrackerConfig();
             reader.ReadStartElement("analytics");
@@ -75,9 +66,6 @@ namespace GoogleAnalytics
                         case "debug":
                             result.Debug = reader.ReadElementContentAsBoolean();
                             break;
-                        case "autoActivityTracking":
-                            result.AutoActivityTracking = reader.ReadElementContentAsBoolean();
-                            break;
                         case "autoAppLifetimeTracking":
                             result.AutoAppLifetimeTracking = reader.ReadElementContentAsBoolean();
                             break;
@@ -95,92 +83,6 @@ namespace GoogleAnalytics
                             break;
                         case "autoTrackNetworkConnectivity":
                             result.AutoTrackNetworkConnectivity = reader.ReadElementContentAsBoolean();
-                            break;
-                        default:
-                            reader.Skip();
-                            break;
-                    }
-                }
-                else
-                {
-                    reader.ReadEndElement();
-                    break;
-                }
-            }
-            while (true);
-            return result;
-        }
-
-        private static EasyTrackerConfig LoadAndroidXml(XmlReader reader)
-        {
-            var result = new EasyTrackerConfig();
-            reader.ReadStartElement("resources");
-            do
-            {
-                if (reader.IsStartElement())
-                {
-                    var key = (string)reader.GetAttribute("name");
-                    switch (reader.Name)
-                    {
-                        case "string":
-                            {
-                                var value = reader.ReadElementContentAsString();
-                                switch (key)
-                                {
-                                    case "ga_trackingId":
-                                        result.TrackingId = value;
-                                        break;
-                                    case "ga_appName":
-                                        result.AppName = value;
-                                        break;
-                                    case "ga_appVersion":
-                                        result.AppVersion = value;
-                                        break;
-                                    case "ga_sampleFrequency":
-                                        result.SampleFrequency = float.Parse(value);
-                                        break;
-                                }
-                            }
-                            break;
-                        case "integer":
-                            {
-                                var value = reader.ReadElementContentAsInt();
-                                switch (key)
-                                {
-                                    case "ga_dispatchPeriod":
-                                        result.DispatchPeriod = TimeSpan.FromSeconds(value);
-                                        break;
-                                    case "ga_sessionTimeout":
-                                        result.SessionTimeout = (value >= 0) ? TimeSpan.FromSeconds(value) : (TimeSpan?)null;
-                                        break;
-                                }
-                            }
-                            break;
-                        case "bool":
-                            {
-                                var value = reader.ReadElementContentAsBoolean();
-                                switch (key)
-                                {
-                                    case "ga_debug":
-                                        result.Debug = value;
-                                        break;
-                                    case "ga_autoActivityTracking":
-                                        result.AutoActivityTracking = value;
-                                        break;
-                                    case "ga_autoAppLifetimeTracking":
-                                        result.AutoAppLifetimeTracking = value;
-                                        break;
-                                    case "ga_autoAppLifetimeMonitoring":
-                                        result.AutoAppLifetimeMonitoring = value;
-                                        break;
-                                    case "ga_anonymizeIp":
-                                        result.AnonymizeIp = value;
-                                        break;
-                                    case "ga_reportUncaughtExceptions":
-                                        result.ReportUncaughtExceptions = value;
-                                        break;
-                                }
-                            }
                             break;
                         default:
                             reader.Skip();
@@ -233,10 +135,6 @@ namespace GoogleAnalytics
         /// </summary>
         public float SampleFrequency { get; set; }
         /// <summary>
-        /// Automatically track a screen view each time a user starts an Activity. false by default. 
-        /// </summary>
-        public bool AutoActivityTracking { get; set; }
-        /// <summary>
         /// Tells Google Analytics to anonymize the information sent by the tracker objects by removing the last octet of the IP address prior to its storage. Note that this will slightly reduce the accuracy of geographic reporting. false by default.
         /// </summary>
         public bool AnonymizeIp { get; set; }
@@ -257,12 +155,12 @@ namespace GoogleAnalytics
         /// </summary>
         public bool AutoAppLifetimeMonitoring { get; set; }
         /// <summary>
-        /// If true, causes all hits to be sent to the secure (SSL) Google Analytics endpoint. Default is false.
-        /// </summary>
-        public bool UseSecure { get; set; }
-        /// <summary>
         /// Tells Google Analytics to automatically monitor network connectivity and avoid sending logs while not connected. Default is true.
         /// </summary>
         public bool AutoTrackNetworkConnectivity { get; set; }
+        /// <summary>
+        /// If true, causes all hits to be sent to the secure (SSL) Google Analytics endpoint. Default is false.
+        /// </summary>
+        public bool UseSecure { get; set; }
     }
 }
