@@ -172,15 +172,8 @@ void GAServiceManager::OnPayloadFailed(Payload^ payload)
 String^ GAServiceManager::ConstructUserAgent()
 {
 	// unfortunately, there isn't much info we can get from Windows 8 Store apps
-	bool hasTouch = false;
-	for each (auto device in Windows::Devices::Input::PointerDevice::GetPointerDevices())
-	{
-		if (device->PointerDeviceType == Windows::Devices::Input::PointerDeviceType::Touch)
-		{
-			hasTouch = true;
-			break;
-		}
-	}
+	auto tc = ref new Windows::Devices::Input::TouchCapabilities(); 
+	bool hasTouch = tc->TouchPresent > 0;
 	return "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0" + (hasTouch ? "; Touch" : "") + ")";
 }
 

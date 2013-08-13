@@ -255,9 +255,8 @@ namespace GoogleAnalytics
         static string ConstructUserAgent()
         {
             // unfortunately, there isn't much info we can get from Windows 8 Store apps
-            var hasTouch = Windows.Devices.Input
-                  .PointerDevice.GetPointerDevices()
-                  .Any(p => p.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch);
+            Windows.Devices.Input.TouchCapabilities tc = new Windows.Devices.Input.TouchCapabilities();
+            var hasTouch = tc.TouchPresent > 0;
             return string.Format("Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0{0})", hasTouch ? "; Touch" : "");
         }
 
