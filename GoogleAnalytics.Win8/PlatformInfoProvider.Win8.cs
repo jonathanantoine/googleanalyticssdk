@@ -1,5 +1,6 @@
 ﻿using System;
 using Windows.Foundation;
+using Windows.Graphics.Display;
 using Windows.Storage;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -31,19 +32,33 @@ namespace GoogleAnalytics
                 if (Window.Current != null && Window.Current.Content != null)
                 {
                     var bounds = Window.Current.Bounds;
+                    double w = bounds.Width;
+                    double h = bounds.Height;
+                    switch (DisplayProperties.ResolutionScale)
+                    {
+                        case ResolutionScale.Scale140Percent:
+                            w = Math.Round(w * 1.4);
+                            h = Math.Round(h * 1.4);
+                            break;
+                        case ResolutionScale.Scale180Percent:
+                            w = Math.Round(w * 1.8);
+                            h = Math.Round(h * 1.8);
+                            break;
+                    }
+
                     if (ApplicationView.Value == ApplicationViewState.FullScreenLandscape)
                     {
-                        ScreenResolution = new Size(bounds.Width, bounds.Height);
+                        ScreenResolution = new Size(w, h);
                     }
                     else if (ApplicationView.Value == ApplicationViewState.FullScreenPortrait)
                     {
-                        ScreenResolution = new Size(bounds.Height, bounds.Width);
+                        ScreenResolution = new Size(h, w);
                     }
                     else if (ApplicationView.Value == ApplicationViewState.Filled)
                     {
-                        ScreenResolution = new Size(bounds.Width + 320.0 + 22.0, bounds.Height);  // add the width of snapped mode & divider grip
+                        ScreenResolution = new Size(w + 320.0 + 22.0, h);  // add the width of snapped mode & divider grip
                     }
-                    ViewPortResolution = new Size(bounds.Width, bounds.Height);
+                    ViewPortResolution = new Size(bounds.Width, bounds.Height); // leave viewport at the scale unadjusted size
                     Window.Current.SizeChanged += Current_SizeChanged;
                     windowInitialized = true;
                 }

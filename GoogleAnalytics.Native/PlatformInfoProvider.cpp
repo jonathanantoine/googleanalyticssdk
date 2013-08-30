@@ -14,6 +14,7 @@ using namespace Windows::UI::Core;
 using namespace Windows::UI::ViewManagement;
 using namespace Windows::Foundation;
 using namespace Windows::Storage;
+using namespace Windows::Graphics::Display;
 
 String^ PlatformInfoProvider::Key_AnonymousClientId = "GoogleAnaltyics.AnonymousClientId";
 
@@ -48,19 +49,34 @@ void PlatformInfoProvider::InitializeWindow()
 	{
 		coreWindow = Windows::UI::Core::CoreWindow::GetForCurrentThread();
 		auto bounds = coreWindow->Bounds;
+
+		float w = bounds.Width;
+		float h = bounds.Height;
+		switch (DisplayProperties::ResolutionScale)
+		{
+		case ResolutionScale::Scale140Percent:
+			w = std::floorf(.5f + w * 1.4f);
+			w = std::floorf(.5f + w * 1.4f);
+			break;
+		case ResolutionScale::Scale180Percent:
+			w = std::floorf(.5f + w * 1.8f);
+			w = std::floorf(.5f + w * 1.8f);
+			break;
+		}
+		
 		if (ApplicationView::Value == ApplicationViewState::FullScreenLandscape)
 		{
-			SetScreenResolution(Size(bounds.Width, bounds.Height));
+			SetScreenResolution(Size(w, h));
 		}
 		else if (ApplicationView::Value == ApplicationViewState::FullScreenPortrait)
 		{
-			SetScreenResolution(Size(bounds.Height, bounds.Width));
+			SetScreenResolution(Size(h, w));
 		}
 		else if (ApplicationView::Value == ApplicationViewState::Filled)
 		{
-			SetScreenResolution(Size(bounds.Width + SnappedModeSize, bounds.Height)); // add the width of snapped mode & divider grip
+			SetScreenResolution(Size(w + SnappedModeSize, h)); // add the width of snapped mode & divider grip
 		}
-		SetViewPortResolution(Size(bounds.Width, bounds.Height));
+		SetViewPortResolution(Size(bounds.Width, bounds.Height)); // leave viewport at the scale unadjusted size
 		sizeChangedEventToken = coreWindow->SizeChanged += ref new TypedEventHandler<CoreWindow^, WindowSizeChangedEventArgs^>(this, &PlatformInfoProvider::Window_SizeChanged);
 		windowInitialized = true;
 	}
