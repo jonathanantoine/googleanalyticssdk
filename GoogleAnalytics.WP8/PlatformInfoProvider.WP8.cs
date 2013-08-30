@@ -33,12 +33,18 @@ namespace GoogleAnalytics
 
         public Size? ScreenResolution
         {
-            get { return ResolutionHelper.CurrentScreenSize; }
+            get
+            {
+                double scale = (double)Application.Current.Host.Content.ScaleFactor / 100;
+                int h = (int)Math.Ceiling(Application.Current.Host.Content.ActualHeight * scale);
+                int w = (int)Math.Ceiling(Application.Current.Host.Content.ActualWidth * scale);
+                return new Size(h, w);
+            }
         }
 
         public Size? ViewPortResolution
         {
-            get { return ResolutionHelper.CurrentScreenSize; }
+            get { return ScreenResolution; }
         }
 
         public string UserLanguage

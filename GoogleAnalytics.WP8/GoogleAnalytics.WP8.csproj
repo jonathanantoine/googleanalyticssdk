@@ -130,7 +130,6 @@
     <Compile Include="PlatformInfoProvider.WP8.cs" />
     <Compile Include="ProductReceipt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResolutionHelper.cs" />
     <Compile Include="TransactionBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
