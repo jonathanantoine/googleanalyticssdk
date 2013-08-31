@@ -59,6 +59,8 @@ namespace GoogleAnalytics
 		
 		static Platform::String^ GetCacheBuster();
 		
+		static Platform::String^ userAgent;
+
 	internal: 
 		
 		void Clear();
@@ -88,7 +90,17 @@ namespace GoogleAnalytics
 		
 		Windows::Foundation::IAsyncAction^ Dispatch();
 		
-		static property Platform::String^ UserAgent;
+		static property Platform::String^ UserAgent
+		{
+			Platform::String^ get()
+			{
+				return userAgent;
+			}
+			void set(Platform::String^ value)
+			{
+				userAgent = value;
+			}
+		}
 		
 	};
 }

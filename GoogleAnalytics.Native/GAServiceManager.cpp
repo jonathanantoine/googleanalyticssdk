@@ -24,13 +24,14 @@ Uri^ GAServiceManager::endPointUnsecure = ref new Uri("http://www.google-analyti
 
 Uri^ GAServiceManager::endPointSecure = ref new Uri("https://ssl.google-analytics.com/collect");
 
+String^ GAServiceManager::userAgent = ConstructUserAgent();
+
 GAServiceManager::GAServiceManager() : 
 	isConnected(true),
 	timer(nullptr)
 {
 	BustCache = false;
 	dispatchPeriod = TimeSpanHelper::FromTicks(0);
-	UserAgent = ConstructUserAgent();
 }
 
 void GAServiceManager::SendPayload(GoogleAnalytics::Payload^ payload)

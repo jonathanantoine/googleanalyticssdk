@@ -30,12 +30,16 @@ namespace GoogleAnalytics
         Timer timer;
 #endif
 
+        static GAServiceManager()
+        {
+            UserAgent = ConstructUserAgent();
+        }
+
         private GAServiceManager()
         {
             dispatchingTasks = new List<Task>();
             payloads = new Queue<Payload>();
             DispatchPeriod = TimeSpan.Zero;
-            UserAgent = ConstructUserAgent();
 #if NETFX_CORE
             timer = ThreadPoolTimer.CreatePeriodicTimer(timer_Tick, DispatchPeriod);
 #else
@@ -249,8 +253,7 @@ namespace GoogleAnalytics
         }
 
         public static string UserAgent { get; set; }
-
-
+        
 #if NETFX_CORE
         static string ConstructUserAgent()
         {
