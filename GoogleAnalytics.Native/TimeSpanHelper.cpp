@@ -40,8 +40,8 @@ TimeSpan TimeSpanHelper::Parse(String^ string)
 	// seconds
 	size_t si = s.find_last_of(':');
 	{
-		int starti = si != std::string::npos ? si : -1;
-		int endi = di != std::string::npos ? di : s.length();
+		size_t starti = si != std::string::npos ? si : -1;
+		size_t endi = di != std::string::npos ? di : s.length();
 		std::wstring ss(s.substr(starti + 1, endi - starti - 1));
 		seconds = std::wcstol(ss.data(), nullptr, 10);
 	}
@@ -49,7 +49,7 @@ TimeSpan TimeSpanHelper::Parse(String^ string)
 	if (si != std::string::npos)
 	{
 		size_t mi = s.find_last_of(':', si - 1);
-		int starti = mi != std::string::npos ? mi : -1;
+		size_t starti = mi != std::string::npos ? mi : -1;
 		std::wstring ms(s.substr(starti + 1, si - starti - 1));
 		minutes = std::wcstol(ms.data(), nullptr, 10);
 		// hours
