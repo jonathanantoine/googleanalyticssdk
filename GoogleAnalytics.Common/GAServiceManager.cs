@@ -4,6 +4,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Text;
+using System.Net;
 #if NETFX_CORE
 using Windows.Foundation;
 using Windows.System.Threading;
@@ -227,7 +229,7 @@ namespace GoogleAnalytics
         {
             if (BustCache) payloadData.Add("z", GetCacheBuster());
             var endPoint = payload.IsUseSecure ? endPointSecure : endPointUnsecure;
-            using (var content = new FormUrlEncodedContent(payloadData))
+            using (var content = GetEncodedContent(payloadData))
             {
                 try
                 {
@@ -253,7 +255,7 @@ namespace GoogleAnalytics
         }
 
         public static string UserAgent { get; set; }
-        
+
 #if NETFX_CORE
         static string ConstructUserAgent()
         {
@@ -301,6 +303,36 @@ namespace GoogleAnalytics
                 random = new Random();
             }
             return random.Next().ToString();
+        }
+
+        static ByteArrayContent GetEncodedContent(IEnumerable<KeyValuePair<string, string>> nameValueCollection)
+        {
+            return new StringContent(GetUrlEncodedString(nameValueCollection));
+        }
+
+        static string GetUrlEncodedString(IEnumerable<KeyValuePair<string, string>> nameValueCollection)
+        {
+            var result = new StringBuilder();
+            bool isFirst = true;
+            foreach (var item in nameValueCollection)
+            {
+                if (isFirst)
+                {
+                    isFirst = false;
+                }
+                else
+                {
+                    result.Append("&");
+                }
+                result.Append(item.Key);
+                result.Append("=");
+#if NETFX_CORE
+                result.Append(WebUtility.UrlEncode(item.Value));
+#else
+                result.Append(HttpUtility.UrlEncode(item.Value));
+#endif
+            }
+            return result.ToString();
         }
     }
 }
