@@ -235,7 +235,10 @@ void GAServiceManager::IsConnected::set(bool value)
 		isConnected = value;
 		if (isConnected)
 		{
-			Dispatch();
+			if (dispatchPeriod.Duration >= 0)
+			{
+				Dispatch();
+			}
 		}
 	}
 }

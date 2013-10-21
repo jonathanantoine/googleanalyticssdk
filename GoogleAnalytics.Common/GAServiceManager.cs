@@ -112,7 +112,10 @@ namespace GoogleAnalytics
                     isConnected = value;
                     if (isConnected)
                     {
-                        var nowait = Dispatch();
+                        if (DispatchPeriod >= TimeSpan.Zero)
+                        {
+                            var nowait = Dispatch();
+                        }
                     }
                 }
             }
