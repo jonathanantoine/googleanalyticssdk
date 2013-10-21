@@ -69,6 +69,8 @@ task<void> GAServiceManager::_Dispatch()
 	}
 
 	return allDispatchingTasks.then([this]() {
+		if (!isConnected) return task<void>([](){});
+
 		std::vector<Payload^> payloadsToSend;
 		{
 			std::lock_guard<std::mutex> lg(payloadLock);
@@ -140,29 +142,38 @@ task<void> GAServiceManager::DispatchImmediatePayload(Payload^ payload)
 
 task<void> GAServiceManager::DispatchPayloadData(Payload^ payload, HttpRequest httpRequest, std::unordered_map<Platform::String^, Platform::String^> payloadData)
 {
-	if (BustCache) payloadData["z"] = GetCacheBuster();
-	auto endPoint = payload->IsUseSecure ? endPointSecure : endPointUnsecure;
-
-	std::wstring content;
-	auto it = begin(payloadData);
-	while (true)
+	if (isConnected) 
 	{
-		content += std::wstring(it->first->Data()) + L"=" + HttpHelper::UrlEncode(std::wstring(it->second->Data()));
-		it++;
-		if (it == end(payloadData)) break;
-		content += '&';
-	}
+		if (BustCache) payloadData["z"] = GetCacheBuster();
+		auto endPoint = payload->IsUseSecure ? endPointSecure : endPointUnsecure;
 
-	return httpRequest.PostAsync(endPoint, content).then([this, payload](task<std::wstring> t) {
-		try
+		std::wstring content;
+		auto it = begin(payloadData);
+		while (true)
 		{
-			t.get();
+			content += std::wstring(it->first->Data()) + L"=" + HttpHelper::UrlEncode(std::wstring(it->second->Data()));
+			it++;
+			if (it == end(payloadData)) break;
+			content += '&';
 		}
-		catch (const std::exception)
-		{
-			OnPayloadFailed(payload);
-		}
-	});
+
+		return httpRequest.PostAsync(endPoint, content).then([this, payload](task<std::wstring> t) {
+			try
+			{
+				t.get();
+			}
+			catch (const std::exception)
+			{
+				OnPayloadFailed(payload);
+			}
+		});
+	}
+	else
+	{
+		std::lock_guard<std::mutex> lg(payloadLock);
+		payloads.push(payload);
+		return task<void>([](){});
+	}
 }
 
 void GAServiceManager::OnPayloadFailed(Payload^ payload)

@@ -163,6 +163,8 @@ namespace GoogleAnalytics
                 await allDispatchingTasks;
             }
 
+            if (!isConnected) return;
+
             IList<Payload> payloadsToSend = new List<Payload>();
             lock (payloads)
             {
@@ -203,10 +205,20 @@ namespace GoogleAnalytics
                 var now = DateTime.UtcNow;
                 foreach (var payload in payloads)
                 {
-                    // clone the data
-                    var payloadData = payload.Data.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-                    payloadData.Add("qt", ((long)now.Subtract(payload.TimeStamp).TotalMilliseconds).ToString());
-                    await DispatchPayloadData(payload, httpClient, payloadData);
+                    if (isConnected)
+                    {
+                        // clone the data
+                        var payloadData = payload.Data.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+                        payloadData.Add("qt", ((long)now.Subtract(payload.TimeStamp).TotalMilliseconds).ToString());
+                        await DispatchPayloadData(payload, httpClient, payloadData);
+                    }
+                    else
+                    {
+                        lock (payloads) // add back to queue
+                        {
+                            this.payloads.Enqueue(payload);
+                        }
+                    }
                 }
             }
         }
