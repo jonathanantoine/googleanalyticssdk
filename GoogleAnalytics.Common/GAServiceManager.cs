@@ -42,11 +42,6 @@ namespace GoogleAnalytics
             dispatchingTasks = new List<Task>();
             payloads = new Queue<Payload>();
             DispatchPeriod = TimeSpan.Zero;
-#if NETFX_CORE
-            timer = ThreadPoolTimer.CreatePeriodicTimer(timer_Tick, DispatchPeriod);
-#else
-            timer = new Timer(timer_Tick, null, DispatchPeriod, DispatchPeriod);
-#endif
         }
 
         public bool BustCache { get; set; }
@@ -89,16 +84,17 @@ namespace GoogleAnalytics
                     {
 #if NETFX_CORE
                         timer.Cancel();
-                        if (dispatchPeriod > TimeSpan.Zero)
-                        {
-                            timer = ThreadPoolTimer.CreatePeriodicTimer(timer_Tick, dispatchPeriod);
-                        }
 #else
                         timer.Dispose();
-                        if (dispatchPeriod > TimeSpan.Zero)
-                        {
-                            timer = new Timer(timer_Tick, null, DispatchPeriod, DispatchPeriod);
-                        }
+#endif
+                        timer = null;
+                    }
+                    if (dispatchPeriod > TimeSpan.Zero)
+                    {
+#if NETFX_CORE
+                        timer = ThreadPoolTimer.CreatePeriodicTimer(timer_Tick, dispatchPeriod);
+#else
+                        timer = new Timer(timer_Tick, null, DispatchPeriod, DispatchPeriod);
 #endif
                     }
                 }
