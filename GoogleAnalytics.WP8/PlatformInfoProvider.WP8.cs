@@ -8,9 +8,11 @@ namespace GoogleAnalytics
     {
         const string Key_AnonymousClientId = "GoogleAnaltyics.AnonymousClientId";
 
+#pragma warning disable 0067
         public event EventHandler ViewPortResolutionChanged;
 
         public event EventHandler ScreenResolutionChanged;
+#pragma warning restore 0067
 
         public string AnonymousClientId
         {
