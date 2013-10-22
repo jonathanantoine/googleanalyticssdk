@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Xml;
+using System.Threading.Tasks;
 #if NETFX_CORE
 using Windows.Foundation;
 using Windows.UI.Xaml;
 #else
 using System.Windows;
-using System.Threading.Tasks;
 #endif
 
 namespace GoogleAnalytics
@@ -66,13 +66,21 @@ namespace GoogleAnalytics
             Config.Validate();
         }
 
-#if NETFX_CORE
+#if WINRT
         public IAsyncAction Dispatch()
-#else
-        public Task Dispatch()
-#endif
         {
             return GAServiceManager.Current.Dispatch();
         }
+#elif NETFX_CORE
+        public IAsyncAction Dispatch()
+        {
+            return GAServiceManager.Current.Dispatch().AsAsyncAction();
+        }
+#else
+        public Task Dispatch()
+        {
+            return GAServiceManager.Current.Dispatch();
+        }
+#endif
     }
 }

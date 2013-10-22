@@ -5,9 +5,14 @@
 
 "%DEVENV%" /build "Release|AnyCPU" GoogleAnalytics.sln
 
-copy "GoogleAnalytics.Win8\bin\Release\GoogleAnalytics.winmd" "deploy\lib\windows8\"
-copy "GoogleAnalytics.WP8\bin\Release\GoogleAnalytics.dll"    "deploy\lib\windowsphone8\"
-copy "GoogleAnalytics.WP7\bin\Release\GoogleAnalytics.dll"    "deploy\lib\wp71\"
+copy "GoogleAnalytics.Managed.Win80\bin\Release\GoogleAnalytics.Portable.dll" 	"deploy\lib\windows8\"
+copy "GoogleAnalytics.Managed.Win80\bin\Release\GoogleAnalytics.dll" 			"deploy\lib\windows8\"
+
+copy "GoogleAnalytics.SL.WP80\bin\Release\GoogleAnalytics.Portable.dll"    		"deploy\lib\windowsphone8\"
+copy "GoogleAnalytics.SL.WP80\bin\Release\GoogleAnalytics.dll"    				"deploy\lib\windowsphone8\"
+
+copy "GoogleAnalytics.SL.WP71\bin\Release\GoogleAnalytics.Portable.dll"    		"deploy\lib\wp71\"
+copy "GoogleAnalytics.SL.WP71\bin\Release\GoogleAnalytics.dll"    				"deploy\lib\wp71\"
 
 .nuget\nuget pack deploy\GoogleAnalyticsSDK.nuspec
 

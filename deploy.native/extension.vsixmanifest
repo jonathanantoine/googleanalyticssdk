@@ -1,6 +1,6 @@
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011">
   <Metadata>
-    <Identity Id="GoogleAnalytics.Native.SDK.c225c41c-f27d-4f8c-acbe-b349c8a6873c" Version="1.1" Language="en-US" Publisher="Tim Greenfield" />
+    <Identity Id="GoogleAnalytics.Native.SDK.c225c41c-f27d-4f8c-acbe-b349c8a6873c" Version="1.2" Language="en-US" Publisher="Tim Greenfield" />
     <DisplayName>Google Analytics SDK</DisplayName>
     <Description>Google Analytics SDK for Windows 8</Description>
     <MoreInfo>http://googleanalyticssdk.codeplex.com/</MoreInfo>
