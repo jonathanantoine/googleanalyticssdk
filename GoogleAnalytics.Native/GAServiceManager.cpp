@@ -162,7 +162,11 @@ task<void> GAServiceManager::DispatchPayloadData(Payload^ payload, HttpRequest h
 			{
 				t.get();
 			}
-			catch (const std::exception)
+			#if defined(__cplusplus_winrt)
+				catch(Platform::Exception^ _E)
+			#else
+				catch (const std::exception)
+			#endif
 			{
 				OnPayloadFailed(payload);
 			}
