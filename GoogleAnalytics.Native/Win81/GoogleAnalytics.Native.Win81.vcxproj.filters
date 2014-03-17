@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resources">
+      <UniqueIdentifier>b6101e80-0313-4eb0-986b-018a3ed458ad</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tga;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="..\Common\AnalyticsEngine.cpp" />
+    <ClCompile Include="..\Common\AppReceipt.cpp" />
+    <ClCompile Include="..\Common\DateTimeHelper.cpp" />
+    <ClCompile Include="..\Common\EasyTracker.cpp" />
+    <ClCompile Include="..\Common\EasyTrackerConfig.cpp" />
+    <ClCompile Include="..\Common\GAServiceManager.cpp" />
+    <ClCompile Include="..\Common\HttpHelper.cpp" />
+    <ClCompile Include="..\Common\HttpRequest.cpp" />
+    <ClCompile Include="..\Common\PayloadFactory.cpp" />
+    <ClCompile Include="..\Common\ProductReceipt.cpp" />
+    <ClCompile Include="..\Common\TimeSpanHelper.cpp" />
+    <ClCompile Include="..\Common\TokenBucket.cpp" />
+    <ClCompile Include="..\Common\Tracker.cpp" />
+    <ClCompile Include="..\Common\TransactionBuilder.cpp" />
+    <ClCompile Include="PlatformInfoProvider.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="..\Common\AnalyticsEngine.h" />
+    <ClInclude Include="..\Common\AppReceipt.h" />
+    <ClInclude Include="..\Common\DateTimeHelper.h" />
+    <ClInclude Include="..\Common\EasyTracker.h" />
+    <ClInclude Include="..\Common\EasyTrackerConfig.h" />
+    <ClInclude Include="..\Common\GAServiceManager.h" />
+    <ClInclude Include="..\Common\HttpHelper.h" />
+    <ClInclude Include="..\Common\HttpRequest.h" />
+    <ClInclude Include="..\Common\Payload.h" />
+    <ClInclude Include="..\Common\PayloadFactory.h" />
+    <ClInclude Include="..\Common\ProductReceipt.h" />
+    <ClInclude Include="..\Common\SessionControl.h" />
+    <ClInclude Include="..\Common\TimeSpanHelper.h" />
+    <ClInclude Include="..\Common\TokenBucket.h" />
+    <ClInclude Include="..\Common\Tracker.h" />
+    <ClInclude Include="..\Common\Transaction.h" />
+    <ClInclude Include="..\Common\TransactionBuilder.h" />
+    <ClInclude Include="..\Common\TransactionItem.h" />
+    <ClInclude Include="PlatformInfoProvider.h" />
+  </ItemGroup>
+</Project>

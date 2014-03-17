@@ -7,8 +7,8 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("GoogleAnalytics")]
-[assembly: AssemblyCopyright("Copyright 2013")]
+[assembly: AssemblyProduct("GoogleAnalytics SDK")]
+[assembly: AssemblyCopyright("Copyright 2014")]
 [assembly: AssemblyTrademark("")]
 
 // Make it easy to distinguish Debug and Release (i.e. Retail) builds;
@@ -31,12 +31,11 @@ using System.Runtime.InteropServices;
 // Note that the assembly version does not get incremented for every build
 // to avoid problems with assembly binding (or requiring a policy or
 // <bindingRedirect> in the config file).
-//
-// The AssemblyFileVersionAttribute is incremented with every build in order
-// to distinguish one build from another. AssemblyFileVersion is specified
-// in AssemblyVersionInfo.cs so that it can be easily incremented by the
-// automated build process.
 [assembly: AssemblyVersion("1.2.00.*")]
+
+// The AssemblyFileVersionAttribute is incremented with every build in order
+// to distinguish one build from another.
+[assembly: AssemblyFileVersion("1.2.00.0")]
 
 // By default, the "Product version" shown in the file properties window is
 // the same as the value specified for AssemblyFileVersionAttribute.

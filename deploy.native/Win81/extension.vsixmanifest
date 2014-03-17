@@ -1,0 +1,17 @@
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011">
+  <Metadata>
+    <Identity Id="GoogleAnalytics.Native.Win81.SDK.c225c41c-f27d-4f8c-acbe-b349c8a6873c" Version="1.2" Language="en-US" Publisher="Tim Greenfield" />
+    <DisplayName>Google Analytics SDK</DisplayName>
+    <Description>Google Analytics SDK for Windows 8.1</Description>
+    <MoreInfo>http://googleanalyticssdk.codeplex.com/</MoreInfo>
+    <License>License.rtf</License>
+    <Tags>Google Analytics SDK Native Windows 8.1</Tags>
+  </Metadata>
+  <Installation Scope="Global" AllUsers="true">
+    <InstallationTarget Id="Microsoft.ExtensionSDK" TargetPlatformIdentifier="Windows" TargetPlatformVersion="v8.1" SdkName="GoogleAnalytics.Native.SDK.Win81" SdkVersion="1.2" />
+  </Installation>
+  <Dependencies/>
+  <Assets>
+    <Asset Type="Microsoft.ExtensionSDK" Path="SDKManifest.xml" />
+  </Assets>
+</PackageManifest>
