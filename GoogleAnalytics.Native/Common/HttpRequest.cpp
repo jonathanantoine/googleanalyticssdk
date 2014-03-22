@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "HttpRequest.h"
 #include <robuffer.h>
-#include <shcore.h>
 
 #pragma comment( lib, "msxml6.lib" )
 
@@ -286,6 +285,14 @@ task<wstring> HttpRequest::DownloadAsync(PCWSTR httpMethod, PCWSTR uri, cancella
 
 	// Create a request.
 	CheckHResult(xhr->Open(httpMethod, uri, stringCallback.Get(), nullptr, nullptr, nullptr, nullptr));
+
+	for (auto it = begin(headers); it != end(headers); it++)
+	{
+		std::tuple<std::wstring, std::wstring> kvp = *it;
+		std::wstring key = std::get<0>(kvp);
+		std::wstring value = std::get<1>(kvp);
+		xhr->SetRequestHeader(key.c_str(), value.c_str());
+	}
 
 	if (postStream != nullptr && contentType != nullptr)
 	{
