@@ -219,7 +219,6 @@
     <ClInclude Include="..\Common\EasyTracker.h" />
     <ClInclude Include="..\Common\EasyTrackerConfig.h" />
     <ClInclude Include="..\Common\GAServiceManager.h" />
-    <ClInclude Include="..\Common\HttpHelper.h" />
     <ClInclude Include="..\Common\HttpRequest.h" />
     <ClInclude Include="..\Common\Payload.h" />
     <ClInclude Include="..\Common\PayloadFactory.h" />
@@ -241,7 +240,6 @@
     <ClCompile Include="..\Common\EasyTracker.cpp" />
     <ClCompile Include="..\Common\EasyTrackerConfig.cpp" />
     <ClCompile Include="..\Common\GAServiceManager.cpp" />
-    <ClCompile Include="..\Common\HttpHelper.cpp" />
     <ClCompile Include="..\Common\HttpRequest.cpp" />
     <ClCompile Include="..\Common\PayloadFactory.cpp" />
     <ClCompile Include="..\Common\ProductReceipt.cpp" />

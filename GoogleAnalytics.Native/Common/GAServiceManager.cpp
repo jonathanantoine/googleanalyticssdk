@@ -7,7 +7,6 @@
 #include "GAServiceManager.h"
 #include "TimeSpanHelper.h"
 #include "DateTimeHelper.h"
-#include "HttpHelper.h"
 
 using namespace GoogleAnalytics;
 using namespace Platform;
@@ -151,7 +150,7 @@ task<void> GAServiceManager::DispatchPayloadData(Payload^ payload, HttpRequest h
 		auto it = begin(payloadData);
 		while (true)
 		{
-			content += std::wstring(it->first->Data()) + L"=" + HttpHelper::UrlEncode(std::wstring(it->second->Data()));
+			content += std::wstring(it->first->Data()) + L"=" + std::wstring(Uri::EscapeComponent(it->second)->Data());
 			it++;
 			if (it == end(payloadData)) break;
 			content += '&';
