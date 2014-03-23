@@ -86,7 +86,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="PlatformInfoProvider.cs" />
+    <Compile Include="..\..\GoogleAnalytics.Managed\Common\PlatformInfoProvider.WP80.cs">
+      <Link>PlatformInfoProvider.WP80.cs</Link>
+    </Compile>
     <Compile Include="ScheduledAgent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

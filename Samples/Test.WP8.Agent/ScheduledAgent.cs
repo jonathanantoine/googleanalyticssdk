@@ -14,7 +14,7 @@ namespace Test.WP8.Agent
         /// </remarks>
         static ScheduledAgent()
         {
-            tracker = new Tracker("UA-39959863-1", new PlatformInfoProvider(), GAServiceManager.Current);
+            tracker = new Tracker("UA-39959863-1", new GoogleAnalytics.PlatformInfoProvider(), GAServiceManager.Current);
             tracker.AppName = "My agent";
             tracker.AppVersion = "1.0";
             
