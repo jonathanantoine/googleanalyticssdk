@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Windows;
 using Microsoft.Phone.Scheduler;
-using GoogleAnalytics;
+using GoogleAnalytics.Core;
 
 namespace Test.WP8.Agent
 {

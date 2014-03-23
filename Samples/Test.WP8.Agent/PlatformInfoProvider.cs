@@ -1,4 +1,4 @@
-﻿using GoogleAnalytics;
+﻿using GoogleAnalytics.Core;
 using System;
 using System.IO.IsolatedStorage;
 using System.Windows;
@@ -52,7 +52,7 @@ namespace Test.WP8.Agent
         public void OnTracking()
         { }
 
-        public Dimensions? ScreenResolution
+        public Dimensions ScreenResolution
         {
             get
             {
@@ -63,7 +63,7 @@ namespace Test.WP8.Agent
             }
         }
 
-        public Dimensions? ViewPortResolution
+        public Dimensions ViewPortResolution
         {
             get { return ScreenResolution; }
         }
