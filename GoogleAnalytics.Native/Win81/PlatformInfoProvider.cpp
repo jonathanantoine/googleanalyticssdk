@@ -168,4 +168,10 @@ String^ PlatformInfoProvider::DocumentEncoding::get()
 	return nullptr;
 }
 
-
+String^ PlatformInfoProvider::ConstructUserAgent()
+{
+	// unfortunately, there isn't much info we can get from Windows 8 Store apps
+	auto tc = ref new Windows::Devices::Input::TouchCapabilities();
+	bool hasTouch = tc->TouchPresent > 0;
+	return "Mozilla/5.0 (compatible; MSIE 11.0; Windows NT 6.3; Trident/7.0" + (hasTouch ? "; Touch" : "") + ")";
+}

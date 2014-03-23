@@ -38,6 +38,10 @@ namespace GoogleAnalytics
 
 		void SetScreenResolution(Platform::IBox<Windows::Foundation::Size>^ value);
 		
+	internal:
+
+		static Platform::String^ ConstructUserAgent();
+
 	public:
 		
 		PlatformInfoProvider();

@@ -163,7 +163,7 @@ namespace GoogleAnalytics
             // unfortunately, there isn't much info we can get from Windows 8 Store apps
             Windows.Devices.Input.TouchCapabilities tc = new Windows.Devices.Input.TouchCapabilities();
             var hasTouch = tc.TouchPresent > 0;
-            return string.Format("Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0{0})", hasTouch ? "; Touch" : "");
+            return string.Format("Mozilla/5.0 (compatible; MSIE 11.0; Windows NT 6.3; Trident/7.0{0})", hasTouch ? "; Touch" : "");
         }
     }
 }

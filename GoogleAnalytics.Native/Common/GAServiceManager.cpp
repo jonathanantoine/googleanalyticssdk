@@ -23,7 +23,7 @@ Uri^ GAServiceManager::endPointUnsecure = ref new Uri("http://www.google-analyti
 
 Uri^ GAServiceManager::endPointSecure = ref new Uri("https://ssl.google-analytics.com/collect");
 
-String^ GAServiceManager::userAgent = ConstructUserAgent();
+String^ GAServiceManager::userAgent = PlatformInfoProvider::ConstructUserAgent();
 
 GAServiceManager::GAServiceManager() : 
 	isConnected(true),
@@ -182,14 +182,6 @@ task<void> GAServiceManager::DispatchPayloadData(Payload^ payload, HttpRequest h
 void GAServiceManager::OnPayloadFailed(Payload^ payload)
 {
 	// TODO: store in isolated storage and retry next session
-}
-
-String^ GAServiceManager::ConstructUserAgent()
-{
-	// unfortunately, there isn't much info we can get from Windows 8 Store apps
-	auto tc = ref new Windows::Devices::Input::TouchCapabilities(); 
-	bool hasTouch = tc->TouchPresent > 0;
-	return "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0" + (hasTouch ? "; Touch" : "") + ")";
 }
 
 String^ GAServiceManager::GetCacheBuster()

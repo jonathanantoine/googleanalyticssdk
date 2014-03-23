@@ -55,8 +55,6 @@ namespace GoogleAnalytics
 		
 		void OnPayloadFailed(GoogleAnalytics::Payload^ payload);
 		
-		static Platform::String^ ConstructUserAgent();
-		
 		static Platform::String^ GetCacheBuster();
 		
 		static Platform::String^ userAgent;
