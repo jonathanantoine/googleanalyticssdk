@@ -251,7 +251,10 @@ namespace GoogleAnalytics.Core
         HttpClient GetHttpClient()
         {
             var result = new HttpClient();
-            result.DefaultRequestHeaders.UserAgent.ParseAdd(UserAgent);
+            if (!string.IsNullOrEmpty(UserAgent))
+            {
+                result.DefaultRequestHeaders.UserAgent.ParseAdd(UserAgent);
+            }
             return result;
         }
 

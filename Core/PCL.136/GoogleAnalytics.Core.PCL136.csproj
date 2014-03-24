@@ -56,6 +56,9 @@
     <Compile Include="..\Common\PayloadFactory.cs">
       <Link>PayloadFactory.cs</Link>
     </Compile>
+    <Compile Include="..\Common\PlatformInfoProvider.cs">
+      <Link>PlatformInfoProvider.cs</Link>
+    </Compile>
     <Compile Include="..\Common\TokenBucket.cs">
       <Link>TokenBucket.cs</Link>
     </Compile>
