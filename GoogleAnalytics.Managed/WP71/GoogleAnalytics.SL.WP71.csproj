@@ -101,8 +101,8 @@
       <Link>EasyTracker.WP.cs</Link>
     </Compile>
     <Compile Include="..\Common\PhoneHelpers.cs" />
+    <Compile Include="..\Common\PlatformInfoProvider.WP71.cs" />
     <Compile Include="AnalyticsEngine.cs" />
-    <Compile Include="PlatformInfoProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
