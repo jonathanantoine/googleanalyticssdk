@@ -129,7 +129,7 @@ namespace GoogleAnalytics
                         System.Windows.Deployment.Current.Dispatcher.BeginInvoke(async () =>
                         {
 #if WINDOWS_PHONE7
-                                await TaskEx.Yield();
+                            await TaskEx.Yield();
 #else
                             await Task.Yield();
 #endif
