@@ -148,7 +148,12 @@ namespace GoogleAnalytics
                     }
                     finally
                     {
-                        reportingException = false;
+                        // we have to do some trickery in order to make sure the flag is reset only after the new exception has passed all the way through the UE pipeline. Otherwise we would have an infinite loop.
+                        var noawait = Window.Current.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
+                        {
+                            await Task.Yield();
+                            reportingException = false;
+                        });
                     }
                 }
             }
