@@ -280,17 +280,21 @@ namespace GoogleAnalytics.Core
             bool isFirst = true;
             foreach (var item in nameValueCollection)
             {
-                if (isFirst)
+                var value = item.Value;
+                if (value != null)
                 {
-                    isFirst = false;
+                    if (isFirst)
+                    {
+                        isFirst = false;
+                    }
+                    else
+                    {
+                        result.Append("&");
+                    }
+                    result.Append(item.Key);
+                    result.Append("=");
+                    result.Append(Uri.EscapeDataString(item.Value));
                 }
-                else
-                {
-                    result.Append("&");
-                }
-                result.Append(item.Key);
-                result.Append("=");
-                result.Append(Uri.EscapeDataString(item.Value));
             }
             return result.ToString();
         }
