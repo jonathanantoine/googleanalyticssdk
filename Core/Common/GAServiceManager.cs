@@ -293,7 +293,7 @@ namespace GoogleAnalytics.Core
                     }
                     result.Append(item.Key);
                     result.Append("=");
-                    result.Append(Uri.EscapeDataString(item.Value));
+                    result.Append(Uri.EscapeDataString(value));
                 }
             }
             return result.ToString();
