@@ -31,15 +31,15 @@ using System.Runtime.InteropServices;
 // Note that the assembly version does not get incremented for every build
 // to avoid problems with assembly binding (or requiring a policy or
 // <bindingRedirect> in the config file).
-[assembly: AssemblyVersion("1.2.03.*")]
+[assembly: AssemblyVersion("1.2.04.*")]
 
 // The AssemblyFileVersionAttribute is incremented with every build in order
 // to distinguish one build from another.
-[assembly: AssemblyFileVersion("1.2.03.0")]
+[assembly: AssemblyFileVersion("1.2.04.0")]
 
 // By default, the "Product version" shown in the file properties window is
 // the same as the value specified for AssemblyFileVersionAttribute.
 // Set AssemblyInformationalVersionAttribute to be the same as
 // AssemblyVersionAttribute so that the "Product version" in the file
 // properties window matches the version displayed in the GAC shell extension.
-[assembly: AssemblyInformationalVersion("1.2.03.0")] // a.k.a. "Product version"
+[assembly: AssemblyInformationalVersion("1.2.04.0")] // a.k.a. "Product version"
