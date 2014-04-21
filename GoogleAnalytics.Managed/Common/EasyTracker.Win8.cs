@@ -1,5 +1,6 @@
 ﻿using GoogleAnalytics.Core;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
@@ -126,38 +127,28 @@ namespace GoogleAnalytics
             deferral.Complete();
         }
 
-        bool reportingException = false;
         async void app_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            if (!reportingException)
+            if (e.Handled)
             {
-                if (e.Handled)
-                {
-                    tracker.SendException(e.Message, false);
-                }
-                else
-                {
-                    try
-                    {
-                        reportingException = true;
-                        e.Handled = true;
-                        tracker.SendException(e.Message, true);
-                        await Dispatch();
-                        // rethrow the exception now that we're done logging it. wrap in another exception in order to prevent stack trace from getting reset.
-                        throw new Exception("Tracked exception rethrown", e.Exception);
-                    }
-                    finally
-                    {
-                        // we have to do some trickery in order to make sure the flag is reset only after the new exception has passed all the way through the UE pipeline. Otherwise we would have an infinite loop.
-                        var noawait = Window.Current.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
-                        {
-                            await Task.Yield();
-                            reportingException = false;
-                        });
-                    }
-                }
+                tracker.SendException(e.Message, false);
+            }
+            else if (!(e.Exception is TrackedException))
+            {
+                e.Handled = true;
+                tracker.SendException(e.Message, true);
+                await Dispatch();
+                // rethrow the exception now that we're done logging it.
+                throw new TrackedException(e.Exception);
             }
         }
 
+    }
+
+    sealed class TrackedException : Exception
+    {
+        public TrackedException(Exception ex)
+            : base("Exception rethrown after tracked by Google Analytics", ex)
+        { }
     }
 }
