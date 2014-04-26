@@ -44,7 +44,7 @@ namespace GoogleAnalytics
 
 		property Windows::Foundation::Collections::IMap<int, Platform::String^>^ CustomDimensions;
 
-		property Windows::Foundation::Collections::IMap<int, int>^ CustomMetrics;
+		property Windows::Foundation::Collections::IMap<int, long long>^ CustomMetrics;
 
 		property Platform::IBox<Windows::Foundation::Size>^ ViewportSize;
 
@@ -68,7 +68,7 @@ namespace GoogleAnalytics
 		
 		GoogleAnalytics::Payload^ TrackView(Platform::String^ screenName, GoogleAnalytics::SessionControl sessionControl = GoogleAnalytics::SessionControl::None, bool isNonInteractive = false);
 		
-		GoogleAnalytics::Payload^ TrackEvent(Platform::String^ category, Platform::String^ action, Platform::String^ label, int value, GoogleAnalytics::SessionControl sessionControl = GoogleAnalytics::SessionControl::None, bool isNonInteractive = false);
+		GoogleAnalytics::Payload^ TrackEvent(Platform::String^ category, Platform::String^ action, Platform::String^ label, long long value, GoogleAnalytics::SessionControl sessionControl = GoogleAnalytics::SessionControl::None, bool isNonInteractive = false);
 		
 		GoogleAnalytics::Payload^ TrackException(Platform::String^ description, bool isFatal, GoogleAnalytics::SessionControl sessionControl = GoogleAnalytics::SessionControl::None, bool isNonInteractive = false);
 		

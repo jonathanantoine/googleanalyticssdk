@@ -21,7 +21,7 @@ namespace GoogleAnalytics.Core
         public string AppVersion { get; set; }
         public bool AnonymizeIP { get; set; }
         public IDictionary<int, string> CustomDimensions { get; set; }
-        public IDictionary<int, int> CustomMetrics { get; set; }
+        public IDictionary<int, long> CustomMetrics { get; set; }
         public Dimensions ViewportSize { get; set; }
         // unused for apps
         public string Referrer { get; set; }
@@ -37,7 +37,7 @@ namespace GoogleAnalytics.Core
         public PayloadFactory()
         {
             CustomDimensions = new Dictionary<int, string>();
-            CustomMetrics = new Dictionary<int, int>();
+            CustomMetrics = new Dictionary<int, long>();
         }
 
         public Payload TrackView(string screenName, SessionControl sessionControl = SessionControl.None, bool isNonInteractive = false)
@@ -46,13 +46,13 @@ namespace GoogleAnalytics.Core
             return PostData(HitType_Pageview, null, isNonInteractive, sessionControl);
         }
 
-        public Payload TrackEvent(string category, string action, string label, int value, SessionControl sessionControl = SessionControl.None, bool isNonInteractive = false)
+        public Payload TrackEvent(string category, string action, string label, long value, SessionControl sessionControl = SessionControl.None, bool isNonInteractive = false)
         {
             var additionalData = new Dictionary<string, string>();
             additionalData.Add("ec", category);
             additionalData.Add("ea", action);
             if (label != null) additionalData.Add("el", label);
-            if (value != 0) additionalData.Add("ev", value.ToString(CultureInfo.InvariantCulture));
+            if (value != 0L) additionalData.Add("ev", value.ToString(CultureInfo.InvariantCulture));
             return PostData(HitType_Event, additionalData, isNonInteractive, sessionControl);
         }
 

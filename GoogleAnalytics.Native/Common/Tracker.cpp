@@ -106,7 +106,7 @@ void Tracker::SetCustomDimension(int index, String^ value)
 	engine->CustomDimensions->Insert(index, value);
 }
 
-void Tracker::SetCustomMetric(int index, int value)
+void Tracker::SetCustomMetric(int index, long long value)
 {
 	engine->CustomMetrics->Insert(index, value);
 }
@@ -198,7 +198,7 @@ void Tracker::SendTiming(TimeSpan time, String^ category, String^ variable, Stri
 	SendPayload(payload);
 }
 
-void Tracker::SendEvent(String^ category, String^ action, String^ label, int value)
+void Tracker::SendEvent(String^ category, String^ action, String^ label, long long value)
 {
 	platformInfoProvider->OnTracking(); // give platform info provider a chance to refresh.
 	auto payload = engine->TrackEvent(category, action, label, value, SessionControl);

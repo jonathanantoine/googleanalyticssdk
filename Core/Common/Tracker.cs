@@ -36,7 +36,7 @@ namespace GoogleAnalytics.Core
             engine.CustomDimensions[index] = value;
         }
 
-        public void SetCustomMetric(int index, int value)
+        public void SetCustomMetric(int index, long value)
         {
             engine.CustomMetrics[index] = value;
         }
@@ -132,7 +132,7 @@ namespace GoogleAnalytics.Core
             SendPayload(payload);
         }
 
-        public void SendEvent(string category, string action, string label, int value)
+        public void SendEvent(string category, string action, string label, long value)
         {
             platformInfoProvider.OnTracking(); // give platform info provider a chance to refresh.
             var payload = engine.TrackEvent(category, action, label, value, SessionControl);

@@ -60,7 +60,7 @@ namespace GoogleAnalytics
 
 		void SetCustomDimension(int index, Platform::String^ value);
 
-		void SetCustomMetric(int index, int value);
+		void SetCustomMetric(int index, long long value);
 
 		property Platform::String^ TrackingId
 		{
@@ -117,7 +117,7 @@ namespace GoogleAnalytics
 
 		void SendTiming(Windows::Foundation::TimeSpan time, Platform::String^ category, Platform::String^ variable, Platform::String^ label);
 
-		void SendEvent(Platform::String^ category, Platform::String^ action, Platform::String^ label, int value);
+		void SendEvent(Platform::String^ category, Platform::String^ action, Platform::String^ label, long long value);
 
 		void SendTransaction(GoogleAnalytics::Transaction^ transaction);
 

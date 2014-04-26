@@ -25,7 +25,7 @@ String^ PayloadFactory::HitType_TransactionItem = "item";
 PayloadFactory::PayloadFactory()
 {
 	CustomDimensions = ref new Map<int, String^>();
-	CustomMetrics = ref new Map<int, int>();
+	CustomMetrics = ref new Map<int, long long>();
 	PropertyId = nullptr;
 	AppName = nullptr;
 	AppVersion = nullptr;
@@ -47,7 +47,7 @@ Payload^ PayloadFactory::TrackView(String^ screenName, SessionControl sessionCon
 	return PostData(HitType_Pageview, nullptr, isNonInteractive, sessionControl);
 }
 
-Payload^ PayloadFactory::TrackEvent(String^ category, String^ action, String^ label, int value, SessionControl sessionControl, bool isNonInteractive)
+Payload^ PayloadFactory::TrackEvent(String^ category, String^ action, String^ label, long long value, SessionControl sessionControl, bool isNonInteractive)
 {
 	auto additionalData = ref new Map<String^, String^>();
 	additionalData->Insert("ec", category);
