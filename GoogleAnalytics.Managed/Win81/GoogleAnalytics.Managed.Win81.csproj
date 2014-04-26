@@ -108,6 +108,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\SolutionItems\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="..\Common\AnalyticsEngine.cs">
       <Link>AnalyticsEngine.cs</Link>
     </Compile>
