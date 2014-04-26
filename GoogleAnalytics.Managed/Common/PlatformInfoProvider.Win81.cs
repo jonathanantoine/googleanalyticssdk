@@ -37,33 +37,9 @@ namespace GoogleAnalytics
                     double w = bounds.Width;
                     double h = bounds.Height;
                     var displayInfo = DisplayInformation.GetForCurrentView();
-                    switch (displayInfo.ResolutionScale)
-                    {
-                        case ResolutionScale.Scale120Percent:
-                            w = Math.Round(w * 1.2);
-                            h = Math.Round(h * 1.2);
-                            break;
-                        case ResolutionScale.Scale140Percent:
-                            w = Math.Round(w * 1.4);
-                            h = Math.Round(h * 1.4);
-                            break;
-                        case ResolutionScale.Scale150Percent:
-                            w = Math.Round(w * 1.5);
-                            h = Math.Round(h * 1.5);
-                            break;
-                        case ResolutionScale.Scale160Percent:
-                            w = Math.Round(w * 1.6);
-                            h = Math.Round(h * 1.6);
-                            break;
-                        case ResolutionScale.Scale180Percent:
-                            w = Math.Round(w * 1.8);
-                            h = Math.Round(h * 1.8);
-                            break;
-                        case ResolutionScale.Scale225Percent:
-                            w = Math.Round(w * 2.25);
-                            h = Math.Round(h * 2.25);
-                            break;
-                    }
+                    var scale = (double)(int)displayInfo.ResolutionScale / 100d;
+                    w = Math.Round(w * scale);
+                    h = Math.Round(h * scale);
 
                     if ((displayInfo.CurrentOrientation & DisplayOrientations.Landscape) == DisplayOrientations.Landscape)
                     {

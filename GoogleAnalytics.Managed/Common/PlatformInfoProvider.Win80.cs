@@ -36,17 +36,9 @@ namespace GoogleAnalytics
                     var bounds = Window.Current.Bounds;
                     double w = bounds.Width;
                     double h = bounds.Height;
-                    switch (DisplayProperties.ResolutionScale)
-                    {
-                        case ResolutionScale.Scale140Percent:
-                            w = Math.Round(w * 1.4);
-                            h = Math.Round(h * 1.4);
-                            break;
-                        case ResolutionScale.Scale180Percent:
-                            w = Math.Round(w * 1.8);
-                            h = Math.Round(h * 1.8);
-                            break;
-                    }
+                    var scale = (double)(int)DisplayProperties.ResolutionScale / 100d;
+                    w = Math.Round(w * scale);
+                    h = Math.Round(h * scale);
 
                     if (ApplicationView.Value == ApplicationViewState.FullScreenLandscape)
                     {
