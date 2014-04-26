@@ -21,8 +21,6 @@ namespace GoogleAnalytics
 		static GoogleAnalytics::EasyTracker^ current;
 		
 		static GoogleAnalytics::Tracker^ tracker;
-		
-		bool reportingException;
 
 		Platform::IBox<Windows::Foundation::DateTime>^ suspended;
 		
@@ -39,8 +37,6 @@ namespace GoogleAnalytics
 		void OnAppResuming();
 
 		Windows::Foundation::IAsyncAction^ OnAppSuspending();
-
-		void OnUnhandledException(Platform::Exception^ ex, bool* handled);
 				
 		property GoogleAnalytics::EasyTrackerConfig^ Config;
 

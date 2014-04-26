@@ -66,8 +66,7 @@ IAsyncAction^ EasyTracker::Dispatch()
 	return GAServiceManager::Current->Dispatch();
 }
 
-EasyTracker::EasyTracker() : 
-	reportingException(false), 
+EasyTracker::EasyTracker() :
 	suspended(nullptr)
 { 
 	Config = nullptr;
@@ -112,28 +111,6 @@ IAsyncAction^ EasyTracker::OnAppSuspending()
 {
 	suspended = DateTimeHelper::Now();
 	return Dispatch();
-}
-
-void EasyTracker::OnUnhandledException(Exception^ ex, bool* handled)
-{
-	if (!reportingException)
-	{
-		if (handled)
-		{
-			tracker->SendException(ex->Message, false);
-		}
-		else
-		{
-			reportingException = true;
-			*handled = true;
-			tracker->SendException(ex->Message, true);
-			create_task(Dispatch()).then([this, ex](task<void> t){
-				reportingException = false;
-				// rethrow exception now that we're done logging it. Note: stack trace will be replaced by current stack.
-				throw ex;
-			}, task_continuation_context::use_current());
-		}
-	}
 }
 
 EasyTracker::~EasyTracker()
