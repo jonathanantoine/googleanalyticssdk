@@ -2,12 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Windows.Foundation;
+#if NETFX_CORE
 using Windows.Storage;
 using Windows.UI.Popups;
-#if NETFX_CORE
+using Windows.Foundation;
 #else
 using System.Windows;
+using System.IO.IsolatedStorage;
 #endif
 
 namespace GoogleAnalytics
@@ -49,17 +50,29 @@ namespace GoogleAnalytics
             {
                 manager.AppOptOut = value;
                 isAppOptOutSet = true;
+#if NETFX_CORE
                 ApplicationData.Current.LocalSettings.Values[Key_AppOptOut] = value;
+#else
+                IsolatedStorageSettings.ApplicationSettings[Key_AppOptOut] = value;
+                IsolatedStorageSettings.ApplicationSettings.Save();
+#endif
                 if (value) GAServiceManager.Current.Clear();
             }
         }
 
         private void LoadAppOptOut()
         {
+#if NETFX_CORE
             if (ApplicationData.Current.LocalSettings.Values.ContainsKey(Key_AppOptOut))
             {
                 manager.AppOptOut = (bool)ApplicationData.Current.LocalSettings.Values[Key_AppOptOut];
             }
+#else
+            if (IsolatedStorageSettings.ApplicationSettings.Contains(Key_AppOptOut))
+            {
+                manager.AppOptOut = (bool)IsolatedStorageSettings.ApplicationSettings[Key_AppOptOut];
+            }
+#endif
             else
             {
                 manager.AppOptOut = false;
