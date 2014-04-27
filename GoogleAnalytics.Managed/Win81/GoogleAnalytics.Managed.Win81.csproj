@@ -136,9 +136,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\WinRT.Win81\GoogleAnalytics.Core.Win81.csproj">
-      <Project>{c71b297e-d926-48f5-8a27-e575d333f470}</Project>
-      <Name>GoogleAnalytics.Core.Win81</Name>
+    <ProjectReference Include="..\..\Core\Universal\GoogleAnalytics.Core.Universal.csproj">
+      <Project>{1f56cd4b-907c-4225-a657-fdceadaa5967}</Project>
+      <Name>GoogleAnalytics.Core.Universal</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">

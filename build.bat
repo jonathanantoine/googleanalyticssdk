@@ -9,14 +9,19 @@
 "%DEVENV%" /build "Release|AnyCPU" GoogleAnalytics.VS2013.sln
 
 copy "GoogleAnalytics.Managed\Win80\bin\Release\GoogleAnalytics.Core.winmd" 	"deploy\lib\windows8\"
-copy "GoogleAnalytics.Managed\Win80\bin\Release\GoogleAnalytics.Core.pdb" 	"deploy\lib\windows8\"
+copy "GoogleAnalytics.Managed\Win80\bin\Release\GoogleAnalytics.Core.pdb" 		"deploy\lib\windows8\"
 copy "GoogleAnalytics.Managed\Win80\bin\Release\GoogleAnalytics.winmd" 			"deploy\lib\windows8\"
 copy "GoogleAnalytics.Managed\Win80\bin\Release\GoogleAnalytics.pdb" 			"deploy\lib\windows8\"
 
 copy "GoogleAnalytics.Managed\Win81\bin\Release\GoogleAnalytics.Core.winmd" 	"deploy\lib\windows81\"
-copy "GoogleAnalytics.Managed\Win81\bin\Release\GoogleAnalytics.Core.pdb" 	"deploy\lib\windows81\"
+copy "GoogleAnalytics.Managed\Win81\bin\Release\GoogleAnalytics.Core.pdb" 		"deploy\lib\windows81\"
 copy "GoogleAnalytics.Managed\Win81\bin\Release\GoogleAnalytics.winmd" 			"deploy\lib\windows81\"
 copy "GoogleAnalytics.Managed\Win81\bin\Release\GoogleAnalytics.pdb" 			"deploy\lib\windows81\"
+
+copy "GoogleAnalytics.Managed\WP81\bin\Release\GoogleAnalytics.Core.winmd" 		"deploy\lib\wpa81\"
+copy "GoogleAnalytics.Managed\WP81\bin\Release\GoogleAnalytics.Core.pdb" 		"deploy\lib\wpa81\"
+copy "GoogleAnalytics.Managed\WP81\bin\Release\GoogleAnalytics.winmd" 			"deploy\lib\wpa81\"
+copy "GoogleAnalytics.Managed\WP81\bin\Release\GoogleAnalytics.pdb" 			"deploy\lib\wpa81\"
 
 copy "GoogleAnalytics.Managed\WP80\bin\Release\GoogleAnalytics.Core.dll"    	"deploy\lib\windowsphone8\"
 copy "GoogleAnalytics.Managed\WP80\bin\Release\GoogleAnalytics.Core.pdb"    	"deploy\lib\windowsphone8\"

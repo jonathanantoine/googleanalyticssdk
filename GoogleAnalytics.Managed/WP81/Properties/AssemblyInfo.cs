@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("GoogleAnalytics.Core")]
+[assembly: AssemblyTitle("GoogleAnalytics")]
 //[assembly: AssemblyDescription("")]
 //[assembly: AssemblyConfiguration("")]
 //[assembly: AssemblyCompany("")]
 //[assembly: AssemblyProduct("GoogleAnalytics SDK")]
-//[assembly: AssemblyCopyright("Copyright ©  2013")]
+//[assembly: AssemblyCopyright("Copyright ©  2014")]
 //[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

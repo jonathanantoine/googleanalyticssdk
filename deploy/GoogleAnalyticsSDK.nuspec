@@ -38,6 +38,7 @@
       </group>
       <group targetFramework="windows8"/>
       <group targetFramework="windows81"/>
+      <group targetFramework="wpa81"/>
     </dependencies>
   </metadata>
 </package>
