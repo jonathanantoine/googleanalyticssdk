@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>GoogleAnalyticsSDK</id>
-    <version>1.2.04</version>
+    <version>1.2.05</version>
     <title>Google Analytics SDK for Windows 8 and Windows Phone</title>
     <authors>Tim Greenfield</authors>
     <owners>Tim Greenfield</owners>
