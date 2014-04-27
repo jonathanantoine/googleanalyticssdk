@@ -24,7 +24,7 @@ mkdir "References"
 mkdir "References\CommonConfiguration"
 mkdir "References\CommonConfiguration\neutral"
 
-copy "..\..\Release\GoogleAnalytics.Native.Win80\GoogleAnalytics.winmd"			"References\CommonConfiguration\neutral\"
+copy "..\..\Release\GoogleAnalytics.Native.Win80\GoogleAnalytics.winmd"				"References\CommonConfiguration\neutral\"
 copy "..\..\Release\GoogleAnalytics.Native.Win80\GoogleAnalytics.pri"				"Redist\CommonConfiguration\neutral\"
 copy "..\..\ARM\Release\GoogleAnalytics.Native.Win80\GoogleAnalytics.Native.dll"	"Redist\CommonConfiguration\ARM\"
 copy "..\..\x64\Release\GoogleAnalytics.Native.Win80\GoogleAnalytics.Native.dll"	"Redist\CommonConfiguration\x64\"
@@ -48,7 +48,7 @@ mkdir "References"
 mkdir "References\CommonConfiguration"
 mkdir "References\CommonConfiguration\neutral"
 
-copy "..\..\Release\GoogleAnalytics.Native.Win81\GoogleAnalytics.winmd"			"References\CommonConfiguration\neutral\"
+copy "..\..\Release\GoogleAnalytics.Native.Win81\GoogleAnalytics.winmd"				"References\CommonConfiguration\neutral\"
 copy "..\..\Release\GoogleAnalytics.Native.Win81\GoogleAnalytics.pri"				"Redist\CommonConfiguration\neutral\"
 copy "..\..\ARM\Release\GoogleAnalytics.Native.Win81\GoogleAnalytics.Native.dll"	"Redist\CommonConfiguration\ARM\"
 copy "..\..\x64\Release\GoogleAnalytics.Native.Win81\GoogleAnalytics.Native.dll"	"Redist\CommonConfiguration\x64\"
@@ -57,8 +57,31 @@ copy "..\..\Release\GoogleAnalytics.Native.Win81\GoogleAnalytics.Native.dll"		"R
 "%ZIP%" a ..\GoogleAnalyticsSDK.Win81.zip "*"
 
 cd ..\
+cd wp81
+
+rmdir /s /q "Redist\"
+rmdir /s /q "References\"
+
+mkdir "Redist"
+mkdir "Redist\CommonConfiguration"
+mkdir "Redist\CommonConfiguration\neutral"
+mkdir "Redist\CommonConfiguration\ARM"
+mkdir "Redist\CommonConfiguration\x86"
+mkdir "References"
+mkdir "References\CommonConfiguration"
+mkdir "References\CommonConfiguration\neutral"
+
+copy "..\..\Release\GoogleAnalytics.Native.WP81\GoogleAnalytics.winmd"			"References\CommonConfiguration\neutral\"
+copy "..\..\Release\GoogleAnalytics.Native.WP81\GoogleAnalytics.pri"			"Redist\CommonConfiguration\neutral\"
+copy "..\..\ARM\Release\GoogleAnalytics.Native.WP81\GoogleAnalytics.Native.dll"	"Redist\CommonConfiguration\ARM\"
+copy "..\..\Release\GoogleAnalytics.Native.WP81\GoogleAnalytics.Native.dll"		"Redist\CommonConfiguration\x86\"
+
+"%ZIP%" a ..\GoogleAnalyticsSDK.WP81.zip "*"
+
+cd ..\
 move GoogleAnalyticsSDK.Win80.zip Master\GoogleAnalyticsSDK.Win80.vsix
 move GoogleAnalyticsSDK.Win81.zip Master\GoogleAnalyticsSDK.Win81.vsix
+move GoogleAnalyticsSDK.WP81.zip Master\GoogleAnalyticsSDK.WP81.vsix
 
 cd Master
 "%ZIP%" a ..\GoogleAnalyticsSDK.zip "*"

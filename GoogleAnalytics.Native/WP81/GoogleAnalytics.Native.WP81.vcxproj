@@ -22,7 +22,7 @@
     <ProjectGuid>{b83734d1-4ea6-433a-9ef6-d79298d2b794}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <ProjectName>GoogleAnalytics.Native.WP81</ProjectName>
-    <RootNamespace>GoogleAnalytics_Native_WP81</RootNamespace>
+    <RootNamespace>GoogleAnalytics</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
     <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
     <AppContainerApplication>true</AppContainerApplication>
@@ -68,12 +68,16 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <TargetName>GoogleAnalytics.Native</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <TargetName>GoogleAnalytics.Native</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <TargetName>GoogleAnalytics.Native</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <TargetName>GoogleAnalytics.Native</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
