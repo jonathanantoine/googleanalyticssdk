@@ -143,6 +143,24 @@ void Tracker::AppVersion::set(String^ value)
 	engine->AppVersion = value;
 }
 
+String^ Tracker::AppId::get()
+{
+	return engine->AppId;
+}
+void Tracker::AppId::set(String^ value)
+{
+	engine->AppId = value;
+}
+
+String^ Tracker::AppInstallerId::get()
+{
+	return engine->AppInstallerId;
+}
+void Tracker::AppInstallerId::set(String^ value)
+{
+	engine->AppInstallerId = value;
+}
+
 IBox<Windows::Foundation::Size>^ Tracker::AppScreen::get()
 {
 	return engine->ViewportSize;

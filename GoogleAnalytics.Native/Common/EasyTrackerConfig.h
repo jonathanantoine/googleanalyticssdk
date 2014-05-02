@@ -41,6 +41,16 @@ namespace GoogleAnalytics
 		property Platform::String^ AppVersion;
 
 		/// <summary>
+		/// Application identifier.
+		/// </summary>
+		property Platform::String^ AppId;
+
+		/// <summary>
+		/// Application installer identifier. 
+		/// </summary>
+		property Platform::String^ AppInstallerId;
+
+		/// <summary>
 		/// The dispatch period in seconds. Defaults to 0 seconds (which indicates to send immediately). 
 		/// </summary>
 		property Windows::Foundation::TimeSpan DispatchPeriod;

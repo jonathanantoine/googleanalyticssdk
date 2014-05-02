@@ -8,7 +8,7 @@ namespace GoogleAnalytics.Core
     //https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters
     internal sealed class PayloadFactory
     {
-        const string HitType_Pageview = "appview";
+        const string HitType_Pageview = "screenview";
         const string HitType_Event = "event";
         const string HitType_Exception = "exception";
         const string HitType_SocialNetworkInteraction = "social";
@@ -19,6 +19,8 @@ namespace GoogleAnalytics.Core
         public string PropertyId { get; set; }
         public string AppName { get; set; }
         public string AppVersion { get; set; }
+        public string AppId { get; set; }
+        public string AppInstallerId { get; set; }
         public bool AnonymizeIP { get; set; }
         public IDictionary<int, string> CustomDimensions { get; set; }
         public IDictionary<int, long> CustomMetrics { get; set; }
@@ -136,6 +138,8 @@ namespace GoogleAnalytics.Core
             result.Add("an", AppName);
             result.Add("av", AppVersion);
             result.Add("t", hitType);
+            if (AppId != null) result.Add("aid", AppId);
+            if (AppInstallerId != null) result.Add("aiid", AppInstallerId);
             if (ScreenName != null) result.Add("cd", ScreenName);
             if (isNonInteractive) result.Add("ni", "1");
             if (AnonymizeIP) result.Add("aip", "1");

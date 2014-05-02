@@ -57,6 +57,8 @@ namespace GoogleAnalytics
             tracker.IsUseSecure = Config.UseSecure;
             tracker.AppName = Config.AppName;
             tracker.AppVersion = Config.AppVersion;
+            tracker.AppId = Config.AppId;
+            tracker.AppInstallerId = Config.AppInstallerId;
             tracker.IsAnonymizeIpEnabled = Config.AnonymizeIp;
             tracker.SampleRate = Config.SampleFrequency;
         }

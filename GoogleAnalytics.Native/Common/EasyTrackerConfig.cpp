@@ -33,6 +33,10 @@ EasyTrackerConfig^ EasyTrackerConfig::Load(XmlDocument^ doc)
 					result->AppName = element->InnerText;
 				else if (element->NodeName == "appVersion")
 					result->AppVersion = element->InnerText;
+				else if (element->NodeName == "appId")
+					result->AppId = element->InnerText;
+				else if (element->NodeName == "appInstallerId")
+					result->AppInstallerId = element->InnerText;
 				else if (element->NodeName == "sampleFrequency")
 					result->SampleFrequency = std::stof(element->InnerText->Data(), nullptr);
 				else if (element->NodeName == "dispatchPeriod")

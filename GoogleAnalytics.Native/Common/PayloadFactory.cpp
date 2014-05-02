@@ -14,7 +14,7 @@ using namespace Platform::Collections;
 using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
 
-String^ PayloadFactory::HitType_Pageview = "appview";
+String^ PayloadFactory::HitType_Pageview = "screenview";
 String^ PayloadFactory::HitType_Event = "event";
 String^ PayloadFactory::HitType_Exception = "exception";
 String^ PayloadFactory::HitType_SocialNetworkInteraction = "social";
@@ -29,6 +29,8 @@ PayloadFactory::PayloadFactory()
 	PropertyId = nullptr;
 	AppName = nullptr;
 	AppVersion = nullptr;
+	AppId = nullptr;
+	AppInstallerId = nullptr;
 	AnonymizeIP = false;
 	ViewportSize = nullptr;
 	Referrer = nullptr;
@@ -137,6 +139,8 @@ IMap<String^, Platform::String^>^ PayloadFactory::GetRequiredPayloadData(String^
 	result->Insert("an", AppName);
 	result->Insert("av", AppVersion);
 	result->Insert("t", hitType);
+	if (AppId) result->Insert("aid", AppId);
+    if (AppInstallerId) result->Insert("aiid", AppInstallerId);
 	if (ScreenName) result->Insert("cd", ScreenName);
 	if (isNonInteractive) result->Insert("ni", "1");
 	if (AnonymizeIP) result->Insert("aip", "1");

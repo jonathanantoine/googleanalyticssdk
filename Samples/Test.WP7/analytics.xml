@@ -7,6 +7,10 @@
   <appName>Test.WP7</appName>
   <!--Replace placeholder version with your app version-->
   <appVersion>1.0.0.0</appVersion>
+  <!--Optionally supply the application ID-->
+  <!--<appId>com.company.app</appId>-->
+  <!--Optionally supply the installer ID for this app.-->
+  <!--<appInstallerId>com.platform.vending</appInstallerId>-->
   <!--Enable writing of debug information to debug window log, useful for troubleshooting your implementation-->
   <debug>false</debug>
   <!--The dispatch period in seconds.-->

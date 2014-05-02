@@ -82,6 +82,18 @@ namespace GoogleAnalytics.Core
             set { engine.AppVersion = value; }
         }
 
+        public string AppId
+        {
+            get { return engine.AppId; }
+            set { engine.AppId = value; }
+        }
+
+        public string AppInstallerId
+        {
+            get { return engine.AppInstallerId; }
+            set { engine.AppInstallerId = value; }
+        }
+
         public Dimensions AppScreen
         {
             get { return engine.ViewportSize; }

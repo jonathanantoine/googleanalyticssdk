@@ -52,6 +52,12 @@ namespace GoogleAnalytics
                         case "appVersion":
                             result.AppVersion = reader.ReadElementContentAsString();
                             break;
+                        case "appId":
+                            result.AppId = reader.ReadElementContentAsString();
+                            break;
+                        case "appInstallerId":
+                            result.AppInstallerId = reader.ReadElementContentAsString();
+                            break;
                         case "sampleFrequency":
                             result.SampleFrequency = reader.ReadElementContentAsFloat();
                             break;
@@ -122,6 +128,14 @@ namespace GoogleAnalytics
         /// The version of your application, used in the app version dimension within your reports. Defaults to the version found in the package. 
         /// </summary>
         public string AppVersion { get; set; }
+        /// <summary>
+        /// Application identifier.
+        /// </summary>
+        public string AppId { get; set; }
+        /// <summary>
+        /// Application installer identifier.
+        /// </summary>
+        public string AppInstallerId { get; set; }
         /// <summary>
         /// Flag to enable or writing of debug information to the log, useful for troubleshooting your implementation. false by default. 
         /// </summary>

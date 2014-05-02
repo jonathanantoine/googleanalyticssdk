@@ -85,6 +85,18 @@ namespace GoogleAnalytics
 			void set(Platform::String^ value);
 		}
 
+		property Platform::String^ AppId
+		{
+			Platform::String^ get();
+			void set(Platform::String^ value);
+		}
+
+		property Platform::String^ AppInstallerId
+		{
+			Platform::String^ get();
+			void set(Platform::String^ value);
+		}
+
 		property Platform::IBox<Windows::Foundation::Size>^ AppScreen
 		{
 			Platform::IBox<Windows::Foundation::Size>^ get();

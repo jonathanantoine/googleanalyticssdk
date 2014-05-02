@@ -40,6 +40,10 @@ namespace GoogleAnalytics
 
 		property Platform::String^ AppVersion;
 
+		property Platform::String^ AppId;
+
+		property Platform::String^ AppInstallerId;
+
 		property bool AnonymizeIP;
 
 		property Windows::Foundation::Collections::IMap<int, Platform::String^>^ CustomDimensions;
