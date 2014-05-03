@@ -34,6 +34,7 @@ namespace GoogleAnalytics
             if (Config.ReportUncaughtExceptions && ctx != null)
             {
                 ctx.UnhandledException += app_UnhandledException;
+                TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
             }
             if (Config.AutoTrackNetworkConnectivity)
             {
@@ -101,6 +102,23 @@ namespace GoogleAnalytics
         private static void UpdateConnectionStatus()
         {
             GAServiceManager.Current.IsConnected = NetworkInterface.GetIsNetworkAvailable();
+        }
+
+        void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+        {
+            var ex = e.Exception.InnerException ?? e.Exception; // inner exception contains better info for unobserved tasks
+            if (e.Observed)
+            {
+                tracker.SendException(ex.ToString(), false);
+            }
+            else
+            {
+                //e.SetObserved();
+                tracker.SendException(ex.ToString(), true);
+                //await Dispatch();
+                // rethrow the exception now that we're done logging it.
+                //throw new TrackedException(e.Exception);
+            }
         }
 
         async void app_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
