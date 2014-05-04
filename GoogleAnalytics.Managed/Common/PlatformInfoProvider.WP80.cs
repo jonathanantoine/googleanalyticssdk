@@ -86,7 +86,7 @@ namespace GoogleAnalytics
         {
             get
             {
-                return Microsoft.Phone.Info.DeviceStatus.DeviceName;
+                return PhoneNameResolver.Resolve(Microsoft.Phone.Info.DeviceStatus.DeviceManufacturer, Microsoft.Phone.Info.DeviceStatus.DeviceName).CanonicalModel;
             }
         }
     }
