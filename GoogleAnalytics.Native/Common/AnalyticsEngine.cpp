@@ -23,7 +23,7 @@ void AnalyticsEngine::SendPayload(Payload^ payload)
 	}
 }
 
-AnalyticsEngine::AnalyticsEngine(PlatformInfoProvider^ platformTrackingInfo) : appOptOut(nullptr)
+AnalyticsEngine::AnalyticsEngine(GoogleAnalytics::PlatformInfoProvider^ platformTrackingInfo) : appOptOut(nullptr)
 {
 	this->DefaultTracker = nullptr;
 	this->platformTrackingInfo = platformTrackingInfo;
@@ -33,7 +33,7 @@ AnalyticsEngine^ AnalyticsEngine::Current::get()
 {
 	if (!current)
 	{
-		current = ref new AnalyticsEngine(ref new PlatformInfoProvider());
+		current = ref new AnalyticsEngine(ref new GoogleAnalytics::PlatformInfoProvider());
 	}
 	return current;
 }
@@ -93,3 +93,7 @@ void AnalyticsEngine::AppOptOut::set(bool value)
 	}
 }
 
+GoogleAnalytics::PlatformInfoProvider^ AnalyticsEngine::PlatformInfoProvider::get()
+{
+	return this->platformTrackingInfo;
+}

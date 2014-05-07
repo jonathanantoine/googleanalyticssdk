@@ -68,5 +68,10 @@ namespace GoogleAnalytics.Core
                 GAServiceManager.Current.UserAgent = value;
             }
         }
+
+        public IPlatformInfoProvider PlatformTrackingInfo
+        {
+            get { return platformTrackingInfo; }
+        }
     }
 }

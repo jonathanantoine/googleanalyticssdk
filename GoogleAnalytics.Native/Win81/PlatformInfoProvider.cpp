@@ -109,6 +109,7 @@ void PlatformInfoProvider::OnTracking()
 
 String^ PlatformInfoProvider::AnonymousClientId::get()
 {
+	if (anonymousClientId) return anonymousClientId;
 	auto appSettings = ApplicationData::Current->LocalSettings;
 	if (!appSettings->Values->HasKey(Key_AnonymousClientId))
 	{
@@ -123,6 +124,10 @@ String^ PlatformInfoProvider::AnonymousClientId::get()
 	{
 		return (String^)appSettings->Values->Lookup(Key_AnonymousClientId);
 	}
+}
+void PlatformInfoProvider::AnonymousClientId::set(String^ value)
+{
+	anonymousClientId = value;
 }
 
 IBox<Size>^ PlatformInfoProvider::ViewPortResolution::get()

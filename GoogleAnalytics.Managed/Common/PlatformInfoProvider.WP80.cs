@@ -8,6 +8,7 @@ namespace GoogleAnalytics
     public sealed class PlatformInfoProvider : IPlatformInfoProvider
     {
         const string Key_AnonymousClientId = "GoogleAnaltyics.AnonymousClientId";
+        string anonymousClientId;
 
 #pragma warning disable 0067
         public event EventHandler ViewPortResolutionChanged;
@@ -19,19 +20,23 @@ namespace GoogleAnalytics
         {
             get
             {
-                var appSettings = IsolatedStorageSettings.ApplicationSettings;
-                if (!appSettings.Contains(Key_AnonymousClientId))
+                if (anonymousClientId == null)
                 {
-                    var result = Guid.NewGuid().ToString();
-                    appSettings.Add(Key_AnonymousClientId, result);
-                    appSettings.Save();
-                    return result;
+                    var appSettings = IsolatedStorageSettings.ApplicationSettings;
+                    if (!appSettings.Contains(Key_AnonymousClientId))
+                    {
+                        anonymousClientId = Guid.NewGuid().ToString();
+                        appSettings.Add(Key_AnonymousClientId, anonymousClientId);
+                        appSettings.Save();
+                    }
+                    else
+                    {
+                        anonymousClientId = (string)appSettings[Key_AnonymousClientId];
+                    }
                 }
-                else
-                {
-                    return (string)appSettings[Key_AnonymousClientId];
-                }
+                return anonymousClientId;
             }
+            set { anonymousClientId = value; }
         }
 
         public Dimensions ScreenResolution

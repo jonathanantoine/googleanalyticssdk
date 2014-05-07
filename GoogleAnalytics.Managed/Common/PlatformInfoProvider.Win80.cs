@@ -13,6 +13,7 @@ namespace GoogleAnalytics
     {
         const string Key_AnonymousClientId = "GoogleAnaltyics.AnonymousClientId";
         bool windowInitialized = false;
+        string anonymousClientId;
 
 #if NETFX_CORE
         public event EventHandler<object> ViewPortResolutionChanged;
@@ -77,18 +78,22 @@ namespace GoogleAnalytics
         {
             get
             {
-                var appSettings = ApplicationData.Current.LocalSettings;
-                if (!appSettings.Values.ContainsKey(Key_AnonymousClientId))
+                if (anonymousClientId == null)
                 {
-                    var result = Guid.NewGuid().ToString();
-                    appSettings.Values[Key_AnonymousClientId] = result;
-                    return result;
+                    var appSettings = ApplicationData.Current.LocalSettings;
+                    if (!appSettings.Values.ContainsKey(Key_AnonymousClientId))
+                    {
+                        anonymousClientId = Guid.NewGuid().ToString();
+                        appSettings.Values[Key_AnonymousClientId] = anonymousClientId;
+                    }
+                    else
+                    {
+                        anonymousClientId = (string)appSettings.Values[Key_AnonymousClientId];
+                    }
                 }
-                else
-                {
-                    return (string)appSettings.Values[Key_AnonymousClientId];
-                }
+                return anonymousClientId;
             }
+            set { anonymousClientId = value; }
         }
 
         Dimensions viewPortResolution;

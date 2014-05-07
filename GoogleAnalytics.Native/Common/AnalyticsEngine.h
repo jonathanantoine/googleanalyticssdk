@@ -55,5 +55,10 @@ namespace GoogleAnalytics
 			bool get();
 			void set(bool value);
 		}
+
+		property GoogleAnalytics::PlatformInfoProvider^ PlatformInfoProvider
+		{
+			GoogleAnalytics::PlatformInfoProvider^ get();
+		}
 	};
 }

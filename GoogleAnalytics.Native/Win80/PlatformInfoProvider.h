@@ -21,6 +21,8 @@ namespace GoogleAnalytics
 		Windows::Foundation::EventRegistrationToken sizeChangedEventToken;
 
 		static Platform::String^ Key_AnonymousClientId;
+
+		Platform::String^ anonymousClientId;
 		
 		bool windowInitialized;
 		
@@ -57,6 +59,7 @@ namespace GoogleAnalytics
 		property Platform::String^ AnonymousClientId
 		{
 			Platform::String^ get();
+			void set(Platform::String^ value);
 		}
 		
 		property Platform::IBox<Windows::Foundation::Size>^ ViewPortResolution

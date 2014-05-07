@@ -129,5 +129,10 @@ namespace GoogleAnalytics
             get { return manager.DefaultTracker; }
             set { manager.DefaultTracker = value; }
         }
+
+        public IPlatformInfoProvider PlatformInfoProvider
+        {
+            get { return manager.PlatformTrackingInfo; }
+        }
     }
 }

@@ -4,7 +4,7 @@ namespace GoogleAnalytics.Core
 {
     public interface IPlatformInfoProvider
     {
-        string AnonymousClientId { get; }
+        string AnonymousClientId { get; set; }
         string DocumentEncoding { get; }
         void OnTracking();
         int? ScreenColorDepthBits { get; }
