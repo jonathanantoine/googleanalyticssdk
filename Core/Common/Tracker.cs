@@ -112,6 +112,25 @@ namespace GoogleAnalytics.Core
             set { engine.Campaign = value; }
         }
 
+        public string CampaignName
+        {
+            get { return engine.CampaignName; }
+            set { engine.CampaignName = value; }
+        }
+
+        public string CampaignSource
+        {
+            get { return engine.CampaignSource; }
+            set { engine.CampaignSource = value; }
+        }
+
+        public string CampaignMedium
+        {
+            get { return engine.CampaignMedium; }
+            set { engine.CampaignMedium = value; }
+        }
+
+
         public float SampleRate { get; set; }
         public bool IsUseSecure { get; set; }
         public bool ThrottlingEnabled { get; set; }

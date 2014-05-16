@@ -25,6 +25,12 @@ namespace GoogleAnalytics.Core
         public IDictionary<int, string> CustomDimensions { get; set; }
         public IDictionary<int, long> CustomMetrics { get; set; }
         public Dimensions ViewportSize { get; set; }
+        
+        //UTM parametres
+        public string CampaignName { get; set; }
+        public string CampaignSource { get; set; }
+        public string CampaignMedium { get; set; }
+
         // unused for apps
         public string Referrer { get; set; }
         public string Campaign { get; set; }
@@ -138,6 +144,9 @@ namespace GoogleAnalytics.Core
             result.Add("an", AppName);
             result.Add("av", AppVersion);
             result.Add("t", hitType);
+            if (CampaignName != null) result.Add("cn", CampaignName);
+            if (CampaignMedium != null) result.Add("cm", CampaignMedium);
+            if (CampaignSource != null) result.Add("cs", CampaignSource);
             if (AppId != null) result.Add("aid", AppId);
             if (AppInstallerId != null) result.Add("aiid", AppInstallerId);
             if (ScreenName != null) result.Add("cd", ScreenName);
