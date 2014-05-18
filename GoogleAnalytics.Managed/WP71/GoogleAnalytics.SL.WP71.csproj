@@ -104,6 +104,9 @@
       <Link>EasyTracker.WP.cs</Link>
     </Compile>
     <Compile Include="..\Common\PhoneHelpers.cs" />
+    <Compile Include="..\Common\PhoneNameResolver.cs">
+      <Link>PhoneNameResolver.cs</Link>
+    </Compile>
     <Compile Include="..\Common\PlatformInfoProvider.WP71.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

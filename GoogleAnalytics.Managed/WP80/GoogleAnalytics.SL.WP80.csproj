@@ -115,7 +115,9 @@
     <Compile Include="..\Common\TransactionBuilder.WP8.cs">
       <Link>TransactionBuilder.WP8.cs</Link>
     </Compile>
-    <Compile Include="PhoneNameResolver.cs" />
+    <Compile Include="..\Common\PhoneNameResolver.cs">
+      <Link>PhoneNameResolver.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

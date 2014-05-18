@@ -13,7 +13,7 @@ using System.Text;
 
 namespace GoogleAnalytics
 {
-    public static class PhoneNameResolver
+    internal static class PhoneNameResolver
     {
         public static CanonicalPhoneName Resolve(string manufacturer, string model)
         {

@@ -67,27 +67,12 @@ namespace GoogleAnalytics
 
         public void OnTracking()
         { }
-        
+
         public string GetUserAgent()
         {
+            var sysInfo = PhoneNameResolver.Resolve(Microsoft.Phone.Info.DeviceStatus.DeviceManufacturer, Microsoft.Phone.Info.DeviceStatus.DeviceName);
             //var userAgentMask = "Mozilla/[version] ([system and browser information]) [platform] ([platform details]) [extensions]";
-            return string.Format("Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone {0}; Trident/6.0; IEMobile/10.0; ARM; Touch; {1}; {2})", Environment.OSVersion.Version, DeviceManufacturer, DeviceType);
-        }
-
-        static string DeviceManufacturer
-        {
-            get
-            {
-                return Microsoft.Phone.Info.DeviceStatus.DeviceManufacturer;
-            }
-        }
-
-        static string DeviceType
-        {
-            get
-            {
-                return PhoneNameResolver.Resolve(Microsoft.Phone.Info.DeviceStatus.DeviceManufacturer, Microsoft.Phone.Info.DeviceStatus.DeviceName).CanonicalModel;
-            }
+            return string.Format("Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone {0}; Trident/6.0; IEMobile/10.0; ARM; Touch; {1}; {2})", Environment.OSVersion.Version, sysInfo.CanonicalManufacturer, sysInfo.CanonicalModel);
         }
     }
 }
