@@ -59,11 +59,6 @@ namespace GoogleAnalytics
             get { return null; }
         }
 
-        public string DocumentEncoding
-        {
-            get { return null; }
-        }
-
         public void OnTracking()
         { }
 

@@ -19,7 +19,6 @@ namespace GoogleAnalytics.Core
             {
                 PropertyId = propertyId,
                 AnonymousClientId = platformInfoProvider.AnonymousClientId,
-                DocumentEncoding = platformInfoProvider.DocumentEncoding,
                 ScreenColorDepthBits = platformInfoProvider.ScreenColorDepthBits,
                 ScreenResolution = platformInfoProvider.ScreenResolution,
                 UserLanguage = platformInfoProvider.UserLanguage,
@@ -100,18 +99,6 @@ namespace GoogleAnalytics.Core
             set { engine.ViewportSize = value; }
         }
 
-        public string Referrer
-        {
-            get { return engine.Referrer; }
-            set { engine.Referrer = value; }
-        }
-
-        public string Campaign
-        {
-            get { return engine.Campaign; }
-            set { engine.Campaign = value; }
-        }
-
         public string CampaignName
         {
             get { return engine.CampaignName; }
@@ -130,7 +117,102 @@ namespace GoogleAnalytics.Core
             set { engine.CampaignMedium = value; }
         }
 
+        public string CampaignKeyword
+        {
+            get { return engine.CampaignKeyword; }
+            set { engine.CampaignKeyword = value; }
+        }
 
+        public string CampaignContent
+        {
+            get { return engine.CampaignContent; }
+            set { engine.CampaignContent = value; }
+        }
+
+        public string CampaignId
+        {
+            get { return engine.CampaignId; }
+            set { engine.CampaignId = value; }
+        }
+
+        public string Referrer
+        {
+            get { return engine.Referrer; }
+            set { engine.Referrer = value; }
+        }
+
+        public string DocumentEncoding
+        {
+            get { return engine.DocumentEncoding; }
+            set { engine.DocumentEncoding = value; }
+        }
+
+        public string GoogleAdWordsId
+        {
+            get { return engine.GoogleAdWordsId; }
+            set { engine.GoogleAdWordsId = value; }
+        }
+
+        public string GoogleDisplayAdsId
+        {
+            get { return engine.GoogleDisplayAdsId; }
+            set { engine.GoogleDisplayAdsId = value; }
+        }
+
+        public string IpOverride
+        {
+            get { return engine.IpOverride; }
+            set { engine.IpOverride = value; }
+        }
+
+        public string UserAgentOverride
+        {
+            get { return engine.UserAgentOverride; }
+            set { engine.UserAgentOverride = value; }
+        }
+
+        public string DocumentLocationUrl
+        {
+            get { return engine.DocumentLocationUrl; }
+            set { engine.DocumentLocationUrl = value; }
+        }
+
+        public string DocumentHostName
+        {
+            get { return engine.DocumentHostName; }
+            set { engine.DocumentHostName = value; }
+        }
+
+        public string DocumentPath
+        {
+            get { return engine.DocumentPath; }
+            set { engine.DocumentPath = value; }
+        }
+
+        public string DocumentTitle
+        {
+            get { return engine.DocumentTitle; }
+            set { engine.DocumentTitle = value; }
+        }
+
+        public string LinkId
+        {
+            get { return engine.LinkId; }
+            set { engine.LinkId = value; }
+        }
+
+        public string ExperimentId
+        {
+            get { return engine.ExperimentId; }
+            set { engine.ExperimentId = value; }
+        }
+
+        public string ExperimentVariant
+        {
+            get { return engine.ExperimentVariant; }
+            set { engine.ExperimentVariant = value; }
+        }
+        
         public float SampleRate { get; set; }
         public bool IsUseSecure { get; set; }
         public bool ThrottlingEnabled { get; set; }

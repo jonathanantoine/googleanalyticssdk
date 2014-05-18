@@ -136,11 +136,6 @@ namespace GoogleAnalytics
             get { return null; }
         }
 
-        public string DocumentEncoding
-        {
-            get { return null; }
-        }
-
         public string GetUserAgent()
         {
             var sysInfo = new Windows.Security.ExchangeActiveSyncProvisioning.EasClientDeviceInformation();

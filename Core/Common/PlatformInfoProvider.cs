@@ -21,8 +21,6 @@ namespace GoogleAnalytics.Core
 
         public string AnonymousClientId { get; set; }
 
-        public string DocumentEncoding { get; set; }
-
         public void OnTracking()
         { }
 

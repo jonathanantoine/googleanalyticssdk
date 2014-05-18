@@ -143,11 +143,6 @@ IBox<int>^ PlatformInfoProvider::ScreenColorDepthBits::get()
 	return nullptr;
 }
 
-String^ PlatformInfoProvider::DocumentEncoding::get()
-{
-	return nullptr;
-}
-
 String^ PlatformInfoProvider::ConstructUserAgent()
 {
 	auto sysInfo = ref new Windows::Security::ExchangeActiveSyncProvisioning::EasClientDeviceInformation();

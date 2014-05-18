@@ -103,13 +103,115 @@ namespace GoogleAnalytics
 			void set(Platform::IBox<Windows::Foundation::Size>^ value);
 		}
 
+		property Platform::String^ CampaignName
+		{
+			Platform::String^ get();
+			void set(Platform::String^ value);
+		}
+
+		property Platform::String^ CampaignSource
+		{
+			Platform::String^ get();
+			void set(Platform::String^ value);
+		}
+
+		property Platform::String^ CampaignMedium
+		{
+			Platform::String^ get();
+			void set(Platform::String^ value);
+		}
+
+		property Platform::String^ CampaignKeyword
+		{
+			Platform::String^ get();
+			void set(Platform::String^ value);
+		}
+
+		property Platform::String^ CampaignContent
+		{
+			Platform::String^ get();
+			void set(Platform::String^ value);
+		}
+
+		property Platform::String^ CampaignId
+		{
+			Platform::String^ get();
+			void set(Platform::String^ value);
+		}
+
 		property Platform::String^ Referrer
 		{
 			Platform::String^ get();
 			void set(Platform::String^ value);
 		}
 
-		property Platform::String^ Campaign
+		property Platform::String^ DocumentEncoding
+		{
+			Platform::String^ get();
+			void set(Platform::String^ value);
+		}
+
+		property Platform::String^ GoogleAdWordsId
+		{
+			Platform::String^ get();
+			void set(Platform::String^ value);
+		}
+
+		property Platform::String^ GoogleDisplayAdsId
+		{
+			Platform::String^ get();
+			void set(Platform::String^ value);
+		}
+
+		property Platform::String^ IpOverride
+		{
+			Platform::String^ get();
+			void set(Platform::String^ value);
+		}
+
+		property Platform::String^ UserAgentOverride
+		{
+			Platform::String^ get();
+			void set(Platform::String^ value);
+		}
+
+		property Platform::String^ DocumentLocationUrl
+		{
+			Platform::String^ get();
+			void set(Platform::String^ value);
+		}
+
+		property Platform::String^ DocumentHostName
+		{
+			Platform::String^ get();
+			void set(Platform::String^ value);
+		}
+
+		property Platform::String^ DocumentPath
+		{
+			Platform::String^ get();
+			void set(Platform::String^ value);
+		}
+
+		property Platform::String^ DocumentTitle
+		{
+			Platform::String^ get();
+			void set(Platform::String^ value);
+		}
+
+		property Platform::String^ LinkId
+		{
+			Platform::String^ get();
+			void set(Platform::String^ value);
+		}
+
+		property Platform::String^ ExperimentId
+		{
+			Platform::String^ get();
+			void set(Platform::String^ value);
+		}
+
+		property Platform::String^ ExperimentVariant
 		{
 			Platform::String^ get();
 			void set(Platform::String^ value);

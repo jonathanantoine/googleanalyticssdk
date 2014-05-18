@@ -25,22 +25,35 @@ namespace GoogleAnalytics.Core
         public IDictionary<int, string> CustomDimensions { get; set; }
         public IDictionary<int, long> CustomMetrics { get; set; }
         public Dimensions ViewportSize { get; set; }
-        
-        //UTM parametres
-        public string CampaignName { get; set; }
-        public string CampaignSource { get; set; }
-        public string CampaignMedium { get; set; }
 
-        // unused for apps
-        public string Referrer { get; set; }
-        public string Campaign { get; set; }
         public string ScreenName { get; set; }
-
         public string AnonymousClientId { get; set; }
         public Dimensions ScreenResolution { get; set; }
         public string UserLanguage { get; set; }
         public int? ScreenColorDepthBits { get; set; }
+
+        // Campaign params
+        public string CampaignName { get; set; }
+        public string CampaignSource { get; set; }
+        public string CampaignMedium { get; set; }
+        public string CampaignKeyword { get; set; }
+        public string CampaignContent { get; set; }
+        public string CampaignId { get; set; }
+
+        // unused for apps
+        public string Referrer { get; set; }
         public string DocumentEncoding { get; set; }
+        public string GoogleAdWordsId { get; set; }
+        public string GoogleDisplayAdsId { get; set; }
+        public string IpOverride { get; set; }
+        public string UserAgentOverride { get; set; }
+        public string DocumentLocationUrl { get; set; }
+        public string DocumentHostName { get; set; }
+        public string DocumentPath { get; set; }
+        public string DocumentTitle { get; set; }
+        public string LinkId { get; set; }
+        public string ExperimentId { get; set; }
+        public string ExperimentVariant { get; set; }
 
         public PayloadFactory()
         {
@@ -144,9 +157,7 @@ namespace GoogleAnalytics.Core
             result.Add("an", AppName);
             result.Add("av", AppVersion);
             result.Add("t", hitType);
-            if (CampaignName != null) result.Add("cn", CampaignName);
-            if (CampaignMedium != null) result.Add("cm", CampaignMedium);
-            if (CampaignSource != null) result.Add("cs", CampaignSource);
+            
             if (AppId != null) result.Add("aid", AppId);
             if (AppInstallerId != null) result.Add("aiid", AppInstallerId);
             if (ScreenName != null) result.Add("cd", ScreenName);
@@ -155,9 +166,31 @@ namespace GoogleAnalytics.Core
             if (sessionControl != SessionControl.None) result.Add("sc", sessionControl == SessionControl.Start ? "start" : "end");
             if (ScreenResolution != null) result.Add("sr", string.Format("{0}x{1}", ScreenResolution.Width, ScreenResolution.Height));
             if (ViewportSize != null) result.Add("vp", string.Format("{0}x{1}", ViewportSize.Width, ViewportSize.Height));
-            if (UserLanguage != null) result.Add("ul", UserLanguage.ToLowerInvariant());
+            if (UserLanguage != null) result.Add("ul", UserLanguage);
             if (ScreenColorDepthBits.HasValue) result.Add("sd", string.Format("{0}-bits", ScreenColorDepthBits.Value));
+            
+            if (CampaignName != null) result.Add("cn", CampaignName);
+            if (CampaignSource != null) result.Add("cs", CampaignSource);
+            if (CampaignMedium != null) result.Add("cm", CampaignMedium);
+            if (CampaignKeyword != null) result.Add("ck", CampaignKeyword);
+            if (CampaignContent != null) result.Add("cc", CampaignContent);
+            if (CampaignId != null) result.Add("ci", CampaignId);
+
+            // other params available but not usually used for apps
+            if (Referrer != null) result.Add("dr", Referrer);
             if (DocumentEncoding != null) result.Add("de", DocumentEncoding);
+            if (GoogleAdWordsId != null) result.Add("gclid", GoogleAdWordsId);
+            if (GoogleDisplayAdsId != null) result.Add("dclid", GoogleDisplayAdsId);
+            if (IpOverride != null) result.Add("uip", IpOverride);
+            if (UserAgentOverride != null) result.Add("ua", UserAgentOverride);
+            if (DocumentLocationUrl != null) result.Add("dl", DocumentLocationUrl);
+            if (DocumentHostName != null) result.Add("dh", DocumentHostName);
+            if (DocumentPath != null) result.Add("dp", DocumentPath);
+            if (DocumentTitle != null) result.Add("dt", DocumentTitle);
+            if (LinkId != null) result.Add("linkid", LinkId);
+            if (ExperimentId != null) result.Add("xid", ExperimentId);
+            if (ExperimentVariant != null) result.Add("xvar", ExperimentVariant);
+
             foreach (var dimension in CustomDimensions)
             {
                 result.Add(string.Format("cd{0}", dimension.Key), dimension.Value);

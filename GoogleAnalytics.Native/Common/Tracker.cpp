@@ -12,16 +12,15 @@ using namespace Platform::Collections;
 using namespace Windows::Foundation::Collections;
 using namespace Windows::Foundation;
 
-Tracker::Tracker(String^ propertyId, PlatformInfoProvider^ platformInfoProvider, AnalyticsEngine^ analyticsEngine) : 
-	startSession(false), 
-	endSession(false)
+Tracker::Tracker(String^ propertyId, PlatformInfoProvider^ platformInfoProvider, AnalyticsEngine^ analyticsEngine) :
+startSession(false),
+endSession(false)
 {
 	this->analyticsEngine = analyticsEngine;
 	this->platformInfoProvider = platformInfoProvider;
 	engine = ref new PayloadFactory();
 	engine->PropertyId = propertyId;
 	engine->AnonymousClientId = platformInfoProvider->AnonymousClientId;
-	engine->DocumentEncoding = platformInfoProvider->DocumentEncoding;
 	engine->ScreenColorDepthBits = platformInfoProvider->ScreenColorDepthBits;
 	engine->ScreenResolution = platformInfoProvider->ScreenResolution;
 	engine->UserLanguage = platformInfoProvider->UserLanguage;
@@ -170,6 +169,60 @@ void Tracker::AppScreen::set(IBox<Windows::Foundation::Size>^ value)
 	engine->ViewportSize = value;
 }
 
+String^ Tracker::CampaignName::get()
+{
+	return engine->CampaignName;
+}
+void Tracker::CampaignName::set(String^ value)
+{
+	engine->CampaignName = value;
+}
+
+String^ Tracker::CampaignSource::get()
+{
+	return engine->CampaignSource;
+}
+void Tracker::CampaignSource::set(String^ value)
+{
+	engine->CampaignSource = value;
+}
+
+String^ Tracker::CampaignMedium::get()
+{
+	return engine->CampaignMedium;
+}
+void Tracker::CampaignMedium::set(String^ value)
+{
+	engine->CampaignMedium = value;
+}
+
+String^ Tracker::CampaignKeyword::get()
+{
+	return engine->CampaignKeyword;
+}
+void Tracker::CampaignKeyword::set(String^ value)
+{
+	engine->CampaignKeyword = value;
+}
+
+String^ Tracker::CampaignContent::get()
+{
+	return engine->CampaignContent;
+}
+void Tracker::CampaignContent::set(String^ value)
+{
+	engine->CampaignContent = value;
+}
+
+String^ Tracker::CampaignId::get()
+{
+	return engine->CampaignId;
+}
+void Tracker::CampaignId::set(String^ value)
+{
+	engine->CampaignId = value;
+}
+
 String^ Tracker::Referrer::get()
 {
 	return engine->Referrer;
@@ -179,13 +232,112 @@ void Tracker::Referrer::set(String^ value)
 	engine->Referrer = value;
 }
 
-String^ Tracker::Campaign::get()
+String^ Tracker::DocumentEncoding::get()
 {
-	return engine->Campaign;
+	return engine->DocumentEncoding;
 }
-void Tracker::Campaign::set(String^ value)
+void Tracker::DocumentEncoding::set(String^ value)
 {
-	engine->Campaign = value;
+	engine->DocumentEncoding = value;
+}
+
+String^ Tracker::GoogleAdWordsId::get()
+{
+	return engine->GoogleAdWordsId;
+}
+void Tracker::GoogleAdWordsId::set(String^ value)
+{
+	engine->GoogleAdWordsId = value;
+}
+
+String^ Tracker::GoogleDisplayAdsId::get()
+{
+	return engine->GoogleDisplayAdsId;
+}
+void Tracker::GoogleDisplayAdsId::set(String^ value)
+{
+	engine->GoogleDisplayAdsId = value;
+}
+
+String^ Tracker::IpOverride::get()
+{
+	return engine->IpOverride;
+}
+void Tracker::IpOverride::set(String^ value)
+{
+	engine->IpOverride = value;
+}
+
+String^ Tracker::UserAgentOverride::get()
+{
+	return engine->UserAgentOverride;
+}
+void Tracker::UserAgentOverride::set(String^ value)
+{
+	engine->UserAgentOverride = value;
+}
+
+String^ Tracker::DocumentLocationUrl::get()
+{
+	return engine->DocumentLocationUrl;
+}
+void Tracker::DocumentLocationUrl::set(String^ value)
+{
+	engine->DocumentLocationUrl = value;
+}
+
+String^ Tracker::DocumentHostName::get()
+{
+	return engine->DocumentHostName;
+}
+void Tracker::DocumentHostName::set(String^ value)
+{
+	engine->DocumentHostName = value;
+}
+
+String^ Tracker::DocumentPath::get()
+{
+	return engine->DocumentPath;
+}
+void Tracker::DocumentPath::set(String^ value)
+{
+	engine->DocumentPath = value;
+}
+
+String^ Tracker::DocumentTitle::get()
+{
+	return engine->DocumentTitle;
+}
+void Tracker::DocumentTitle::set(String^ value)
+{
+	engine->DocumentTitle = value;
+}
+
+String^ Tracker::LinkId::get()
+{
+	return engine->LinkId;
+}
+void Tracker::LinkId::set(String^ value)
+{
+	engine->LinkId = value;
+}
+
+String^ Tracker::ExperimentId::get()
+{
+	return engine->ExperimentId;
+}
+void Tracker::ExperimentId::set(String^ value)
+{
+	engine->ExperimentId = value;
+}
+
+String^ Tracker::ExperimentVariant::get()
+{
+	return engine->ExperimentVariant;
+}
+void Tracker::ExperimentVariant::set(String^ value)
+{
+	engine->ExperimentVariant = value;
 }
 
 void Tracker::SendView(String^ screenName)

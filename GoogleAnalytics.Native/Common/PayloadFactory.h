@@ -52,10 +52,6 @@ namespace GoogleAnalytics
 
 		property Platform::IBox<Windows::Foundation::Size>^ ViewportSize;
 
-		property Platform::String^ Referrer;
-
-		property Platform::String^ Campaign;
-
 		property Platform::String^ ScreenName;
 
 		property Platform::String^ AnonymousClientId;
@@ -66,7 +62,26 @@ namespace GoogleAnalytics
 
 		property Platform::IBox<int>^ ScreenColorDepthBits;
 
+		property Platform::String^ CampaignName;
+		property Platform::String^ CampaignSource;
+		property Platform::String^ CampaignMedium;
+		property Platform::String^ CampaignKeyword;
+		property Platform::String^ CampaignContent;
+		property Platform::String^ CampaignId;
+
+		property Platform::String^ Referrer;
 		property Platform::String^ DocumentEncoding;
+		property Platform::String^ GoogleAdWordsId;
+		property Platform::String^ GoogleDisplayAdsId;
+		property Platform::String^ IpOverride;
+		property Platform::String^ UserAgentOverride;
+		property Platform::String^ DocumentLocationUrl;
+		property Platform::String^ DocumentHostName;
+		property Platform::String^ DocumentPath;
+		property Platform::String^ DocumentTitle;
+		property Platform::String^ LinkId;
+		property Platform::String^ ExperimentId;
+		property Platform::String^ ExperimentVariant;
 
 		PayloadFactory();
 		

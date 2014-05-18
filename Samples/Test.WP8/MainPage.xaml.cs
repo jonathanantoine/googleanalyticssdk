@@ -31,11 +31,6 @@ namespace Test.WP8
         {
             base.OnNavigatedTo(e);
 
-            //UTM
-            GoogleAnalytics.EasyTracker.GetTracker().CampaignName = "TestCampaign";
-            GoogleAnalytics.EasyTracker.GetTracker().CampaignMedium = "TestMedium";
-            GoogleAnalytics.EasyTracker.GetTracker().CampaignSource = "TestSource";
-
             GoogleAnalytics.EasyTracker.GetTracker().SendView("Main");
         }
 

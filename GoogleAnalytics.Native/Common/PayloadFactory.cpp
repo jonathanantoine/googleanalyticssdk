@@ -33,14 +33,32 @@ PayloadFactory::PayloadFactory()
 	AppInstallerId = nullptr;
 	AnonymizeIP = false;
 	ViewportSize = nullptr;
-	Referrer = nullptr;
-	Campaign = nullptr;
 	ScreenName = nullptr;
 	AnonymousClientId = nullptr;
 	ScreenResolution = nullptr;
 	UserLanguage = nullptr;
 	ScreenColorDepthBits = nullptr;
+	
+	CampaignName = nullptr;
+	CampaignSource = nullptr;
+	CampaignMedium = nullptr;
+	CampaignKeyword = nullptr;
+	CampaignContent = nullptr;
+	CampaignId = nullptr;
+
+	Referrer = nullptr;
 	DocumentEncoding = nullptr;
+	GoogleAdWordsId = nullptr;
+	GoogleDisplayAdsId = nullptr;
+	IpOverride = nullptr;
+	UserAgentOverride = nullptr;
+	DocumentLocationUrl = nullptr;
+	DocumentHostName = nullptr;
+	DocumentPath = nullptr;
+	DocumentTitle = nullptr;
+	LinkId = nullptr;
+	ExperimentId = nullptr;
+	ExperimentVariant = nullptr;
 }
 
 Payload^ PayloadFactory::TrackView(String^ screenName, SessionControl sessionControl, bool isNonInteractive)
@@ -139,6 +157,7 @@ IMap<String^, Platform::String^>^ PayloadFactory::GetRequiredPayloadData(String^
 	result->Insert("an", AppName);
 	result->Insert("av", AppVersion);
 	result->Insert("t", hitType);
+
 	if (AppId) result->Insert("aid", AppId);
     if (AppInstallerId) result->Insert("aiid", AppInstallerId);
 	if (ScreenName) result->Insert("cd", ScreenName);
@@ -149,7 +168,29 @@ IMap<String^, Platform::String^>^ PayloadFactory::GetRequiredPayloadData(String^
 	if (ViewportSize != nullptr) result->Insert("vp", ViewportSize->Value.Width.ToString() + "x" + ViewportSize->Value.Height.ToString());
 	if (UserLanguage) result->Insert("ul", UserLanguage);
 	if (ScreenColorDepthBits) result->Insert("sd", ScreenColorDepthBits->Value.ToString() + "-bits");
+	
+	if (CampaignName) result->Insert("cn", CampaignName);
+	if (CampaignSource) result->Insert("cs", CampaignSource);
+	if (CampaignMedium) result->Insert("cm", CampaignMedium);
+	if (CampaignKeyword) result->Insert("ck", CampaignKeyword);
+	if (CampaignContent) result->Insert("cc", CampaignContent);
+	if (CampaignId) result->Insert("ci", CampaignId);
+
+	// other params available but not usually used for apps
+	if (Referrer) result->Insert("dr", Referrer);
 	if (DocumentEncoding) result->Insert("de", DocumentEncoding);
+	if (GoogleAdWordsId) result->Insert("gclid", GoogleAdWordsId);
+	if (GoogleDisplayAdsId) result->Insert("dclid", GoogleDisplayAdsId);
+	if (IpOverride) result->Insert("uip", IpOverride);
+	if (UserAgentOverride) result->Insert("ua", UserAgentOverride);
+	if (DocumentLocationUrl) result->Insert("dl", DocumentLocationUrl);
+	if (DocumentHostName) result->Insert("dh", DocumentHostName);
+	if (DocumentPath) result->Insert("dp", DocumentPath);
+	if (DocumentTitle) result->Insert("dt", DocumentTitle);
+	if (LinkId) result->Insert("linkid", LinkId);
+	if (ExperimentId) result->Insert("xid", ExperimentId);
+	if (ExperimentVariant) result->Insert("xvar", ExperimentVariant);
+
 	for each (auto dimension in CustomDimensions)
 	{
 		result->Insert("cd" + dimension->Key, dimension->Value);

@@ -82,11 +82,6 @@ namespace GoogleAnalytics
 			Platform::IBox<int>^ get();
 		}
 
-		property Platform::String^ DocumentEncoding
-		{
-			Platform::String^ get();
-		}
-
 		static property float SnappedModeSize
 		{
 			float get()
