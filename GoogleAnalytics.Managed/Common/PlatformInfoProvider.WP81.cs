@@ -139,7 +139,8 @@ namespace GoogleAnalytics
         
         public string GetUserAgent()
         {
-            return string.Format("Mozilla/5.0 (Windows Phone 8.1; ARM; Trident/7.0; Touch; rv11.0; IEMobile/11.0) like Gecko");
+            var sysInfo = new Windows.Security.ExchangeActiveSyncProvisioning.EasClientDeviceInformation();
+            return string.Format("Mozilla/5.0 (Windows Phone 8.1; ARM; Trident/7.0; Touch; rv11.0; IEMobile/11.0; {0}; {1}) like Gecko", sysInfo.SystemManufacturer, sysInfo.SystemProductName);
         }
     }
 }

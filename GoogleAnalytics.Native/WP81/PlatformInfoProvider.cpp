@@ -150,5 +150,6 @@ String^ PlatformInfoProvider::DocumentEncoding::get()
 
 String^ PlatformInfoProvider::ConstructUserAgent()
 {
-	return "Mozilla/5.0 (Windows Phone 8.1; ARM; Trident/7.0; Touch; rv11.0; IEMobile/11.0) like Gecko";
+	auto sysInfo = ref new Windows::Security::ExchangeActiveSyncProvisioning::EasClientDeviceInformation();
+	return "Mozilla/5.0 (Windows Phone 8.1; ARM; Trident/7.0; Touch; rv11.0; IEMobile/11.0; " + sysInfo->SystemManufacturer + "; " + sysInfo->SystemProductName + ") like Gecko";
 }

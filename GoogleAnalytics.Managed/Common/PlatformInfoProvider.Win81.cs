@@ -138,13 +138,12 @@ namespace GoogleAnalytics
             get { return null; }
         }
 
-
         public string GetUserAgent()
         {
-            // unfortunately, there isn't much info we can get from Windows 8 Store apps
+            var sysInfo = new Windows.Security.ExchangeActiveSyncProvisioning.EasClientDeviceInformation();
             Windows.Devices.Input.TouchCapabilities tc = new Windows.Devices.Input.TouchCapabilities();
             var hasTouch = tc.TouchPresent > 0;
-            return string.Format("Mozilla/5.0 (compatible; MSIE 11.0; Windows NT 6.3; Trident/7.0{0})", hasTouch ? "; Touch" : "");
+            return string.Format("Mozilla/5.0 (compatible; MSIE 11.0; Windows NT 6.3; Trident/7.0{0}; {1}; {2})", hasTouch ? "; Touch" : "", sysInfo.SystemManufacturer, sysInfo.SystemProductName);
         }
     }
 }
