@@ -69,11 +69,5 @@ namespace GoogleAnalytics
             transaction.Items.Add(transactionItem);
             return transaction;
         }
-
-        static double ParseFormattedCurrency(string formattedCurrency)
-        {
-            return double.Parse(formattedCurrency, System.Globalization.NumberStyles.Currency);
-
-        }
     }
 }
