@@ -92,6 +92,10 @@ namespace GoogleAnalytics
 		{
 			Platform::String^ get()
 			{
+				if (!userAgent)
+				{
+					userAgent = PlatformInfoProvider::ConstructUserAgent();
+				}
 				return userAgent;
 			}
 			void set(Platform::String^ value)

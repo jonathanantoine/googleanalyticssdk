@@ -23,7 +23,7 @@ Uri^ GAServiceManager::endPointUnsecure = ref new Uri("http://www.google-analyti
 
 Uri^ GAServiceManager::endPointSecure = ref new Uri("https://ssl.google-analytics.com/collect");
 
-String^ GAServiceManager::userAgent = PlatformInfoProvider::ConstructUserAgent();
+String^ GAServiceManager::userAgent = nullptr;
 
 GAServiceManager::GAServiceManager() : 
 	isConnected(true),
