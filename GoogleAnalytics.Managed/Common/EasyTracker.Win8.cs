@@ -131,18 +131,7 @@ namespace GoogleAnalytics
         void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
         {
             var ex = e.Exception.InnerException ?? e.Exception; // inner exception contains better info for unobserved tasks
-            if (e.Observed)
-            {
-                tracker.SendException(ex.ToString(), false);
-            }
-            else
-            {
-                //e.SetObserved();
-                tracker.SendException(ex.ToString(), true);
-                //await Dispatch();
-                // rethrow the exception now that we're done logging it.
-                //throw new TrackedException(e.Exception);
-            }
+            tracker.SendException(ex.ToString(), false);
         }
 
         async void app_UnhandledException(object sender, UnhandledExceptionEventArgs e)
