@@ -1,4 +1,4 @@
-﻿﻿/*
+﻿/*
  * Copyright (c) 2013 by Alan Mendelevich
  * 
  * Licensed under MIT license.
@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace GoogleAnalytics
 {
@@ -192,7 +193,7 @@ namespace GoogleAnalytics
 
             if (lookupValue.StartsWith("C620"))
             {
-                lookupValue = "C625";
+                lookupValue = "C620";
             }
 
             if (htcLookupTable.ContainsKey(lookupValue))
@@ -222,7 +223,8 @@ namespace GoogleAnalytics
             var lookupValue = modelNormalized;
             if (modelNormalized.StartsWith("RM-"))
             {
-                lookupValue = modelNormalized.Substring(0, 6);
+                var rms = Regex.Match(modelNormalized, "(RM-)([0-9]+)");
+                lookupValue = rms.Value;
             }
 
             if (nokiaLookupTable.ContainsKey(lookupValue))
@@ -300,6 +302,9 @@ namespace GoogleAnalytics
             { "SPH-I800", new CanonicalPhoneName() { CanonicalModel = "ATIV S Neo", Comments="Sprint" } },
             { "SGH-I187", new CanonicalPhoneName() { CanonicalModel = "ATIV S Neo", Comments="AT&T" } },
             { "GT-I8675", new CanonicalPhoneName() { CanonicalModel = "ATIV S Neo" } },
+
+            // ATIV SE
+            { "SM-W750V", new CanonicalPhoneName() { CanonicalModel = "ATIV SE", Comments="Verizon" } },
         };
 
         private static Dictionary<string, CanonicalPhoneName> htcLookupTable = new Dictionary<string, CanonicalPhoneName>()
@@ -387,7 +392,9 @@ namespace GoogleAnalytics
             { "RADAR 4G", new CanonicalPhoneName() { CanonicalModel = "Radar", Comments = "T-Mobile USA" } },
             { "RADAR C110E", new CanonicalPhoneName() { CanonicalModel = "Radar" } },
             
-        };
+            // One M8
+            { "HTC6995LVW", new CanonicalPhoneName() { CanonicalModel = "One M8", Comments="Verizon" } },
+};
 
         private static Dictionary<string, CanonicalPhoneName> nokiaLookupTable = new Dictionary<string, CanonicalPhoneName>()
         {
@@ -467,6 +474,27 @@ namespace GoogleAnalytics
             { "RM-996", new CanonicalPhoneName() { CanonicalModel = "Lumia 1320" } },
             // Lumia Icon
             { "RM-927", new CanonicalPhoneName() { CanonicalModel = "Lumia Icon", Comments="Verizon" } },
+            // Lumia 630
+            { "RM-976", new CanonicalPhoneName() { CanonicalModel = "Lumia 630" } },
+            { "RM-977", new CanonicalPhoneName() { CanonicalModel = "Lumia 630" } },
+            { "RM-978", new CanonicalPhoneName() { CanonicalModel = "Lumia 630" } },
+            { "RM-979", new CanonicalPhoneName() { CanonicalModel = "Lumia 630" } },
+            // Lumia 635
+            { "RM-974", new CanonicalPhoneName() { CanonicalModel = "Lumia 635" } },
+            { "RM-975", new CanonicalPhoneName() { CanonicalModel = "Lumia 635" } },
+            // Lumia 526
+            { "RM-997", new CanonicalPhoneName() { CanonicalModel = "Lumia 526", Comments="China Mobile" } },
+            // Lumia 930
+            { "RM-1045", new CanonicalPhoneName() { CanonicalModel = "Lumia 930" } },
+            // Lumia 636
+            { "RM-1027", new CanonicalPhoneName() { CanonicalModel = "Lumia 636", Comments="China" } },
+            // Lumia 638
+            { "RM-1010", new CanonicalPhoneName() { CanonicalModel = "Lumia 638", Comments="China" } },
+            // Lumia 530
+            { "RM-1017", new CanonicalPhoneName() { CanonicalModel = "Lumia 530", Comments="Single SIM" } },
+            { "RM-1018", new CanonicalPhoneName() { CanonicalModel = "Lumia 530", Comments="Single SIM" } },
+            { "RM-1019", new CanonicalPhoneName() { CanonicalModel = "Lumia 530", Comments="Dual SIM" } },
+            { "RM-1020", new CanonicalPhoneName() { CanonicalModel = "Lumia 530", Comments="Dual SIM" } },
         };
     }
 
