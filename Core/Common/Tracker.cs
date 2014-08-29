@@ -39,7 +39,7 @@ namespace GoogleAnalytics.Core
         {
             engine.CustomMetrics[index] = value;
         }
-        
+
 #if NETFX_CORE
         private void platformTrackingInfo_ViewPortResolutionChanged(object sender, object args)
 #else
@@ -48,7 +48,7 @@ namespace GoogleAnalytics.Core
         {
             engine.ViewportSize = platformInfoProvider.ViewPortResolution;
         }
-        
+
 #if NETFX_CORE
         private void platformTrackingInfo_ScreenResolutionChanged(object sender, object args)
 #else
@@ -212,7 +212,7 @@ namespace GoogleAnalytics.Core
             get { return engine.ExperimentVariant; }
             set { engine.ExperimentVariant = value; }
         }
-        
+
         public float SampleRate { get; set; }
         public bool IsUseSecure { get; set; }
         public bool ThrottlingEnabled { get; set; }
@@ -259,6 +259,13 @@ namespace GoogleAnalytics.Core
             {
                 SendPayload(payload);
             }
+        }
+
+        public void SendTransactionItem(TransactionItem transactionItem)
+        {
+            platformInfoProvider.OnTracking(); // give platform info provider a chance to refresh.
+            var payload = engine.TrackTransactionItem(transactionItem.TransactionId, transactionItem.Name, (double)transactionItem.PriceInMicros / 1000000, transactionItem.Quantity, transactionItem.SKU, transactionItem.Category, transactionItem.CurrencyCode, SessionControl);
+            SendPayload(payload);
         }
 
         IEnumerable<Payload> TrackTransaction(Transaction transaction, SessionControl sessionControl = SessionControl.None, bool isNonInteractive = false)

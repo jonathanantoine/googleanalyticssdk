@@ -30,6 +30,16 @@ namespace GoogleAnalytics
 			Category = nullptr;
 		}
 
+		TransactionItem(Platform::String^ transactionId, Platform::String^ sku, Platform::String^ name, long long priceInMicros, long long quantity)
+		{
+			TransactionId = transactionId;
+			Name = name;
+			PriceInMicros = priceInMicros;
+			Quantity = quantity;
+			SKU = sku;
+			Category = nullptr;
+		}
+
 		property Platform::String^ Name;
 
 		property long long PriceInMicros;
@@ -39,6 +49,10 @@ namespace GoogleAnalytics
 		property Platform::String^ SKU;
 
 		property Platform::String^ Category;
+
+		property Platform::String^ TransactionId;
+
+		property Platform::String^ CurrencyCode;
 
 	};
 }

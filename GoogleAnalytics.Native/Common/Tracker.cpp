@@ -384,6 +384,13 @@ void Tracker::SendTransaction(Transaction^ transaction)
 	}
 }
 
+void Tracker::SendTransactionItem(TransactionItem^ transactionItem)
+{
+	platformInfoProvider->OnTracking(); // give platform info provider a chance to refresh.
+	auto payload = engine->TrackTransactionItem(transactionItem->TransactionId, transactionItem->Name, (double)transactionItem->PriceInMicros / 1000000, transactionItem->Quantity, transactionItem->SKU, transactionItem->Category, transactionItem->CurrencyCode, SessionControl);
+	SendPayload(payload);
+}
+
 void Tracker::SetStartSession(bool value)
 {
 	startSession = value;

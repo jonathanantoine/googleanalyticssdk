@@ -235,6 +235,8 @@ namespace GoogleAnalytics
 
 		void SendTransaction(GoogleAnalytics::Transaction^ transaction);
 
+		void SendTransactionItem(GoogleAnalytics::TransactionItem^ transactionItem);
+
 		void SetStartSession(bool value);
 
 		void SetEndSession(bool value);
