@@ -39,6 +39,7 @@
       <group targetFramework="windows8"/>
       <group targetFramework="windows81"/>
       <group targetFramework="wpa81"/>
+      <group targetFramework="portable-windows8+net45"/>
     </dependencies>
   </metadata>
 </package>
