@@ -20,10 +20,21 @@
         <dependency id="Microsoft.Bcl.Async" version="1.0.16" />
         <dependency id="Microsoft.Net.Http" version="2.1.10" />
       </group>
-      <group targetFramework="portable-sl4+wp71+windows8">
+      <group targetFramework="portable-sl4+wp71+win8">
         <dependency id="Microsoft.Bcl" version="1.0.19" />
         <dependency id="Microsoft.Bcl.Build" version="1.0.7" />
         <dependency id="Microsoft.Bcl.Async" version="1.0.16" />
+        <dependency id="Microsoft.Net.Http" version="2.1.10" />
+      </group>
+      <group targetFramework="portable-net40+win8+wp8+sl5">
+        <dependency id="Microsoft.Bcl" version="1.0.19" />
+        <dependency id="Microsoft.Bcl.Build" version="1.0.7" />
+        <dependency id="Microsoft.Bcl.Async" version="1.0.16" />
+        <dependency id="Microsoft.Net.Http" version="2.1.10" />
+      </group>
+      <group targetFramework="portable-net45+win8+wp8">
+        <dependency id="Microsoft.Bcl" version="1.0.19" />
+        <dependency id="Microsoft.Bcl.Build" version="1.0.7" />
         <dependency id="Microsoft.Net.Http" version="2.1.10" />
       </group>
       <group targetFramework="windowsphone8">
@@ -31,15 +42,10 @@
         <dependency id="Microsoft.Bcl.Build" version="1.0.7" />
         <dependency id="Microsoft.Net.Http" version="2.1.10" />
       </group>
-      <group targetFramework="portable-windows8+net45">
-        <dependency id="Microsoft.Bcl" version="1.0.19" />
-        <dependency id="Microsoft.Bcl.Build" version="1.0.7" />
-        <dependency id="Microsoft.Net.Http" version="2.1.10" />
-      </group>
       <group targetFramework="windows8"/>
       <group targetFramework="windows81"/>
       <group targetFramework="wpa81"/>
-      <group targetFramework="portable-windows8+net45"/>
+      <group targetFramework="portable-win81+wpa81"/>
     </dependencies>
   </metadata>
 </package>

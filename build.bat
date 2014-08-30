@@ -36,11 +36,14 @@ copy "GoogleAnalytics.Managed\WP71\bin\Release\GoogleAnalytics.pdb"    			"deplo
 copy "Core\Universal\bin\Release\GoogleAnalytics.Core.winmd" 					"deploy\lib\portable-win81+wpa81\"
 @rem copy "Core\Universal\bin\Release\GoogleAnalytics.Core.pdb" 						"deploy\lib\portable-win81+wpa81\"
 
-copy "Core\PCL.136\bin\Release\GoogleAnalytics.Core.dll"    					"deploy\lib\portable-windows8+net45\"
-copy "Core\PCL.136\bin\Release\GoogleAnalytics.Core.pdb"    					"deploy\lib\portable-windows8+net45\"
+copy "Core\PCL.136\bin\Release\GoogleAnalytics.Core.dll"    					"deploy\lib\portable-net40+win8+wp8+sl5\"
+copy "Core\PCL.136\bin\Release\GoogleAnalytics.Core.pdb"    					"deploy\lib\portable-net40+win8+wp8+sl5\"
 
-copy "Core\PCL.104\bin\Release\GoogleAnalytics.Core.dll"    					"deploy\lib\portable-sl4+wp71+windows8\"
-copy "Core\PCL.104\bin\Release\GoogleAnalytics.Core.pdb"    					"deploy\lib\portable-sl4+wp71+windows8\"
+copy "Core\PCL.78\bin\Release\GoogleAnalytics.Core.dll"    						"deploy\lib\portable-net45+win8+wp8\"
+copy "Core\PCL.78\bin\Release\GoogleAnalytics.Core.pdb"    						"deploy\lib\portable-net45+win8+wp8\"
+
+copy "Core\PCL.104\bin\Release\GoogleAnalytics.Core.dll"    					"deploy\lib\portable-sl4+wp71+win8\"
+copy "Core\PCL.104\bin\Release\GoogleAnalytics.Core.pdb"    					"deploy\lib\portable-sl4+wp71+win8\"
 
 .nuget\nuget pack deploy\GoogleAnalyticsSDK.nuspec
 
