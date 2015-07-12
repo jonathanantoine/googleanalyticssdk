@@ -46,25 +46,28 @@ void PlatformInfoProvider::InitializeWindow()
 	try
 	{
 		coreWindow = Windows::UI::Core::CoreWindow::GetForCurrentThread();
-		auto bounds = coreWindow->Bounds;
-
-		float w = bounds.Width;
-		float h = bounds.Height;
-		auto displayInfo = DisplayInformation::GetForCurrentView();
-		w = std::floorf(.5f + w * (float)displayInfo->RawPixelsPerViewPixel);
-		w = std::floorf(.5f + w * (float)displayInfo->RawPixelsPerViewPixel);
-
-		if ((displayInfo->CurrentOrientation & DisplayOrientations::Landscape) == DisplayOrientations::Landscape)
+		if (coreWindow.Get())
 		{
-			SetScreenResolution(Size(w, h));
+			auto bounds = coreWindow->Bounds;
+
+			float w = bounds.Width;
+			float h = bounds.Height;
+			auto displayInfo = DisplayInformation::GetForCurrentView();
+			w = std::floorf(.5f + w * (float)displayInfo->RawPixelsPerViewPixel);
+			w = std::floorf(.5f + w * (float)displayInfo->RawPixelsPerViewPixel);
+
+			if ((displayInfo->CurrentOrientation & DisplayOrientations::Landscape) == DisplayOrientations::Landscape)
+			{
+				SetScreenResolution(Size(w, h));
+			}
+			else // portrait
+			{
+				SetScreenResolution(Size(h, w));
+			}
+			SetViewPortResolution(Size(bounds.Width, bounds.Height)); // leave viewport at the scale unadjusted size
+			sizeChangedEventToken = coreWindow->SizeChanged += ref new TypedEventHandler<CoreWindow^, WindowSizeChangedEventArgs^>(this, &PlatformInfoProvider::Window_SizeChanged);
+			windowInitialized = true;
 		}
-		else // portrait
-		{
-			SetScreenResolution(Size(h, w));
-		}
-		SetViewPortResolution(Size(bounds.Width, bounds.Height)); // leave viewport at the scale unadjusted size
-		sizeChangedEventToken = coreWindow->SizeChanged += ref new TypedEventHandler<CoreWindow^, WindowSizeChangedEventArgs^>(this, &PlatformInfoProvider::Window_SizeChanged);
-		windowInitialized = true;
 	}
 	catch (const std::exception) { /* ignore, CoreWindow may not be ready yet */ }
 }

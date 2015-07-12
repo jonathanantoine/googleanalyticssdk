@@ -46,50 +46,53 @@ void PlatformInfoProvider::InitializeWindow()
 	try
 	{
 		coreWindow = Windows::UI::Core::CoreWindow::GetForCurrentThread();
-		auto bounds = coreWindow->Bounds;
+		if (coreWindow.Get())
+		{
+			auto bounds = coreWindow->Bounds;
 
-		float w = bounds.Width;
-		float h = bounds.Height;
-		auto displayInfo = DisplayInformation::GetForCurrentView();
-		switch (displayInfo->ResolutionScale)
-		{
-		case ResolutionScale::Scale120Percent:
-			w = std::floorf(.5f + w * 1.2f);
-			w = std::floorf(.5f + w * 1.2f);
-			break;
-		case ResolutionScale::Scale140Percent:
-			w = std::floorf(.5f + w * 1.4f);
-			w = std::floorf(.5f + w * 1.4f);
-			break;
-		case ResolutionScale::Scale150Percent:
-			w = std::floorf(.5f + w * 1.5f);
-			w = std::floorf(.5f + w * 1.5f);
-			break;
-		case ResolutionScale::Scale160Percent:
-			w = std::floorf(.5f + w * 1.6f);
-			w = std::floorf(.5f + w * 1.6f);
-			break;
-		case ResolutionScale::Scale180Percent:
-			w = std::floorf(.5f + w * 1.8f);
-			w = std::floorf(.5f + w * 1.8f);
-			break;
-		case ResolutionScale::Scale225Percent:
-			w = std::floorf(.5f + w * 2.25f);
-			w = std::floorf(.5f + w * 2.25f);
-			break;
-		}
+			float w = bounds.Width;
+			float h = bounds.Height;
+			auto displayInfo = DisplayInformation::GetForCurrentView();
+			switch (displayInfo->ResolutionScale)
+			{
+			case ResolutionScale::Scale120Percent:
+				w = std::floorf(.5f + w * 1.2f);
+				w = std::floorf(.5f + w * 1.2f);
+				break;
+			case ResolutionScale::Scale140Percent:
+				w = std::floorf(.5f + w * 1.4f);
+				w = std::floorf(.5f + w * 1.4f);
+				break;
+			case ResolutionScale::Scale150Percent:
+				w = std::floorf(.5f + w * 1.5f);
+				w = std::floorf(.5f + w * 1.5f);
+				break;
+			case ResolutionScale::Scale160Percent:
+				w = std::floorf(.5f + w * 1.6f);
+				w = std::floorf(.5f + w * 1.6f);
+				break;
+			case ResolutionScale::Scale180Percent:
+				w = std::floorf(.5f + w * 1.8f);
+				w = std::floorf(.5f + w * 1.8f);
+				break;
+			case ResolutionScale::Scale225Percent:
+				w = std::floorf(.5f + w * 2.25f);
+				w = std::floorf(.5f + w * 2.25f);
+				break;
+			}
 
-		if ((displayInfo->CurrentOrientation & DisplayOrientations::Landscape) == DisplayOrientations::Landscape)
-		{
-			SetScreenResolution(Size(w, h));
+			if ((displayInfo->CurrentOrientation & DisplayOrientations::Landscape) == DisplayOrientations::Landscape)
+			{
+				SetScreenResolution(Size(w, h));
+			}
+			else // portrait
+			{
+				SetScreenResolution(Size(h, w));
+			}
+			SetViewPortResolution(Size(bounds.Width, bounds.Height)); // leave viewport at the scale unadjusted size
+			sizeChangedEventToken = coreWindow->SizeChanged += ref new TypedEventHandler<CoreWindow^, WindowSizeChangedEventArgs^>(this, &PlatformInfoProvider::Window_SizeChanged);
+			windowInitialized = true;
 		}
-		else // portrait
-		{
-			SetScreenResolution(Size(h, w));
-		}
-		SetViewPortResolution(Size(bounds.Width, bounds.Height)); // leave viewport at the scale unadjusted size
-		sizeChangedEventToken = coreWindow->SizeChanged += ref new TypedEventHandler<CoreWindow^, WindowSizeChangedEventArgs^>(this, &PlatformInfoProvider::Window_SizeChanged);
-		windowInitialized = true;
 	}
 	catch (const std::exception) { /* ignore, CoreWindow may not be ready yet */ }
 }

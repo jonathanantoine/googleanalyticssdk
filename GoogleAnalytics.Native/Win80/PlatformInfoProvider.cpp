@@ -21,9 +21,9 @@ String^ PlatformInfoProvider::Key_AnonymousClientId = "GoogleAnaltyics.Anonymous
 float PlatformInfoProvider::snappedModeSize = 320.0 + 22.0;
 
 PlatformInfoProvider::PlatformInfoProvider() :
-	windowInitialized(false),
-	viewPortResolution(nullptr),
-	screenResolution(nullptr)
+windowInitialized(false),
+viewPortResolution(nullptr),
+screenResolution(nullptr)
 {
 	InitializeWindow();
 }
@@ -48,37 +48,40 @@ void PlatformInfoProvider::InitializeWindow()
 	try
 	{
 		coreWindow = Windows::UI::Core::CoreWindow::GetForCurrentThread();
-		auto bounds = coreWindow->Bounds;
+		if (coreWindow.Get())
+		{
+			auto bounds = coreWindow->Bounds;
 
-		float w = bounds.Width;
-		float h = bounds.Height;
-		switch (DisplayProperties::ResolutionScale)
-		{
-		case ResolutionScale::Scale140Percent:
-			w = std::floorf(.5f + w * 1.4f);
-			w = std::floorf(.5f + w * 1.4f);
-			break;
-		case ResolutionScale::Scale180Percent:
-			w = std::floorf(.5f + w * 1.8f);
-			w = std::floorf(.5f + w * 1.8f);
-			break;
+			float w = bounds.Width;
+			float h = bounds.Height;
+			switch (DisplayProperties::ResolutionScale)
+			{
+			case ResolutionScale::Scale140Percent:
+				w = std::floorf(.5f + w * 1.4f);
+				w = std::floorf(.5f + w * 1.4f);
+				break;
+			case ResolutionScale::Scale180Percent:
+				w = std::floorf(.5f + w * 1.8f);
+				w = std::floorf(.5f + w * 1.8f);
+				break;
+			}
+
+			if (ApplicationView::Value == ApplicationViewState::FullScreenLandscape)
+			{
+				SetScreenResolution(Size(w, h));
+			}
+			else if (ApplicationView::Value == ApplicationViewState::FullScreenPortrait)
+			{
+				SetScreenResolution(Size(h, w));
+			}
+			else if (ApplicationView::Value == ApplicationViewState::Filled)
+			{
+				SetScreenResolution(Size(w + SnappedModeSize, h)); // add the width of snapped mode & divider grip
+			}
+			SetViewPortResolution(Size(bounds.Width, bounds.Height)); // leave viewport at the scale unadjusted size
+			sizeChangedEventToken = coreWindow->SizeChanged += ref new TypedEventHandler<CoreWindow^, WindowSizeChangedEventArgs^>(this, &PlatformInfoProvider::Window_SizeChanged);
+			windowInitialized = true;
 		}
-		
-		if (ApplicationView::Value == ApplicationViewState::FullScreenLandscape)
-		{
-			SetScreenResolution(Size(w, h));
-		}
-		else if (ApplicationView::Value == ApplicationViewState::FullScreenPortrait)
-		{
-			SetScreenResolution(Size(h, w));
-		}
-		else if (ApplicationView::Value == ApplicationViewState::Filled)
-		{
-			SetScreenResolution(Size(w + SnappedModeSize, h)); // add the width of snapped mode & divider grip
-		}
-		SetViewPortResolution(Size(bounds.Width, bounds.Height)); // leave viewport at the scale unadjusted size
-		sizeChangedEventToken = coreWindow->SizeChanged += ref new TypedEventHandler<CoreWindow^, WindowSizeChangedEventArgs^>(this, &PlatformInfoProvider::Window_SizeChanged);
-		windowInitialized = true;
 	}
 	catch (const std::exception) { /* ignore, CoreWindow may not be ready yet */ }
 }
