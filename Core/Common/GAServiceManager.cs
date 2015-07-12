@@ -322,6 +322,8 @@ namespace GoogleAnalytics.Core
 
         static string GetUrlEncodedString(IEnumerable<KeyValuePair<string, string>> nameValueCollection)
         {
+            const int MaxUriStringSize = 65519;
+
             var result = new StringBuilder();
             bool isFirst = true;
             foreach (var item in nameValueCollection)
@@ -339,6 +341,7 @@ namespace GoogleAnalytics.Core
                     }
                     result.Append(item.Key);
                     result.Append("=");
+                    if (value.Length > MaxUriStringSize) value = value.Substring(0, MaxUriStringSize);
                     result.Append(Uri.EscapeDataString(value));
                 }
             }
