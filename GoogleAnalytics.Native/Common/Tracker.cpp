@@ -80,6 +80,7 @@ void Tracker::SendPayload(Payload^ payload)
 			if (!ThrottlingEnabled || hitTokenBucket->Consume())
 			{
 				payload->IsUseSecure = IsUseSecure;
+				payload->IsDebug = IsDebug;
 				analyticsEngine->SendPayload(payload);
 			}
 		}

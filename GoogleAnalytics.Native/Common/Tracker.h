@@ -221,6 +221,8 @@ namespace GoogleAnalytics
 
 		property bool IsUseSecure;
 
+		property bool IsDebug;
+
 		property bool ThrottlingEnabled;
 
 		void SendView(Platform::String^ screenName);

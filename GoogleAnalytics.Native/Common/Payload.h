@@ -10,7 +10,7 @@
 namespace GoogleAnalytics
 {
 
-	ref class Payload sealed
+	public ref class Payload sealed
 	{
 	private:
 		Windows::Foundation::DateTime timeStamp;
@@ -22,6 +22,7 @@ namespace GoogleAnalytics
 		Payload(Windows::Foundation::Collections::IMap<Platform::String^, Platform::String^>^ data)
 		{
 			this->IsUseSecure = false;
+			this->IsDebug = false;
 			this->data = data;
 			this->timeStamp = DateTimeHelper::Now();
 		}
@@ -43,6 +44,8 @@ namespace GoogleAnalytics
 		}
 
 		property bool IsUseSecure;
+
+		property bool IsDebug;
 
 	};
 }

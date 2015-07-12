@@ -19,15 +19,19 @@ using namespace Web;
 
 GAServiceManager^ GAServiceManager::current = nullptr;
 
+Uri^ GAServiceManager::endPointUnsecureDebug = ref new Uri("http://www.google-analytics.com/debug/collect");
+
+Uri^ GAServiceManager::endPointSecureDebug = ref new Uri("https://ssl.google-analytics.com/debug/collect");
+
 Uri^ GAServiceManager::endPointUnsecure = ref new Uri("http://www.google-analytics.com/collect");
 
 Uri^ GAServiceManager::endPointSecure = ref new Uri("https://ssl.google-analytics.com/collect");
 
 String^ GAServiceManager::userAgent = nullptr;
 
-GAServiceManager::GAServiceManager() : 
-	isConnected(true),
-	timer(nullptr)
+GAServiceManager::GAServiceManager() :
+isConnected(true),
+timer(nullptr)
 {
 	BustCache = false;
 	dispatchPeriod = TimeSpanHelper::FromTicks(0);
@@ -49,7 +53,7 @@ void GAServiceManager::SendPayload(GoogleAnalytics::Payload^ payload)
 void GAServiceManager::Clear()
 {
 	std::lock_guard<std::mutex> lg(payloadLock);
-	while(!payloads.empty()) payloads.pop();
+	while (!payloads.empty()) payloads.pop();
 }
 
 void GAServiceManager::timer_Tick(ThreadPoolTimer^ sender)
@@ -114,7 +118,7 @@ task<void> GAServiceManager::DispatchQueuedPayloads(std::vector<Payload^> payloa
 		Payload^ payload = *it;
 
 		// clone the data
-		std::unordered_map<Platform::String^, Platform::String^> payloadData;
+		std::unordered_map<String^, String^> payloadData;
 		for each (auto kvp in payload->Data)
 		{
 			payloadData[kvp->Key] = kvp->Value;
@@ -131,7 +135,7 @@ task<void> GAServiceManager::DispatchImmediatePayload(Payload^ payload)
 	Web::HttpRequest httpRequest;
 	httpRequest.headers.push_back(std::tuple<std::wstring, std::wstring>(L"User-Agent", UserAgent->Data()));
 	// clone the data
-	std::unordered_map<Platform::String^, Platform::String^> payloadData;
+	std::unordered_map<String^, String^> payloadData;
 	for each (auto kvp in payload->Data)
 	{
 		payloadData[kvp->Key] = kvp->Value;
@@ -139,37 +143,28 @@ task<void> GAServiceManager::DispatchImmediatePayload(Payload^ payload)
 	return DispatchPayloadData(payload, httpRequest, payloadData);
 }
 
-task<void> GAServiceManager::DispatchPayloadData(Payload^ payload, HttpRequest httpRequest, std::unordered_map<Platform::String^, Platform::String^> payloadData)
+task<void> GAServiceManager::DispatchPayloadData(Payload^ payload, HttpRequest httpRequest, std::unordered_map<String^, String^> payloadData)
 {
-	if (isConnected) 
+	if (isConnected)
 	{
 		if (BustCache) payloadData["z"] = GetCacheBuster();
-		auto endPoint = payload->IsUseSecure ? endPointSecure : endPointUnsecure;
-
-		std::wstring content;
-		auto it = begin(payloadData);
-		while (true)
-		{
-			content += std::wstring(it->first->Data()) + L"=" + std::wstring(Uri::EscapeComponent(it->second)->Data());
-			it++;
-			if (it == end(payloadData)) break;
-			content += '&';
-		}
-
-		return httpRequest.PostAsync(endPoint, content).then([this, payload](task<std::wstring> t) {
+		
+		return IssueRequestAsync(payload, httpRequest, payloadData).then([this, payload](task<std::wstring> t) {
 			try
 			{
-				t.get();
+				std::wstring response(t.get());
+				OnPayloadSent(payload, ref new String(response.c_str()));
 			}
-			#if defined(__cplusplus_winrt)
-				catch(Platform::Exception^ _E)
-			#else
-				catch (const std::exception)
-			#endif
+#if defined(__cplusplus_winrt)
+			catch (Exception^ _E)
+#else
+			catch (const std::exception)
+#endif
 			{
-				OnPayloadFailed(payload);
+				// TODO: get real error & determine http status code if not 200.
+				OnPayloadFailed(payload, L"Unknown error");
 			}
-		});
+		}, task_continuation_context::use_current());
 	}
 	else
 	{
@@ -179,9 +174,45 @@ task<void> GAServiceManager::DispatchPayloadData(Payload^ payload, HttpRequest h
 	}
 }
 
-void GAServiceManager::OnPayloadFailed(Payload^ payload)
+task<std::wstring> GAServiceManager::IssueRequestAsync(Payload^ payload, HttpRequest httpRequest, std::unordered_map<String^, String^> payloadData)
+{
+	auto endPoint = payload->IsDebug ? (payload->IsUseSecure ? endPointSecureDebug : endPointUnsecureDebug) : (payload->IsUseSecure ? endPointSecure : endPointUnsecure);
+
+	std::wstring content;
+	auto it = begin(payloadData);
+	while (true)
+	{
+		content += std::wstring(it->first->Data()) + L"=" + std::wstring(Uri::EscapeComponent(it->second)->Data());
+		it++;
+		if (it == end(payloadData)) break;
+		content += '&';
+	}
+
+	if (PostData)
+	{
+		return httpRequest.PostAsync(endPoint, content);
+	}
+	else
+	{
+		auto url = endPoint->RawUri + L"?" + ref new String(content.c_str());
+		return httpRequest.GetAsync(ref new Uri(url));
+	}
+}
+
+void GAServiceManager::OnPayloadFailed(Payload^ payload, String^ error)
 {
 	// TODO: store in isolated storage and retry next session
+	PayloadSent(this, ref new PayloadSentEventArgs(payload, error));
+}
+
+void GAServiceManager::OnPayloadSent(Payload^ payload, String^ response)
+{
+	PayloadSent(this, ref new PayloadSentEventArgs(payload, response));
+}
+
+void GAServiceManager::OnPayloadMalformed(GoogleAnalytics::Payload^ payload, int httpStatusCode)
+{
+	PayloadMalformed(this, ref new PayloadMalformedEventArgs(payload, httpStatusCode));
 }
 
 String^ GAServiceManager::GetCacheBuster()

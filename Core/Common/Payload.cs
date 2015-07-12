@@ -14,5 +14,6 @@ namespace GoogleAnalytics.Core
         public IDictionary<string, string> Data { get; private set; }
         public DateTimeOffset TimeStamp { get; private set; }
         public bool IsUseSecure { get; set; }
+        public bool IsDebug { get; set; }
     }
 }

@@ -215,6 +215,7 @@ namespace GoogleAnalytics.Core
 
         public float SampleRate { get; set; }
         public bool IsUseSecure { get; set; }
+        public bool IsDebug { get; set; }
         public bool ThrottlingEnabled { get; set; }
 
         public void SendView(string screenName)
@@ -320,6 +321,7 @@ namespace GoogleAnalytics.Core
                     if (!ThrottlingEnabled || hitTokenBucket.Consume())
                     {
                         payload.IsUseSecure = IsUseSecure;
+                        payload.IsDebug = IsDebug;
                         serviceManager.SendPayload(payload);
                     }
                 }

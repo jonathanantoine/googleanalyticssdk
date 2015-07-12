@@ -17,6 +17,8 @@ namespace GoogleAnalytics.Core
     {
         static Random random;
         static GAServiceManager current;
+        static readonly Uri endPointUnsecureDebug = new Uri("http://www.google-analytics.com/debug/collect");
+        static readonly Uri endPointSecureDebug = new Uri("https://ssl.google-analytics.com/debug/collect");
         static readonly Uri endPointUnsecure = new Uri("http://www.google-analytics.com/collect");
         static readonly Uri endPointSecure = new Uri("https://ssl.google-analytics.com/collect");
         readonly Queue<Payload> payloads;
@@ -27,8 +29,18 @@ namespace GoogleAnalytics.Core
         Timer timer;
 #endif
 
+        /// <summary>
+        /// Gets or sets whether data should be sent via POST or GET method. Default is POST.
+        /// </summary>
+        public bool PostData { get; set; }
+
+        public event EventHandler<PayloadSentEventArgs> PayloadSent;
+        public event EventHandler<PayloadFailedEventArgs> PayloadFailed;
+        public event EventHandler<PayloadMalformedEventArgs> PayloadMalformed;
+
         private GAServiceManager()
         {
+            PostData = true;
             dispatchingTasks = new List<Task>();
             payloads = new Queue<Payload>();
             DispatchPeriod = TimeSpan.Zero;
@@ -125,7 +137,7 @@ namespace GoogleAnalytics.Core
                 }
             }
         }
-        
+
 #if NETFX_CORE
         public IAsyncAction Dispatch()
         {
@@ -229,23 +241,57 @@ namespace GoogleAnalytics.Core
         async Task DispatchPayloadData(Payload payload, HttpClient httpClient, Dictionary<string, string> payloadData)
         {
             if (BustCache) payloadData.Add("z", GetCacheBuster());
-            var endPoint = payload.IsUseSecure ? endPointSecure : endPointUnsecure;
-            using (var content = GetEncodedContent(payloadData))
+            try
             {
-                try
+                using (var response = await SendPayloadAsync(payload, httpClient, payloadData))
                 {
-                    await httpClient.PostAsync(endPoint, content);
+                    try
+                    {
+                        response.EnsureSuccessStatusCode();
+                        await OnPayloadSentAsync(payload, response);
+                    }
+                    catch // If you do not get a 2xx status code, you should NOT retry the request. Instead, you should stop and correct any errors in your HTTP request.
+                    {
+                        OnMalformedPayload(payload, response);
+                    }
                 }
-                catch
-                {
-                    OnPayloadFailed(payload);
-                }
+            }
+            catch (Exception ex)
+            {
+                OnPayloadFailed(payload, ex);
             }
         }
 
-        void OnPayloadFailed(Payload payload)
+        async Task<HttpResponseMessage> SendPayloadAsync(Payload payload, HttpClient httpClient, Dictionary<string, string> payloadData)
+        {
+            var endPoint = payload.IsDebug ? (payload.IsUseSecure ? endPointSecureDebug : endPointUnsecureDebug) : (payload.IsUseSecure ? endPointSecure : endPointUnsecure);
+            if (PostData)
+            {
+                using (var content = GetEncodedContent(payloadData))
+                {
+                    return await httpClient.PostAsync(endPoint, content);
+                }
+            }
+            else
+            {
+                return await httpClient.GetAsync(endPoint + "?" + GetUrlEncodedString(payloadData));
+            }
+        }
+
+        void OnMalformedPayload(Payload payload, HttpResponseMessage response)
+        {
+            if (PayloadMalformed != null) PayloadMalformed(this, new PayloadMalformedEventArgs(payload, (int)response.StatusCode));
+        }
+
+        void OnPayloadFailed(Payload payload, Exception exception)
         {
             // TODO: store in isolated storage and retry next session
+            if (PayloadFailed != null) PayloadFailed(this, new PayloadFailedEventArgs(payload, exception.Message));
+        }
+
+        async Task OnPayloadSentAsync(Payload payload, HttpResponseMessage response)
+        {
+            if (PayloadSent != null) PayloadSent(this, new PayloadSentEventArgs(payload, await response.Content.ReadAsStringAsync()));
         }
 
         HttpClient GetHttpClient()
@@ -298,5 +344,53 @@ namespace GoogleAnalytics.Core
             }
             return result.ToString();
         }
+    }
+
+    public sealed class PayloadFailedEventArgs
+#if !NETFX_CORE
+ : EventArgs
+#endif
+    {
+        internal PayloadFailedEventArgs(Payload payload, string error)
+        {
+            Error = error;
+            Payload = payload;
+        }
+
+        public string Error { get; private set; }
+
+        public Payload Payload { get; private set; }
+    }
+
+    public sealed class PayloadSentEventArgs
+#if !NETFX_CORE
+ : EventArgs
+#endif
+    {
+        internal PayloadSentEventArgs(Payload payload, string response)
+        {
+            Response = response;
+            Payload = payload;
+        }
+
+        public string Response { get; private set; }
+
+        public Payload Payload { get; private set; }
+    }
+
+    public sealed class PayloadMalformedEventArgs
+#if !NETFX_CORE
+ : EventArgs
+#endif
+    {
+        internal PayloadMalformedEventArgs(Payload payload, int httpStatusCode)
+        {
+            HttpStatusCode = httpStatusCode;
+            Payload = payload;
+        }
+
+        public int HttpStatusCode { get; private set; }
+
+        public Payload Payload { get; private set; }
     }
 }
