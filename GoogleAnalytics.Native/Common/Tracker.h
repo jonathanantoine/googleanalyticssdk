@@ -217,6 +217,24 @@ namespace GoogleAnalytics
 			void set(Platform::String^ value);
 		}
 
+		property Platform::String^ DataSource
+		{
+			Platform::String^ get();
+			void set(Platform::String^ value);
+		}
+
+		property Platform::String^ UserId
+		{
+			Platform::String^ get();
+			void set(Platform::String^ value);
+		}
+
+		property Platform::String^ GeographicalId
+		{
+			Platform::String^ get();
+			void set(Platform::String^ value);
+		}
+
 		property float SampleRate;
 
 		property bool IsUseSecure;

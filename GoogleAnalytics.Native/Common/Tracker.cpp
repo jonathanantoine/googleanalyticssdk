@@ -341,6 +341,33 @@ void Tracker::ExperimentVariant::set(String^ value)
 	engine->ExperimentVariant = value;
 }
 
+String^ Tracker::DataSource::get()
+{
+	return engine->DataSource;
+}
+void Tracker::DataSource::set(String^ value)
+{
+	engine->DataSource = value;
+}
+
+String^ Tracker::UserId::get()
+{
+	return engine->UserId;
+}
+void Tracker::UserId::set(String^ value)
+{
+	engine->UserId = value;
+}
+
+String^ Tracker::GeographicalId::get()
+{
+	return engine->GeographicalId;
+}
+void Tracker::GeographicalId::set(String^ value)
+{
+	engine->GeographicalId = value;
+}
+
 void Tracker::SendView(String^ screenName)
 {
 	platformInfoProvider->OnTracking(); // give platform info provider a chance to refresh.

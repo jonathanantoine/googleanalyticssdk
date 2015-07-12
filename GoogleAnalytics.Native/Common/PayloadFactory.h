@@ -82,6 +82,9 @@ namespace GoogleAnalytics
 		property Platform::String^ LinkId;
 		property Platform::String^ ExperimentId;
 		property Platform::String^ ExperimentVariant;
+		property Platform::String^ UserId;
+		property Platform::String^ DataSource;
+		property Platform::String^ GeographicalId;
 
 		PayloadFactory();
 		

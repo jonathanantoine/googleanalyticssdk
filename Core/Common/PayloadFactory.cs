@@ -32,6 +32,11 @@ namespace GoogleAnalytics.Core
         public string UserLanguage { get; set; }
         public int? ScreenColorDepthBits { get; set; }
 
+        // optional
+        public string UserId { get; set; }
+        public string DataSource { get; set; }
+        public string GeographicalId { get; set; }
+
         // Campaign params
         public string CampaignName { get; set; }
         public string CampaignSource { get; set; }
@@ -54,7 +59,7 @@ namespace GoogleAnalytics.Core
         public string LinkId { get; set; }
         public string ExperimentId { get; set; }
         public string ExperimentVariant { get; set; }
-
+        
         public PayloadFactory()
         {
             CustomDimensions = new Dictionary<int, string>();
@@ -190,6 +195,9 @@ namespace GoogleAnalytics.Core
             if (LinkId != null) result.Add("linkid", LinkId);
             if (ExperimentId != null) result.Add("xid", ExperimentId);
             if (ExperimentVariant != null) result.Add("xvar", ExperimentVariant);
+            if (DataSource != null) result.Add("ds", DataSource);
+            if (UserId != null) result.Add("uid", UserId);
+            if (GeographicalId != null) result.Add("geoid", GeographicalId);
 
             foreach (var dimension in CustomDimensions)
             {

@@ -190,6 +190,9 @@ IMap<String^, Platform::String^>^ PayloadFactory::GetRequiredPayloadData(String^
 	if (LinkId) result->Insert("linkid", LinkId);
 	if (ExperimentId) result->Insert("xid", ExperimentId);
 	if (ExperimentVariant) result->Insert("xvar", ExperimentVariant);
+	if (DataSource) result->Insert("ds", DataSource);
+	if (UserId) result->Insert("uid", UserId);
+	if (GeographicalId) result->Insert("geoid", GeographicalId);
 
 	for each (auto dimension in CustomDimensions)
 	{
