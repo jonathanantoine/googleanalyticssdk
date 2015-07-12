@@ -9,9 +9,7 @@ namespace GoogleAnalytics
         {
             try
             {
-                XmlReaderSettings xmlReaderSettings = new XmlReaderSettings();
-                xmlReaderSettings.XmlResolver = new XmlXapResolver();
-                using (XmlReader xmlReader = XmlReader.Create("WMAppManifest.xml", xmlReaderSettings))
+                using (XmlReader xmlReader = XmlReader.Create("WMAppManifest.xml"))
                 {
                     xmlReader.ReadToDescendant("App");
                     if (!xmlReader.IsStartElement())
