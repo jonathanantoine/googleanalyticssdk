@@ -101,7 +101,7 @@ Payload^ PayloadFactory::TrackUserTiming(String^ category, String^ variable, IBo
 	if (variable) additionalData->Insert("utv", variable);
 	if (time != nullptr) additionalData->Insert("utt", std::floor(0.5 + TimeSpanHelper::GetTotalMilliseconds(time->Value)).ToString());
 	if (label) additionalData->Insert("utl", label);
-	if (loadTime != nullptr) additionalData->Insert("ptl", std::floor(0.5 + TimeSpanHelper::GetTotalMilliseconds(loadTime->Value)).ToString());
+	if (loadTime != nullptr) additionalData->Insert("plt", std::floor(0.5 + TimeSpanHelper::GetTotalMilliseconds(loadTime->Value)).ToString());
 	if (dnsTime != nullptr) additionalData->Insert("dns", std::floor(0.5 + TimeSpanHelper::GetTotalMilliseconds(dnsTime->Value)).ToString());
 	if (downloadTime != nullptr) additionalData->Insert("pdt", std::floor(0.5 + TimeSpanHelper::GetTotalMilliseconds(downloadTime->Value)).ToString());
 	if (redirectResponseTime != nullptr) additionalData->Insert("rrt", std::floor(0.5 + TimeSpanHelper::GetTotalMilliseconds(redirectResponseTime->Value)).ToString());

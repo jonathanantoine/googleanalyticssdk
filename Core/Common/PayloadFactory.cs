@@ -106,7 +106,7 @@ namespace GoogleAnalytics.Core
             if (variable != null) additionalData.Add("utv", variable);
             if (time.HasValue) additionalData.Add("utt", Math.Round(time.Value.TotalMilliseconds).ToString(CultureInfo.InvariantCulture));
             if (label != null) additionalData.Add("utl", label);
-            if (loadTime.HasValue) additionalData.Add("ptl", Math.Round(loadTime.Value.TotalMilliseconds).ToString(CultureInfo.InvariantCulture));
+            if (loadTime.HasValue) additionalData.Add("plt", Math.Round(loadTime.Value.TotalMilliseconds).ToString(CultureInfo.InvariantCulture));
             if (dnsTime.HasValue) additionalData.Add("dns", Math.Round(dnsTime.Value.TotalMilliseconds).ToString(CultureInfo.InvariantCulture));
             if (downloadTime.HasValue) additionalData.Add("pdt", Math.Round(downloadTime.Value.TotalMilliseconds).ToString(CultureInfo.InvariantCulture));
             if (redirectResponseTime.HasValue) additionalData.Add("rrt", Math.Round(redirectResponseTime.Value.TotalMilliseconds).ToString(CultureInfo.InvariantCulture));
