@@ -10,7 +10,7 @@ namespace GoogleAnalytics
         const string Key_AnonymousClientId = "GoogleAnaltyics.AnonymousClientId";
         string anonymousClientId;
 
-        public static PlatformInfoProvider()
+        static PlatformInfoProvider()
         {
             OSVersionPrecision = 2;
         }
