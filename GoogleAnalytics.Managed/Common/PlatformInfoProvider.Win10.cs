@@ -1,5 +1,7 @@
 ﻿using GoogleAnalytics.Core;
 using System;
+using System.Linq;
+using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.Graphics.Display;
 using Windows.Storage;
@@ -35,8 +37,19 @@ namespace GoogleAnalytics
                 if (Window.Current != null && Window.Current.Content != null)
                 {
                     var bounds = Window.Current.Bounds;
-                    double w = bounds.Width;
-                    double h = bounds.Height;
+                    double w, h;
+                    var pointerDevice = PointerDevice.GetPointerDevices().FirstOrDefault();
+                    if (pointerDevice != null)
+                    {
+                        w = pointerDevice.ScreenRect.Width;
+                        h = pointerDevice.ScreenRect.Height;
+                    }
+                    else
+                    {
+                        w = bounds.Width;
+                        h = bounds.Height;
+                    }
+
                     var displayInfo = DisplayInformation.GetForCurrentView();
                     var scale = (double)(int)displayInfo.ResolutionScale / 100d;
                     w = Math.Round(w * scale);
