@@ -8,6 +8,15 @@
 @IF NOT EXIST "%DEVENV%" SET DEVENV=%ProgramFiles(x86)%\Microsoft Visual Studio 12.0\Common7\IDE\VSWinExpress.exe
 "%DEVENV%" /build "Release|AnyCPU" GoogleAnalytics.VS2013.sln
 
+@set DEVENV=%ProgramFiles(x86)%\Microsoft Visual Studio 14.0\Common7\IDE\devenv.exe
+@IF NOT EXIST "%DEVENV%" SET DEVENV=%ProgramFiles(x86)%\Microsoft Visual Studio 14.0\Common7\IDE\VSWinExpress.exe
+"%DEVENV%" /build "Release|AnyCPU" GoogleAnalytics.VS2015.sln
+
+copy "Core\UWP\bin\Release\GoogleAnalytics.Core.winmd" 							"deploy\lib\win10\"
+copy "Core\UWP\bin\Release\GoogleAnalytics.Core.pdb" 							"deploy\lib\win10\"
+copy "GoogleAnalytics.Managed\UWP\bin\Release\GoogleAnalytics.winmd" 			"deploy\lib\win10\"
+copy "GoogleAnalytics.Managed\UWP\bin\Release\GoogleAnalytics.pdb" 				"deploy\lib\win10\"
+
 copy "Core\Universal\bin\Release\GoogleAnalytics.Core.winmd" 					"deploy\lib\windows81\"
 copy "Core\Universal\bin\Release\GoogleAnalytics.Core.pdb" 						"deploy\lib\windows81\"
 copy "GoogleAnalytics.Managed\Win81\bin\Release\GoogleAnalytics.winmd" 			"deploy\lib\windows81\"
