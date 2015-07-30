@@ -46,7 +46,7 @@
       <group targetFramework="windows81"/>
       <group targetFramework="wpa81"/>
       <group targetFramework="portable-win81+wpa81"/>
-      <group targetFramework="win10"/>
+      <group targetFramework="uap10.0"/>
     </dependencies>
   </metadata>
 </package>
