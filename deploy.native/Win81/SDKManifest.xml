@@ -1,6 +1,6 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <FileList
-  Identity = "GoogleAnalytics.Native.SDK.Win81, Version=1.2"
+  Identity = "GoogleAnalytics.Native.SDK.Win81, Version=1.3"
   DisplayName = "Google Analytics SDK"
   MinVSVersion = "12.0"
   MinToolsVersion = "4.0"
