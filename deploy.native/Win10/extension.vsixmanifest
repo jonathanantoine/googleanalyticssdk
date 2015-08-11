@@ -8,7 +8,7 @@
     <Tags>Google Analytics SDK Native Windows 10</Tags>
   </Metadata>
   <Installation Scope="Global" AllUsers="true">
-    <InstallationTarget Id="Microsoft.ExtensionSDK" TargetPlatformIdentifier="Windows Kits" TargetPlatformVersion="10" SdkName="GoogleAnalytics.Native.SDK.Win81" SdkVersion="1.3" />
+    <InstallationTarget Id="Microsoft.ExtensionSDK" TargetPlatformIdentifier="Windows Kits" TargetPlatformVersion="10" SdkName="GoogleAnalytics.Native.SDK.Win10" SdkVersion="1.3" />
   </Installation>
   <Dependencies/>
   <Assets>
