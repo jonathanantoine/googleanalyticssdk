@@ -175,6 +175,25 @@ String^ PlatformInfoProvider::ConstructUserAgent()
 {
 	auto sysInfo = ref new Windows::Security::ExchangeActiveSyncProvisioning::EasClientDeviceInformation();
 	auto tc = ref new Windows::Devices::Input::TouchCapabilities();
-	bool hasTouch = tc->TouchPresent > 0;
-	return "Mozilla/5.0 (Windows NT 10.0" + (hasTouch ? "; Touch" : "") + "; " + sysInfo->SystemManufacturer + "; " + sysInfo->SystemProductName + ") Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240";
+	bool hasTouch(tc->TouchPresent > 0);
+	auto package = Windows::ApplicationModel::Package::Current;
+	String^ architecture = package->Id->Architecture.ToString();
+	auto ai = Windows::System::Profile::AnalyticsInfo::VersionInfo;
+	String^ sv = ai->DeviceFamilyVersion;
+
+	unsigned long long v = wcstoull(sv->Data(), 0, 10);
+	unsigned long long v1 = (v & 0xFFFF000000000000L) >> 48;
+	unsigned long long v2 = (v & 0x0000FFFF00000000LL) >> 32;
+	String^ systemVersion = v1.ToString() + "." + v2.ToString();
+	String^ os;
+	if (ai->DeviceFamily == "Windows.Desktop") {
+		os = "Windows NT";
+	}
+	else if (ai->DeviceFamily == "Windows.Mobile") {
+		os = "Windows Phone";
+	}
+	else {
+		os = "Windows";
+	}
+	return = "Mozilla/5.0 (" + os + " " + systemVersion + (hasTouch ? "; Touch" : "") + "; " + architecture + "; " + sysInfo->SystemManufacturer + "; " + sysInfo->SystemProductName + ")";
 }

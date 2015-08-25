@@ -1,10 +1,12 @@
 ﻿using GoogleAnalytics.Core;
 using System;
 using System.Linq;
+using Windows.ApplicationModel;
 using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.Graphics.Display;
 using Windows.Storage;
+using Windows.System.Profile;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -150,7 +152,27 @@ namespace GoogleAnalytics
             var sysInfo = new Windows.Security.ExchangeActiveSyncProvisioning.EasClientDeviceInformation();
             Windows.Devices.Input.TouchCapabilities tc = new Windows.Devices.Input.TouchCapabilities();
             var hasTouch = tc.TouchPresent > 0;
-            return string.Format("Mozilla/5.0 (Windows NT 10.0{0}; {1}; {2}) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240", hasTouch ? "; Touch" : "", sysInfo.SystemManufacturer, sysInfo.SystemProductName);
+            var ai = AnalyticsInfo.VersionInfo;
+            string sv = ai.DeviceFamilyVersion;
+            ulong v = ulong.Parse(sv);
+            ulong v1 = (v & 0xFFFF000000000000L) >> 48;
+            ulong v2 = (v & 0x0000FFFF00000000L) >> 32;
+            var systemVersion = $"{v1}.{v2}";
+            string os;
+            switch (ai.DeviceFamily)
+            {
+                case "Windows.Desktop":
+                    os = "Windows NT";
+                    break;
+                case "Windows.Mobile":
+                    os = "Windows Phone";
+                    break;
+                default:
+                    os = "Windows";
+                    break;
+            }
+
+            return string.Format("Mozilla/5.0 ({0} {1}{2}; {3}; {4}; {5})", os, systemVersion, hasTouch ? "; Touch" : "", Package.Current.Id.Architecture.ToString(), sysInfo.SystemManufacturer, sysInfo.SystemProductName);
         }
     }
 }
