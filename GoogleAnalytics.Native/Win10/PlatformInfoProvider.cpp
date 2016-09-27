@@ -192,6 +192,9 @@ String^ PlatformInfoProvider::ConstructUserAgent()
 	else if (ai->DeviceFamily == "Windows.Mobile") {
 		os = "Windows Phone";
 	}
+	else if (ai->DeviceFamily == "Windows.Xbox") {
+		os = "Windows NT";
+	}
 	else {
 		os = "Windows";
 	}

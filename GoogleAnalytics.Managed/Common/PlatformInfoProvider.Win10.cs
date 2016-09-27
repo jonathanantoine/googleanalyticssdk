@@ -167,6 +167,9 @@ namespace GoogleAnalytics
                 case "Windows.Mobile":
                     os = "Windows Phone";
                     break;
+                case "Windows.Xbox":
+                    os = "Windows NT";
+                    break;
                 default:
                     os = "Windows";
                     break;
